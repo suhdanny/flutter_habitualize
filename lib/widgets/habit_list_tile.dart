@@ -29,68 +29,69 @@ class HabitListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      key: const ValueKey(0),
-      startActionPane: ActionPane(
-        motion: const DrawerMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (ctx) {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text("Delete Habit"),
-                  content: Text(
-                    "Are you sure you want to delete '$title'? This action cannot be undone.",
-                    textAlign: TextAlign.left,
+    return Card(
+      margin: const EdgeInsets.all(8),
+      child: Slidable(
+        key: const ValueKey(0),
+        startActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (ctx) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Delete Habit"),
+                    content: Text(
+                      "Are you sure you want to delete '$title'? This action cannot be undone.",
+                      textAlign: TextAlign.left,
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          String userUid =
+                              FirebaseAuth.instance.currentUser!.uid;
+                          FirebaseFirestore.instance
+                              .doc('users/$userUid/habits/$docId')
+                              .delete();
+                          Navigator.pop(context, 'Delete');
+                        },
+                        child: const Text("Delete"),
+                      ),
+                    ],
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text("Cancel"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        String userUid = FirebaseAuth.instance.currentUser!.uid;
-                        FirebaseFirestore.instance
-                            .doc('users/$userUid/habits/$docId')
-                            .delete();
-                        Navigator.pop(context, 'Delete');
-                      },
-                      child: const Text("Delete"),
-                    ),
-                  ],
-                ),
-              );
-            },
-            icon: Icons.delete,
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-          ),
-          SlidableAction(
-            onPressed: (ctx) {
-              Navigator.pushNamed(
-                context,
-                '/add-habit',
-                arguments: {
-                  "docId": docId,
-                  "icon": icon,
-                  "iconColor": iconColor,
-                  "title": title,
-                  "count": count,
-                  "countUnit": countUnit,
-                  "duration": duration,
-                },
-              );
-            },
-            icon: Icons.edit,
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-          ),
-        ],
-      ),
-      child: Card(
-        margin: const EdgeInsets.all(8),
+                );
+              },
+              icon: Icons.delete,
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            SlidableAction(
+              onPressed: (ctx) {
+                Navigator.pushNamed(
+                  context,
+                  '/add-habit',
+                  arguments: {
+                    "docId": docId,
+                    "icon": icon,
+                    "iconColor": iconColor,
+                    "title": title,
+                    "count": count,
+                    "countUnit": countUnit,
+                    "duration": duration,
+                  },
+                );
+              },
+              icon: Icons.edit,
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+            ),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
