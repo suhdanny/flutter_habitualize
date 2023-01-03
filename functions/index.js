@@ -3,7 +3,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
-exports.resetCompleted = functions.pubsub.schedule("0 0 * * *").onRun((_) => {
+exports.resetFieldsDaily = functions.pubsub.schedule("0 0 * * *").onRun((_) => {
   const db = admin.firestore();
 
   const usersRef = db.collection("users");
@@ -16,6 +16,7 @@ exports.resetCompleted = functions.pubsub.schedule("0 0 * * *").onRun((_) => {
         querySnapshot.forEach((doc) => {
           habitsRef.doc(doc.id).update({
             completed: false,
+            dayCount: 0,
           });
         });
       });
