@@ -31,6 +31,7 @@ class HomeScreen extends StatelessWidget {
               title: data['title'],
               count: data['count'],
               countUnit: data['countUnit'],
+              dayCount: data['dayCount'],
               duration: data['duration'],
               streaks: data['streaks'],
               completed: data['completed'],

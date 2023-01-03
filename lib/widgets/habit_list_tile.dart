@@ -11,6 +11,7 @@ class HabitListTile extends StatelessWidget {
     required this.title,
     required this.count,
     required this.countUnit,
+    required this.dayCount,
     required this.duration,
     required this.streaks,
     required this.completed,
@@ -22,6 +23,7 @@ class HabitListTile extends StatelessWidget {
   final Color iconColor;
   final String title;
   final int count;
+  final int dayCount;
   final String countUnit;
   final String duration;
   final int streaks;
@@ -106,7 +108,7 @@ class HabitListTile extends StatelessWidget {
             leading: Icon(
               icon,
               color: iconColor,
-              size: 40,
+              size: 55,
             ),
             title: Text(
               title,
@@ -114,11 +116,24 @@ class HabitListTile extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-            subtitle: Text(
-              "$count $countUnit / $duration",
-              style: const TextStyle(
-                fontSize: 15,
-              ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+                Text(
+                  "$count $countUnit / $duration",
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  "TODAY: $dayCount / $count $countUnit",
+                  style: TextStyle(
+                    color: dayCount >= count ? Colors.red : Colors.grey,
+                  ),
+                ),
+              ],
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -140,6 +155,7 @@ class HabitListTile extends StatelessWidget {
                       "streaks": completed
                           ? FieldValue.increment(-1)
                           : FieldValue.increment(1),
+                      "dayCount": !completed ? count : 0,
                     });
                   },
                   icon: Icon(
