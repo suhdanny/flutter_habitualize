@@ -76,6 +76,7 @@ class HabitListTile extends StatelessWidget {
                   context,
                   '/add-habit',
                   arguments: {
+                    "appBarTitle": "Edit Habit",
                     "docId": docId,
                     "icon": icon,
                     "iconColor": iconColor,

@@ -47,10 +47,12 @@ class AddHabitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appBarTitle =
+        (ModalRoute.of(context)!.settings.arguments as Map)["appBarTitle"];
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Add Habit",
+          appBarTitle,
           style: const TextStyle(
             fontSize: 30,
           ),

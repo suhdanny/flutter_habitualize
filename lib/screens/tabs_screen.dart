@@ -50,7 +50,11 @@ class _TabsScreenState extends State<TabsScreen> {
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/add-habit');
+                Navigator.pushNamed(
+                  context,
+                  '/add-habit',
+                  arguments: {"appBarTitle": "Add Habit"},
+                );
               },
               child: const Icon(
                 Icons.add,
