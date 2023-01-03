@@ -94,6 +94,13 @@ class HabitListTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
+            onTap: () => Navigator.pushNamed(
+              context,
+              '/habit-details',
+              arguments: {
+                "title": title,
+              },
+            ),
             leading: Icon(
               icon,
               color: iconColor,

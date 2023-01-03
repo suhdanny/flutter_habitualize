@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import './screens/habit_details_page.dart';
 import './screens/add_habit_screen.dart';
 import './screens/tabs_screen.dart';
 import './screens/auth_screen.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         },
       ),
       routes: {
-        '/add-habit': (ctx) => AddHabitScreen(),
+        '/add-habit': (ctx) => const AddHabitScreen(),
+        '/habit-details': (ctx) => const HabitDetailsPage(),
       },
     );
   }
