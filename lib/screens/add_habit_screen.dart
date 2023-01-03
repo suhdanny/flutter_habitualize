@@ -7,6 +7,7 @@ class AddHabitScreen extends StatelessWidget {
   const AddHabitScreen({super.key});
 
   void addHabit(
+    String? docId,
     bool completed,
     int count,
     String countUnit,
@@ -17,16 +18,31 @@ class AddHabitScreen extends StatelessWidget {
     String title,
   ) async {
     String userUid = FirebaseAuth.instance.currentUser!.uid;
-    await FirebaseFirestore.instance.collection('users/$userUid/habits').add({
-      "completed": completed,
-      "count": count,
-      "countUnit": countUnit,
-      "duration": duration,
-      "icon": icon,
-      "iconColor": iconColor,
-      "streaks": streaks,
-      "title": title,
-    });
+    if (docId == null) {
+      await FirebaseFirestore.instance.collection('users/$userUid/habits').add({
+        "completed": completed,
+        "count": count,
+        "countUnit": countUnit,
+        "duration": duration,
+        "icon": icon,
+        "iconColor": iconColor,
+        "streaks": streaks,
+        "title": title,
+      });
+    } else {
+      await FirebaseFirestore.instance
+          .doc('users/$userUid/habits/$docId')
+          .update({
+        "completed": completed,
+        "count": count,
+        "countUnit": countUnit,
+        "duration": duration,
+        "icon": icon,
+        "iconColor": iconColor,
+        "streaks": streaks,
+        "title": title,
+      });
+    }
   }
 
   @override

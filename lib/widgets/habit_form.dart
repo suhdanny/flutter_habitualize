@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/input_title_text.dart';
 import '../widgets/icon_and_color_picker.dart';
 import '../widgets/duration_picker.dart';
@@ -17,14 +16,36 @@ class HabitForm extends StatefulWidget {
 
 class _HabitFormState extends State<HabitForm> {
   final _formKey = GlobalKey<FormState>();
+  bool _isInit = true;
+  String? _docId;
+
   bool _dailySelected = true;
   bool _weeklySelected = false;
   String? _title;
   IconData? _iconData;
-  ColorSwatch? _tempMainColor;
-  ColorSwatch? _mainColor;
+  Color? _tempMainColor;
+  Color? _mainColor;
   String? _count;
   String? _countUnit;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      final args = (ModalRoute.of(context)!.settings.arguments as Map?);
+      if (args != null) {
+        _docId = args['docId'];
+        _dailySelected = args['duration'] == 'day' ? true : false;
+        _weeklySelected = args['duration'] == 'week' ? true : false;
+        _title = args['title'];
+        _iconData = args['icon'];
+        _mainColor = args['iconColor'];
+        _count = args['count'].toString();
+        _countUnit = args['countUnit'];
+      }
+      _isInit = false;
+    }
+    super.didChangeDependencies();
+  }
 
   void _pickIcon() async {
     IconData? icon = await FlutterIconPicker.showIconPicker(context);
@@ -94,6 +115,7 @@ class _HabitFormState extends State<HabitForm> {
 
     try {
       widget.addHabit(
+        _docId,
         false,
         int.parse(_count!),
         _countUnit,
@@ -107,14 +129,6 @@ class _HabitFormState extends State<HabitForm> {
     } catch (error) {
       print(error);
     }
-
-    // print(_title);
-    // print(_iconData.toString());
-    // print(_mainColor!.value.toRadixString(16));
-    // print(_dailySelected);
-    // print(_weeklySelected);
-    // print(_count);
-    // print(_countUnit);
   }
 
   @override
@@ -128,6 +142,7 @@ class _HabitFormState extends State<HabitForm> {
             children: [
               const InputTitleText(title: "Title"),
               TextFormField(
+                initialValue: _title,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -170,6 +185,7 @@ class _HabitFormState extends State<HabitForm> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      initialValue: _count,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),

@@ -68,7 +68,21 @@ class HabitListTile extends StatelessWidget {
             foregroundColor: Colors.white,
           ),
           SlidableAction(
-            onPressed: (ctx) {},
+            onPressed: (ctx) {
+              Navigator.pushNamed(
+                context,
+                '/add-habit',
+                arguments: {
+                  "docId": docId,
+                  "icon": icon,
+                  "iconColor": iconColor,
+                  "title": title,
+                  "count": count,
+                  "countUnit": countUnit,
+                  "duration": duration,
+                },
+              );
+            },
             icon: Icons.edit,
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
