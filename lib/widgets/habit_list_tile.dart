@@ -106,7 +106,7 @@ class HabitListTile extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              "$count$countUnit / $duration",
+              "$count $countUnit / $duration",
               style: const TextStyle(
                 fontSize: 15,
               ),
