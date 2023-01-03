@@ -14,7 +14,6 @@ class AddHabitScreen extends StatelessWidget {
     String duration,
     String icon,
     String iconColor,
-    int streaks,
     String title,
   ) async {
     String userUid = FirebaseAuth.instance.currentUser!.uid;
@@ -26,8 +25,9 @@ class AddHabitScreen extends StatelessWidget {
         "duration": duration,
         "icon": icon,
         "iconColor": iconColor,
-        "streaks": streaks,
+        "streaks": 0,
         "title": title,
+        "dayCount": 0,
       });
     } else {
       await FirebaseFirestore.instance
@@ -39,7 +39,6 @@ class AddHabitScreen extends StatelessWidget {
         "duration": duration,
         "icon": icon,
         "iconColor": iconColor,
-        "streaks": streaks,
         "title": title,
       });
     }

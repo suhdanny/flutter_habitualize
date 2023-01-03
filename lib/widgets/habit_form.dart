@@ -16,6 +16,7 @@ class HabitForm extends StatefulWidget {
 
 class _HabitFormState extends State<HabitForm> {
   final _formKey = GlobalKey<FormState>();
+  final _countController = TextEditingController();
   bool _isInit = true;
   String? _docId;
 
@@ -31,8 +32,8 @@ class _HabitFormState extends State<HabitForm> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final args = (ModalRoute.of(context)!.settings.arguments as Map?);
-      if (args != null) {
+      final args = ModalRoute.of(context)!.settings.arguments as Map;
+      if (args['docId'] != null) {
         _docId = args['docId'];
         _dailySelected = args['duration'] == 'day' ? true : false;
         _weeklySelected = args['duration'] == 'week' ? true : false;
@@ -41,6 +42,7 @@ class _HabitFormState extends State<HabitForm> {
         _mainColor = args['iconColor'];
         _count = args['count'].toString();
         _countUnit = args['countUnit'];
+        _countController.text = args['count'].toString();
       }
       _isInit = false;
     }
@@ -122,7 +124,6 @@ class _HabitFormState extends State<HabitForm> {
         _dailySelected ? 'day' : 'week',
         _iconData.toString(),
         _mainColor!.value.toRadixString(16),
-        0,
         _title,
       );
       Navigator.of(context).pop();
@@ -185,7 +186,7 @@ class _HabitFormState extends State<HabitForm> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      initialValue: _count,
+                      controller: _countController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
