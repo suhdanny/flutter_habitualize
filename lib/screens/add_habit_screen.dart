@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../widgets/habit_form.dart';
+
+class AddHabitScreen extends StatelessWidget {
+  const AddHabitScreen({super.key});
+
+  void addHabit(
+    bool completed,
+    int count,
+    String countUnit,
+    String duration,
+    String icon,
+    String iconColor,
+    int streaks,
+    String title,
+  ) async {
+    String userUid = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance.collection('users/$userUid/habits').add({
+      "completed": completed,
+      "count": count,
+      "countUnit": countUnit,
+      "duration": duration,
+      "icon": icon,
+      "iconColor": iconColor,
+      "streaks": streaks,
+      "title": title,
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Add Habit",
+          style: const TextStyle(
+            fontSize: 30,
+          ),
+        ),
+      ),
+      body: HabitForm(
+        addHabit: addHabit,
+      ),
+    );
+  }
+}
