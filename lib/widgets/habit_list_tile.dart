@@ -32,7 +32,9 @@ class HabitListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 7, horizontal: 5),
       child: Slidable(
         key: const ValueKey(0),
         startActionPane: ActionPane(
@@ -71,6 +73,7 @@ class HabitListTile extends StatelessWidget {
               icon: Icons.delete,
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
+              label: 'Delete',
             ),
             SlidableAction(
               onPressed: (ctx) {
@@ -92,6 +95,26 @@ class HabitListTile extends StatelessWidget {
               icon: Icons.edit,
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
+              label: 'Edit',
+            ),
+          ],
+        ),
+        endActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (_) {},
+              icon: Icons.more_time,
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              label: "Count",
+            ),
+            SlidableAction(
+              onPressed: (_) {},
+              icon: Icons.create,
+              backgroundColor: Colors.yellow[700] as Color,
+              foregroundColor: Colors.white,
+              label: "Notes",
             ),
           ],
         ),
@@ -113,7 +136,7 @@ class HabitListTile extends StatelessWidget {
             title: Text(
               title,
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 18,
               ),
             ),
             subtitle: Column(
@@ -136,15 +159,15 @@ class HabitListTile extends StatelessWidget {
               ],
             ),
             trailing: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   "$streaks 🔥",
                   style: const TextStyle(
-                    fontSize: 25,
+                    fontSize: 28,
                   ),
                 ),
-                const SizedBox(width: 8),
                 IconButton(
                   onPressed: () async {
                     String userUid = FirebaseAuth.instance.currentUser!.uid;
@@ -160,7 +183,7 @@ class HabitListTile extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.task_alt,
-                    size: 35,
+                    size: 37,
                     color: completed ? Colors.red : Colors.grey,
                   ),
                 ),
