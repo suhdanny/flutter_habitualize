@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class HabitListTile extends StatelessWidget {
+class HabitListTile extends StatefulWidget {
   const HabitListTile({
     required this.docId,
     required this.icon,
@@ -30,6 +30,13 @@ class HabitListTile extends StatelessWidget {
   final bool completed;
 
   @override
+  State<HabitListTile> createState() => _HabitListTileState();
+}
+
+class _HabitListTileState extends State<HabitListTile> {
+  String? _countInput;
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -47,7 +54,7 @@ class HabitListTile extends StatelessWidget {
                   builder: (context) => AlertDialog(
                     title: const Text("Delete Habit"),
                     content: Text(
-                      "Are you sure you want to delete '$title'? This action cannot be undone.",
+                      "Are you sure you want to delete '${widget.title}'? This action cannot be undone.",
                       textAlign: TextAlign.left,
                     ),
                     actions: [
@@ -60,7 +67,7 @@ class HabitListTile extends StatelessWidget {
                           String userUid =
                               FirebaseAuth.instance.currentUser!.uid;
                           FirebaseFirestore.instance
-                              .doc('users/$userUid/habits/$docId')
+                              .doc('users/$userUid/habits/${widget.docId}')
                               .delete();
                           Navigator.pop(context, 'Delete');
                         },
@@ -82,13 +89,13 @@ class HabitListTile extends StatelessWidget {
                   '/add-habit',
                   arguments: {
                     "appBarTitle": "Edit Habit",
-                    "docId": docId,
-                    "icon": icon,
-                    "iconColor": iconColor,
-                    "title": title,
-                    "count": count,
-                    "countUnit": countUnit,
-                    "duration": duration,
+                    "docId": widget.docId,
+                    "icon": widget.icon,
+                    "iconColor": widget.iconColor,
+                    "title": widget.title,
+                    "count": widget.count,
+                    "countUnit": widget.countUnit,
+                    "duration": widget.duration,
                   },
                 );
               },
@@ -103,7 +110,81 @@ class HabitListTile extends StatelessWidget {
           motion: const DrawerMotion(),
           children: [
             SlidableAction(
-              onPressed: (_) {},
+              onPressed: (ctx) {
+                showDialog(
+                  context: ctx,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Add Daily Count"),
+                    content: TextField(
+                      decoration: const InputDecoration(
+                        label: Text("Enter Count"),
+                      ),
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        setState(() {
+                          _countInput = value;
+                        });
+                      },
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _countInput = null;
+                          });
+                          Navigator.pop(context, 'Cancel');
+                        },
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (_countInput == null) return;
+                          try {
+                            final db = FirebaseFirestore.instance;
+                            String userUid =
+                                FirebaseAuth.instance.currentUser!.uid;
+
+                            db
+                                .doc('users/$userUid/habits/${widget.docId}')
+                                .get()
+                                .then((DocumentSnapshot doc) {
+                              final docData =
+                                  doc.data() as Map<String, dynamic>;
+                              final currentCompleted = docData['completed'];
+                              final currentDayCount = docData['dayCount'];
+                              final currentStreaks = docData['streaks'];
+
+                              // if the updated dayCount exceeds daily goal count, then updated completed to true
+                              bool updatedCompleted =
+                                  currentDayCount + int.parse(_countInput!) >=
+                                          widget.count
+                                      ? true
+                                      : false;
+
+                              // if current completed is false and updatedCompleted is true, then update the streaks value by 1
+                              int updatedStreaks =
+                                  updatedCompleted && !currentCompleted
+                                      ? currentStreaks + 1
+                                      : currentStreaks;
+
+                              doc.reference.update({
+                                "dayCount": FieldValue.increment(
+                                    int.parse(_countInput!)),
+                                "completed": updatedCompleted,
+                                "streaks": updatedStreaks,
+                              });
+                            });
+                          } catch (error) {
+                            print(error);
+                          }
+                          Navigator.pop(context, 'Add');
+                        },
+                        child: const Text("Add"),
+                      ),
+                    ],
+                  ),
+                );
+              },
               icon: Icons.more_time,
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
@@ -125,16 +206,16 @@ class HabitListTile extends StatelessWidget {
               context,
               '/habit-details',
               arguments: {
-                "title": title,
+                "title": widget.title,
               },
             ),
             leading: Icon(
-              icon,
-              color: iconColor,
+              widget.icon,
+              color: widget.iconColor,
               size: 55,
             ),
             title: Text(
-              title,
+              widget.title,
               style: const TextStyle(
                 fontSize: 18,
               ),
@@ -144,16 +225,18 @@ class HabitListTile extends StatelessWidget {
               children: [
                 const SizedBox(height: 10),
                 Text(
-                  "$count $countUnit / $duration",
+                  "${widget.count} ${widget.countUnit} / ${widget.duration}",
                   style: const TextStyle(
                     fontSize: 15,
                   ),
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  "TODAY: $dayCount / $count $countUnit",
+                  "TODAY: ${widget.dayCount} / ${widget.count} ${widget.countUnit}",
                   style: TextStyle(
-                    color: dayCount >= count ? Colors.red : Colors.grey,
+                    color: widget.dayCount >= widget.count
+                        ? Colors.red
+                        : Colors.grey,
                   ),
                 ),
               ],
@@ -163,7 +246,7 @@ class HabitListTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "$streaks 🔥",
+                  "${widget.streaks} 🔥",
                   style: const TextStyle(
                     fontSize: 28,
                   ),
@@ -172,19 +255,19 @@ class HabitListTile extends StatelessWidget {
                   onPressed: () async {
                     String userUid = FirebaseAuth.instance.currentUser!.uid;
                     await FirebaseFirestore.instance
-                        .doc('/users/$userUid/habits/$docId')
+                        .doc('/users/$userUid/habits/${widget.docId}')
                         .update({
-                      "completed": !completed,
-                      "streaks": completed
+                      "completed": !widget.completed,
+                      "streaks": widget.completed
                           ? FieldValue.increment(-1)
                           : FieldValue.increment(1),
-                      "dayCount": !completed ? count : 0,
+                      "dayCount": !widget.completed ? widget.count : 0,
                     });
                   },
                   icon: Icon(
                     Icons.task_alt,
                     size: 37,
-                    color: completed ? Colors.red : Colors.grey,
+                    color: widget.completed ? Colors.red : Colors.grey,
                   ),
                 ),
               ],

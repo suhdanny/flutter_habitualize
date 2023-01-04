@@ -16,8 +16,6 @@ class DurationPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(dailySelected);
-    print(weeklySelected);
     return Row(
       children: [
         Expanded(
