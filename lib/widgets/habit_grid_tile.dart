@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
+import 'package:intl/intl.dart';
 
 class HabitGridTile extends StatelessWidget {
   const HabitGridTile({
@@ -16,6 +17,7 @@ class HabitGridTile extends StatelessWidget {
     required this.duration,
     required this.streaks,
     required this.completed,
+    required this.selectedDateTime,
     super.key,
   });
 
@@ -29,6 +31,7 @@ class HabitGridTile extends StatelessWidget {
   final String duration;
   final int streaks;
   final bool completed;
+  final DateTime selectedDateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -47,18 +50,21 @@ class HabitGridTile extends StatelessWidget {
               Icon(
                 icon,
                 size: 60,
+                color: iconColor,
               ),
               IconButton(
                 onPressed: () async {
                   String userUid = FirebaseAuth.instance.currentUser!.uid;
+                  String selectedDate =
+                      DateFormat('yyyy-MM-dd').format(selectedDateTime);
                   await FirebaseFirestore.instance
-                      .doc('/users/$userUid/habits/${docId}')
+                      .doc('/users/$userUid/habits/$docId')
                       .update({
-                    "completed": !completed,
+                    "timeline.$selectedDate.completed": !completed,
                     "streaks": completed
                         ? FieldValue.increment(-1)
                         : FieldValue.increment(1),
-                    "dayCount": !completed ? count : 0,
+                    "timeline.$selectedDate.dayCount": !completed ? count : 0,
                   });
                 },
                 icon: Icon(
