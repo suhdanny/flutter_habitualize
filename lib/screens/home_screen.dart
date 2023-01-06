@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/habit_list_tile.dart';
+import '../widgets/home_calendar.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -12,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        HomeCalendar(),
         Expanded(
           child: StreamBuilder(
             builder: (ctx, snapshot) {

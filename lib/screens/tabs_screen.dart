@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import './home_screen.dart';
 import './settings_screen.dart';
+import '../widgets/home_calendar.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -31,9 +32,9 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  // String get currentDate {
-  //   return DateFormat("EEE MMM d").format(DateTime.now());
-  // }
+  String get currentDate {
+    return DateFormat("EEE MMM d").format(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
