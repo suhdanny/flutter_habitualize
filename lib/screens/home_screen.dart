@@ -28,16 +28,21 @@ class HomeScreen extends StatelessWidget {
                 'Welcome, \n${FirebaseAuth.instance.currentUser!.displayName!}',
                 style: const TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             const HomeCalendar(),
-            const Text(
-              "Today's Challenge",
-              style: TextStyle(
-                fontSize: 20,
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 17.0),
+              child: const Text(
+                "Today's Challenge",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(height: 10),
