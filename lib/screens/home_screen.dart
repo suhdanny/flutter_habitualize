@@ -9,6 +9,17 @@ class HomeScreen extends StatelessWidget {
 
   String userUid = FirebaseAuth.instance.currentUser!.uid;
 
+  String get greetingText {
+    int hour = DateTime.now().hour;
+    if (hour >= 6 && hour < 12) {
+      return 'Good Morning,';
+    } else if (hour >= 12 && hour < 18) {
+      return 'Good Afternoon,';
+    } else {
+      return 'Good Evening,';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,7 +35,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Welcome, \n${FirebaseAuth.instance.currentUser!.displayName!}',
+                '$greetingText, \n${FirebaseAuth.instance.currentUser!.displayName!}',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
