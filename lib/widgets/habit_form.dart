@@ -33,6 +33,8 @@ class _HabitFormState extends State<HabitForm> {
   void didChangeDependencies() {
     if (_isInit) {
       final args = ModalRoute.of(context)!.settings.arguments as Map;
+
+      // docId is only present for the habit that has already been created
       if (args['docId'] != null) {
         _docId = args['docId'];
         _dailySelected = args['duration'] == 'day' ? true : false;
