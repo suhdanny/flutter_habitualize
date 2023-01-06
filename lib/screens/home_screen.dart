@@ -110,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         duration: data['duration'],
                         streaks: data['streaks'],
                         completed: data['timeline'][selectedDate]['completed'],
+                        selectedDateTime: _selectedDateTime,
                       );
                     },
                     itemCount: snapshot.data!.docs.length,

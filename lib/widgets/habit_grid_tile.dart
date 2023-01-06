@@ -15,6 +15,7 @@ class HabitGridTile extends StatelessWidget {
     required this.duration,
     required this.streaks,
     required this.completed,
+    required this.selectedDateTime,
     super.key,
   });
 
@@ -28,6 +29,7 @@ class HabitGridTile extends StatelessWidget {
   final String duration;
   final int streaks;
   final bool completed;
+  final DateTime selectedDateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -51,16 +53,16 @@ class HabitGridTile extends StatelessWidget {
               IconButton(
                 onPressed: () async {
                   String userUid = FirebaseAuth.instance.currentUser!.uid;
-                  String currentDate =
-                      DateFormat('yyyy-MM-dd').format(DateTime.now());
+                  String selectedDate =
+                      DateFormat('yyyy-MM-dd').format(selectedDateTime);
                   await FirebaseFirestore.instance
                       .doc('/users/$userUid/habits/$docId')
                       .update({
-                    "timeline.$currentDate.completed": !completed,
+                    "timeline.$selectedDate.completed": !completed,
                     "streaks": completed
                         ? FieldValue.increment(-1)
                         : FieldValue.increment(1),
-                    "timeline.$currentDate.dayCount": !completed ? count : 0,
+                    "timeline.$selectedDate.dayCount": !completed ? count : 0,
                   });
                 },
                 icon: Icon(
