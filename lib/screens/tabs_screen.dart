@@ -31,21 +31,13 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  String get currentDate {
-    return DateFormat("EEE MMM d").format(DateTime.now());
-  }
+  // String get currentDate {
+  //   return DateFormat("EEE MMM d").format(DateTime.now());
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          currentDate,
-          style: TextStyle(
-            fontSize: 30,
-          ),
-        ),
-      ),
       body: _widgetOptions![_selectedIndex],
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(

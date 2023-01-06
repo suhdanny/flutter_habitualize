@@ -154,7 +154,7 @@ class _HabitListTileState extends State<HabitListTile> {
                               final currentDayCount = docData['dayCount'];
                               final currentStreaks = docData['streaks'];
 
-                              // if the updated dayCount exceeds daily goal count, then updated completed to true
+                              // if the updated dayCount exceeds daily goal count, then completed must be true
                               bool updatedCompleted =
                                   currentDayCount + int.parse(_countInput!) >=
                                           widget.count
