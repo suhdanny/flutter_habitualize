@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/habit_grid_tile.dart';
@@ -45,9 +46,9 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 15),
             const HomeCalendar(),
             const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(left: 17.0),
-              child: const Text(
+            const Padding(
+              padding: EdgeInsets.only(left: 17.0),
+              child: Text(
                 "Today's Challenge",
                 style: TextStyle(
                   fontSize: 20,
@@ -74,6 +75,8 @@ class HomeScreen extends StatelessWidget {
                     itemBuilder: (ctx, idx) {
                       Map<String, dynamic> data =
                           snapshot.data!.docs[idx].data();
+                      String currentDate =
+                          DateFormat('yyyy-MM-dd').format(DateTime.now());
                       int codePoint = int.parse(
                           data['icon'].split('U+')[1].split(')')[0],
                           radix: 16);
@@ -81,6 +84,7 @@ class HomeScreen extends StatelessWidget {
                           IconData(codePoint, fontFamily: "MaterialIcons");
                       Color iconColor =
                           Color(int.parse(data['iconColor'], radix: 16));
+
                       return HabitGridTile(
                         docId: snapshot.data!.docs[idx].id,
                         icon: icon,
@@ -88,10 +92,10 @@ class HomeScreen extends StatelessWidget {
                         title: data['title'],
                         count: data['count'],
                         countUnit: data['countUnit'],
-                        dayCount: data['dayCount'],
+                        dayCount: data['timeline'][currentDate]['dayCount'],
                         duration: data['duration'],
                         streaks: data['streaks'],
-                        completed: data['completed'],
+                        completed: data['timeline'][currentDate]['completed'],
                       );
                     },
                     itemCount: snapshot.data!.docs.length,

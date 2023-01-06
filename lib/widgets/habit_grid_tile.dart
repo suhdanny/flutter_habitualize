@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class HabitGridTile extends StatelessWidget {
   const HabitGridTile({
@@ -45,18 +46,21 @@ class HabitGridTile extends StatelessWidget {
               Icon(
                 icon,
                 size: 60,
+                color: iconColor,
               ),
               IconButton(
                 onPressed: () async {
                   String userUid = FirebaseAuth.instance.currentUser!.uid;
+                  String currentDate =
+                      DateFormat('yyyy-MM-dd').format(DateTime.now());
                   await FirebaseFirestore.instance
-                      .doc('/users/$userUid/habits/${docId}')
+                      .doc('/users/$userUid/habits/$docId')
                       .update({
-                    "completed": !completed,
+                    "timeline.$currentDate.completed": !completed,
                     "streaks": completed
                         ? FieldValue.increment(-1)
                         : FieldValue.increment(1),
-                    "dayCount": !completed ? count : 0,
+                    "timeline.$currentDate.dayCount": !completed ? count : 0,
                   });
                 },
                 icon: Icon(
