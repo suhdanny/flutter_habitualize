@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/habit_grid_tile.dart';
-import '../widgets/habit_list_tile.dart';
 import '../widgets/home_calendar.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  String userUid = FirebaseAuth.instance.currentUser!.uid;
+  final String userUid = FirebaseAuth.instance.currentUser!.uid;
 
   String get greetingText {
     int hour = DateTime.now().hour;
     if (hour >= 6 && hour < 12) {
-      return 'Good Morning,';
+      return 'Good morning';
     } else if (hour >= 12 && hour < 18) {
-      return 'Good Afternoon,';
+      return 'Good afternoon';
     } else {
-      return 'Good Evening,';
+      return 'Good evening';
     }
   }
 
@@ -25,7 +24,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(17.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
