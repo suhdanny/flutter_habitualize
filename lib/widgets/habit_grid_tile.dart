@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 
 class HabitGridTile extends StatelessWidget {
   const HabitGridTile({
@@ -60,8 +62,9 @@ class HabitGridTile extends StatelessWidget {
                   });
                 },
                 icon: Icon(
-                  Icons.task_alt,
-                  size: 40,
+                  IconData(0xf3fe,
+                      fontFamily: iconFont, fontPackage: iconFontPackage),
+                  size: 30,
                   color: completed ? Colors.red : Colors.grey,
                 ),
               ),
@@ -74,15 +77,15 @@ class HabitGridTile extends StatelessWidget {
               fontSize: 18,
             ),
           ),
-          const SizedBox(height: 5),
-          Text(
-            "$count $countUnit / $duration",
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 1),
+          // Text(
+          //   "$count $countUnit / $duration",
+          //   style: const TextStyle(
+          //     fontSize: 15,
+          //     color: Colors.grey,
+          //   ),
+          // ),
+          // const SizedBox(height: 5),
           Text(
             "TODAY: $dayCount $countUnit / $duration",
             style: const TextStyle(

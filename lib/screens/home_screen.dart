@@ -12,12 +12,13 @@ class HomeScreen extends StatelessWidget {
   String get greetingText {
     int hour = DateTime.now().hour;
     if (hour >= 6 && hour < 12) {
-      return 'Good morning';
+      return 'Good morning 👋🏻';
     } else if (hour >= 12 && hour < 18) {
-      return 'Good afternoon';
-    } else {
-      return 'Good evening';
+      return 'Good afternoon 😊';
+    } else if (hour >= 18 && hour < 21) {
+      return 'Good evening 🌅';
     }
+    return 'Good Night 🥱';
   }
 
   @override
@@ -35,27 +36,42 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               title: Text(
-                '$greetingText, \n${FirebaseAuth.instance.currentUser!.displayName!}',
+                '$greetingText, ',
                 style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w300,
                 ),
+                selectionColor: Colors.black,
+              ),
+              subtitle: Text(
+                '${FirebaseAuth.instance.currentUser!.displayName!}',
+                style: const TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                ),
+                selectionColor: Colors.black,
               ),
             ),
             const SizedBox(height: 15),
+
             const HomeCalendar(),
+
             const SizedBox(height: 20),
+            // ignore: prefer_const_constructors
             Padding(
               padding: const EdgeInsets.only(left: 17.0),
               child: const Text(
                 "Today's Challenge",
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
+
             const SizedBox(height: 10),
+
             Expanded(
               child: StreamBuilder(
                 builder: (ctx, snapshot) {
