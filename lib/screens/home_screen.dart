@@ -5,10 +5,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/habit_grid_tile.dart';
 import '../widgets/home_calendar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final String userUid = FirebaseAuth.instance.currentUser!.uid;
+  DateTime _selectedDateTime = DateTime.now();
+
+  void _updateSelectedDateTime(DateTime date) {
+    setState(() {
+      _selectedDateTime = date;
+    });
+  }
 
   String get greetingText {
     int hour = DateTime.now().hour;
@@ -44,7 +56,9 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            const HomeCalendar(),
+            HomeCalendar(
+              updatedSelectedDateTime: _updateSelectedDateTime,
+            ),
             const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.only(left: 17.0),
@@ -75,8 +89,8 @@ class HomeScreen extends StatelessWidget {
                     itemBuilder: (ctx, idx) {
                       Map<String, dynamic> data =
                           snapshot.data!.docs[idx].data();
-                      String currentDate =
-                          DateFormat('yyyy-MM-dd').format(DateTime.now());
+                      String selectedDate =
+                          DateFormat('yyyy-MM-dd').format(_selectedDateTime);
                       int codePoint = int.parse(
                           data['icon'].split('U+')[1].split(')')[0],
                           radix: 16);
@@ -92,10 +106,10 @@ class HomeScreen extends StatelessWidget {
                         title: data['title'],
                         count: data['count'],
                         countUnit: data['countUnit'],
-                        dayCount: data['timeline'][currentDate]['dayCount'],
+                        dayCount: data['timeline'][selectedDate]['dayCount'],
                         duration: data['duration'],
                         streaks: data['streaks'],
-                        completed: data['timeline'][currentDate]['completed'],
+                        completed: data['timeline'][selectedDate]['completed'],
                       );
                     },
                     itemCount: snapshot.data!.docs.length,
