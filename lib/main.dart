@@ -23,6 +23,11 @@ class MyApp extends StatelessWidget {
       title: 'Habitualize',
       theme: ThemeData(
         textTheme: GoogleFonts.latoTextTheme(),
+        primaryColor: const Color.fromRGBO(235, 83, 83, 1),
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: const Color.fromRGBO(249, 217, 35, 1),
+          cardColor: const Color.fromRGBO(54, 174, 124, 1),
+        ),
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
