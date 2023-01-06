@@ -13,7 +13,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        HomeCalendar(),
         Expanded(
           child: StreamBuilder(
             builder: (ctx, snapshot) {
