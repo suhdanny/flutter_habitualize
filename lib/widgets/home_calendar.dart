@@ -6,7 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class HomeCalendar extends StatefulWidget {
-  const HomeCalendar({required this.updatedSelectedDateTime, super.key});
+  const HomeCalendar({
+    required this.updatedSelectedDateTime,
+    super.key,
+  });
 
   final Function updatedSelectedDateTime;
 
@@ -18,6 +21,26 @@ class _HomeCalendarState extends State<HomeCalendar> {
   final _controller = DatePickerController();
   final userUid = FirebaseAuth.instance.currentUser!.uid;
   bool _isInit = true;
+
+  void createNewTimeline(date) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users/$userUid/habits')
+        .get();
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      String selectedDate = DateFormat('yyyy-MM-dd').format(date);
+      Map<String, dynamic> timeline = data['timeline'];
+
+      if (!timeline.containsKey(selectedDate)) {
+        await doc.reference.update({
+          "timeline.$selectedDate": {
+            "completed": false,
+            "dayCount": 0,
+          }
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +91,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
               ),
             ),
             onDateChange: (date) {
+              createNewTimeline(date);
               widget.updatedSelectedDateTime(date);
             },
           );

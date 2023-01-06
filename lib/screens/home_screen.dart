@@ -98,6 +98,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           IconData(codePoint, fontFamily: "MaterialIcons");
                       Color iconColor =
                           Color(int.parse(data['iconColor'], radix: 16));
+                      Map<String, dynamic>? timelineData =
+                          data['timeline'][selectedDate];
+                      int dayCount =
+                          timelineData == null ? 0 : timelineData['dayCount'];
+                      bool completed = timelineData == null
+                          ? false
+                          : timelineData['completed'];
 
                       return HabitGridTile(
                         docId: snapshot.data!.docs[idx].id,
@@ -106,10 +113,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: data['title'],
                         count: data['count'],
                         countUnit: data['countUnit'],
-                        dayCount: data['timeline'][selectedDate]['dayCount'],
+                        dayCount: dayCount,
                         duration: data['duration'],
                         streaks: data['streaks'],
-                        completed: data['timeline'][selectedDate]['completed'],
+                        completed: completed,
                         selectedDateTime: _selectedDateTime,
                       );
                     },
