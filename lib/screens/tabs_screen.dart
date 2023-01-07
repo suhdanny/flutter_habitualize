@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import './home_screen.dart';
 import './calendar_screen.dart';
 import './settings_screen.dart';
@@ -22,7 +23,7 @@ class _TabsScreenState extends State<TabsScreen> {
     _widgetOptions = [
       HomeScreen(),
       CalendarScreen(),
-      AddHabitScreen(),
+      Container(),
       StatsScreen(),
       SettingsScreen(),
     ];
@@ -31,7 +32,19 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _onItemTapped(index) {
     if (index == 2) {
-      Navigator.pushNamed(context, '/add-habit');
+      showMaterialModalBottomSheet(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(50),
+              topRight: Radius.circular(50),
+            ),
+          ),
+          expand: false,
+          context: context,
+          builder: (context) {
+            return AddHabitScreen();
+          });
+      return;
     }
     setState(() {
       _selectedIndex = index;

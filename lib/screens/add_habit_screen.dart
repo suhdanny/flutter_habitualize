@@ -46,9 +46,11 @@ class AddHabitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(child: Text("Add Habit")),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.9,
+      child: Center(
+        child: Text("Hi"),
+      ),
     );
   }
 }
