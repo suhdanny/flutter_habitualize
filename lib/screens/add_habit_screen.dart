@@ -47,9 +47,33 @@ class AddHabitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 25),
       height: MediaQuery.of(context).size.height * 0.9,
-      child: Center(
-        child: Text("Hi"),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(Icons.close),
+              ),
+              Text(
+                "Add Habit",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              Opacity(
+                opacity: 0,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.delete),
+                ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
