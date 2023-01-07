@@ -90,48 +90,52 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemBuilder: (ctx, idx) {
-                      Map<String, dynamic> data =
-                          snapshot.data!.docs[idx].data();
-                      String selectedDate =
-                          DateFormat('yyyy-MM-dd').format(_selectedDateTime);
-                      int codePoint = int.parse(
-                          data['icon'].split('U+')[1].split(')')[0],
-                          radix: 16);
-                      IconData icon =
-                          IconData(codePoint, fontFamily: "MaterialIcons");
-                      Color iconColor =
-                          Color(int.parse(data['iconColor'], radix: 16));
-                      Map<String, dynamic>? timelineData =
-                          data['timeline'][selectedDate];
-                      int dayCount =
-                          timelineData == null ? 0 : timelineData['dayCount'];
-                      bool completed = timelineData == null
-                          ? false
-                          : timelineData['completed'];
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(9.0, 0.0, 9.0, 0.0),
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 8.0,
+                        crossAxisSpacing: 8.0,
+                        childAspectRatio: 1,
+                      ),
+                      itemBuilder: (ctx, idx) {
+                        Map<String, dynamic> data =
+                            snapshot.data!.docs[idx].data();
+                        String selectedDate =
+                            DateFormat('yyyy-MM-dd').format(_selectedDateTime);
+                        int codePoint = int.parse(
+                            data['icon'].split('U+')[1].split(')')[0],
+                            radix: 16);
+                        IconData icon =
+                            IconData(codePoint, fontFamily: "MaterialIcons");
+                        Color iconColor =
+                            Color(int.parse(data['iconColor'], radix: 16));
+                        Map<String, dynamic>? timelineData =
+                            data['timeline'][selectedDate];
+                        int dayCount =
+                            timelineData == null ? 0 : timelineData['dayCount'];
+                        bool completed = timelineData == null
+                            ? false
+                            : timelineData['completed'];
 
-                      return HabitGridTile(
-                        docId: snapshot.data!.docs[idx].id,
-                        icon: icon,
-                        iconColor: iconColor,
-                        title: data['title'],
-                        count: data['count'],
-                        countUnit: data['countUnit'],
-                        dayCount: dayCount,
-                        duration: data['duration'],
-                        streaks: data['streaks'],
-                        completed: completed,
-                        selectedDateTime: _selectedDateTime,
-                      );
-                    },
-                    itemCount: snapshot.data!.docs.length,
+                        return HabitGridTile(
+                          docId: snapshot.data!.docs[idx].id,
+                          icon: icon,
+                          iconColor: iconColor,
+                          title: data['title'],
+                          count: data['count'],
+                          countUnit: data['countUnit'],
+                          dayCount: dayCount,
+                          duration: data['duration'],
+                          streaks: data['streaks'],
+                          completed: completed,
+                          selectedDateTime: _selectedDateTime,
+                        );
+                      },
+                      itemCount: snapshot.data!.docs.length,
+                    ),
                   );
                 },
                 stream: FirebaseFirestore.instance

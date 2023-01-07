@@ -61,39 +61,43 @@ class _HomeCalendarState extends State<HomeCalendar> {
             }
           });
 
-          return DatePicker(
-            calendarStartDate,
-            controller: _controller,
-            height: 100,
-            width: 80,
-            initialSelectedDate: DateTime.now(),
-            selectionColor: Color.fromRGBO(54, 174, 124, 1),
-            selectedTextColor: Colors.white,
-            monthTextStyle: GoogleFonts.lato(
-              textStyle: const TextStyle(
-                fontSize: 8,
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(17.0, 0.0, 17.0, 0.0),
+            child: DatePicker(
+              calendarStartDate,
+              controller: _controller,
+              height: 90,
+              width: 60,
+              initialSelectedDate: DateTime.now(),
+              selectionColor: Color.fromRGBO(125, 157, 156, 1),
+              selectedTextColor: Colors.white,
+              daysCount: 100,
+              monthTextStyle: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            dateTextStyle: GoogleFonts.lato(
-              textStyle: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
+              dateTextStyle: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            dayTextStyle: GoogleFonts.lato(
-              textStyle: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
+              dayTextStyle: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
               ),
+              onDateChange: (date) {
+                createNewTimeline(date);
+                widget.updatedSelectedDateTime(date);
+              },
             ),
-            onDateChange: (date) {
-              createNewTimeline(date);
-              widget.updatedSelectedDateTime(date);
-            },
           );
         });
   }
