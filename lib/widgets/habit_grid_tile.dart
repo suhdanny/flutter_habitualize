@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +8,7 @@ import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 import 'package:intl/intl.dart';
 
 class HabitGridTile extends StatelessWidget {
-  const HabitGridTile({
+  HabitGridTile({
     required this.docId,
     required this.icon,
     required this.iconColor,
@@ -33,10 +35,20 @@ class HabitGridTile extends StatelessWidget {
   final bool completed;
   final DateTime selectedDateTime;
 
+  List<String> colors = [
+    'Color.fromRGBO(235, 83, 83, 0.5)',
+    'Color.fromRGBO(249, 217, 35, 0.5)',
+    'Color.fromRGBO(54, 174, 124, 0.5)',
+    'Color.fromRGBO(24, 116, 152, 0.5)',
+  ];
+
+  int index = Random().nextInt(4);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
       ),
