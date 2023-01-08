@@ -210,7 +210,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     streaks: data['streaks'],
                                     completed: completed
                                         ? 'completed!'
-                                        : 'uncompleted!',
+                                        : 'uncompleted',
                                   );
                                 },
                                 itemCount: snapshot.data!.docs.length,
