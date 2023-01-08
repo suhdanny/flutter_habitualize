@@ -5,7 +5,6 @@ import './home_screen.dart';
 import './calendar_screen.dart';
 import './settings_screen.dart';
 import './add_habit_screen.dart';
-import './stats_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
@@ -24,7 +23,6 @@ class _TabsScreenState extends State<TabsScreen> {
       HomeScreen(),
       CalendarScreen(),
       Container(),
-      StatsScreen(),
       SettingsScreen(),
     ];
     super.initState();
@@ -71,8 +69,6 @@ class _TabsScreenState extends State<TabsScreen> {
               icon: Icon(Icons.calendar_month), selectedColor: Colors.black),
           DotNavigationBarItem(
               icon: Icon(Icons.add), selectedColor: Colors.black),
-          DotNavigationBarItem(
-              icon: Icon(Icons.stacked_bar_chart), selectedColor: Colors.black),
           DotNavigationBarItem(
               icon: Icon(Icons.settings), selectedColor: Colors.black),
         ],

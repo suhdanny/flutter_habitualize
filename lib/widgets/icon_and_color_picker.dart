@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 
 class IconAndColorPicker extends StatelessWidget {
   const IconAndColorPicker({
@@ -27,30 +28,21 @@ class IconAndColorPicker extends StatelessWidget {
             child: Container(
               child: Row(
                 children: [
-                  CircleAvatar(child: Icon(Icons.directions_run)),
-                  SizedBox(width: 10),
+                  CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                          IconData(
+                            0xf48a,
+                            fontFamily: iconFont,
+                            fontPackage: iconFontPackage,
+                          ),
+                          color: Colors.black)),
+                  SizedBox(width: 7),
                   const Text(
-                    "Icon",
+                    "Choose Icon",
                     style: TextStyle(
                       fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: GestureDetector(
-            child: Container(
-              child: Row(
-                children: [
-                  CircleAvatar(backgroundColor: Colors.red),
-                  SizedBox(width: 10),
-                  const Text(
-                    "Color",
-                    style: TextStyle(
-                      fontSize: 15,
+                      color: Color.fromARGB(255, 87, 85, 85),
                     ),
                   ),
                 ],

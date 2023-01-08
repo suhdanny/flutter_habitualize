@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import '../widgets/input_title_text.dart';
@@ -140,121 +141,163 @@ class _HabitFormState extends State<HabitForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const InputTitleText(title: "Title"),
-            TextFormField(
-              initialValue: _title,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                label: const Text(
-                  "Enter Title",
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
-                contentPadding: const EdgeInsets.all(15),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter the title of the habit.";
-                }
-                return null;
-              },
-              onSaved: (value) => _title = value,
-            ),
-            const SizedBox(height: 20),
-            const InputTitleText(title: "Icon and Color"),
-            IconAndColorPicker(
-              pickIcon: _pickIcon,
-              openMainColorPicker: _openMainColorPicker,
-              iconData: _iconData,
-              mainColor: _mainColor,
-            ),
-            const SizedBox(height: 20),
-            const InputTitleText(title: "Duration"),
-            DurationPicker(
-              handleDailySelect: _handleDailySelect,
-              handleWeeklySelect: _handleWeeklySelect,
-              dailySelected: _dailySelected,
-              weeklySelected: _weeklySelected,
-            ),
-            const SizedBox(height: 20),
-            const InputTitleText(title: "Count"),
-            Row(
+      child: Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
               children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _countController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      label: const Text(
-                        "Enter Count",
-                        style: TextStyle(
-                          fontSize: 15,
+                TextFormField(
+                  style: const TextStyle(
+                    fontSize: 25,
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: "Add new habit",
+                    hintStyle: TextStyle(
+                      fontSize: 28,
+                    ),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 3),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter the title of the habit.";
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _title = value,
+                ),
+                const SizedBox(height: 20),
+                // const InputTitleText(title: "Icon and Color"),
+                IconAndColorPicker(
+                  pickIcon: _pickIcon,
+                  openMainColorPicker: _openMainColorPicker,
+                  iconData: _iconData,
+                  mainColor: _mainColor,
+                ),
+                const SizedBox(height: 10),
+                // const InputTitleText(title: "Duration"),
+                Column(children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          IconData(0xf44c,
+                              fontFamily: iconFont,
+                              fontPackage: iconFontPackage),
+                          color: Colors.black,
                         ),
                       ),
-                      contentPadding: const EdgeInsets.all(15),
-                    ),
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          int.parse(value) < 0) {
-                        return "Please enter valid count.";
-                      }
-                      return null;
-                    },
-                    onSaved: (value) => _count = value,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: DropdownButton(
-                    value: _countUnit,
-                    items: const [
-                      DropdownMenuItem(
-                        value: 'min',
-                        child: Text("min"),
-                      ),
-                      DropdownMenuItem(
-                        value: 'hr',
-                        child: Text("hr"),
-                      ),
-                      DropdownMenuItem(
-                        value: 'times',
-                        child: Text('times'),
+                      SizedBox(width: 7),
+                      Column(
+                        children: [
+                          Text(
+                            "I want to set the habit to be",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 87, 85, 85),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                    onChanged: (value) {
-                      setState(() {
-                        _countUnit = value;
-                      });
-                    },
                   ),
-                )
+                  // const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(32.0, 0, 20.0, 0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          // margin: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
+                          child: TextFormField(
+                            controller: _countController,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              label: Text(
+                                "Enter Count",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                              contentPadding: EdgeInsets.all(15),
+                            ),
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  int.parse(value) < 0) {
+                                return "Please enter valid count.";
+                              }
+                              return null;
+                            },
+                            onSaved: (value) => _count = value,
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: DropdownButton(
+                            value: _countUnit,
+                            iconSize: 24,
+                            underline: Container(
+                              height: 2,
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: Color(0xFFBDBDBD),
+                                          width: 0.0))),
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'min',
+                                child: Text("min"),
+                              ),
+                              DropdownMenuItem(
+                                value: 'hr',
+                                child: Text("hr"),
+                              ),
+                              DropdownMenuItem(
+                                value: 'times',
+                                child: Text('times'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                _countUnit = value;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  DurationPicker(
+                    handleDailySelect: _handleDailySelect,
+                    handleWeeklySelect: _handleWeeklySelect,
+                    dailySelected: _dailySelected,
+                    weeklySelected: _weeklySelected,
+                  ),
+                ]),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
-            const SizedBox(height: 20),
-            FractionallySizedBox(
-              widthFactor: 0.5,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(15),
-                  textStyle: const TextStyle(
-                    fontSize: 15,
-                  ),
+          ),
+          FractionallySizedBox(
+            widthFactor: 0.5,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromRGBO(87, 111, 114, 1),
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                textStyle: const TextStyle(
+                  fontSize: 15,
                 ),
-                onPressed: _handleSubmit,
-                child: const Text("Submit"),
               ),
+              onPressed: _handleSubmit,
+              child: const Text("Add habit 😆"),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -47,7 +47,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         Padding(
           padding: EdgeInsets.all(25.0),
           child: Container(
-            margin: const EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 30),
             child: ListTile(
               title: const Text(
                 "Today is",
