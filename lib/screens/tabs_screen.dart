@@ -46,6 +46,7 @@ class _TabsScreenState extends State<TabsScreen> {
           });
       return;
     }
+
     setState(() {
       _selectedIndex = index;
     });
@@ -55,7 +56,7 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions![_selectedIndex],
-      // extendBody: true,
+      extendBody: true,
       bottomNavigationBar: DotNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
