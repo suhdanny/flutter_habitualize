@@ -21,6 +21,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   final String userUid = FirebaseAuth.instance.currentUser!.uid;
 
   TextEditingController _eventController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
 
   // @override
   // void initState() {
@@ -145,10 +146,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     decoration: const BoxDecoration(
                       color: Color.fromRGBO(125, 157, 156, 1),
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(40),
-                          topRight: Radius.circular(40)),
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40),
+                      ),
                     ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
@@ -156,9 +159,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           child: const Text(
                             "All Habits",
                             style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                         StreamBuilder(
@@ -166,42 +170,50 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               .collection('users/$userUid/habits')
                               .snapshots(),
                           builder: (context, snapshot) {
-                            if (!snapshot.hasData)
-                              return CircularProgressIndicator();
+                            if (!snapshot.hasData) {
+                              return const CircularProgressIndicator();
+                            }
                             final docs = snapshot.data!.docs;
                             String selectedDateString =
                                 DateFormat('yyyy-MM-dd').format(selectedDay);
 
                             return Expanded(
-                              child: Container(
-                                child: ListView.builder(
-                                  itemBuilder: (ctx, idx) {
-                                    final data = docs[idx].data();
-                                    int codePoint = int.parse(
-                                        data['icon']
-                                            .split('U+')[1]
-                                            .split(')')[0],
-                                        radix: 16);
-                                    IconData icon = IconData(codePoint,
-                                        fontFamily: "MaterialIcons");
-                                    bool completed = data['timeline']
-                                                [selectedDateString] ==
-                                            null
-                                        ? false
-                                        : data['timeline'][selectedDateString]
-                                            ['completed'];
+                              child: ListView.builder(
+                                controller: _scrollController,
+                                itemBuilder: (ctx, idx) {
+                                  final data = docs[idx].data();
+                                  int codePoint = int.parse(
+                                      data['icon'].split('U+')[1].split(')')[0],
+                                      radix: 16);
+                                  IconData icon = IconData(codePoint,
+                                      fontFamily: "MaterialIcons");
+                                  bool completed = data['timeline']
+                                              [selectedDateString] ==
+                                          null
+                                      ? false
+                                      : data['timeline'][selectedDateString]
+                                          ['completed'];
 
-                                    return CalendarList(
-                                      icon: icon,
-                                      title: data['title'],
-                                      streaks: data['streaks'],
-                                      completed: completed
-                                          ? 'completed!'
-                                          : 'uncompleted!',
+                                  Future.delayed(Duration.zero, () {
+                                    _scrollController.animateTo(
+                                      30,
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      curve: Curves.ease,
                                     );
-                                  },
-                                  itemCount: docs.length,
-                                ),
+                                  });
+
+                                  return CalendarList(
+                                    docId: docs[idx].id,
+                                    icon: icon,
+                                    title: data['title'],
+                                    streaks: data['streaks'],
+                                    completed: completed
+                                        ? 'completed!'
+                                        : 'uncompleted!',
+                                  );
+                                },
+                                itemCount: snapshot.data!.docs.length,
                               ),
                             );
                           },
@@ -219,10 +231,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 }
 
-
 //                 final snapshot = await FirebaseFirestore.instance
 //                     .collection('users/$userUid/habits')
 //                     .get();
-
-
-
