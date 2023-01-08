@@ -17,7 +17,7 @@ class HabitForm extends StatefulWidget {
 class _HabitFormState extends State<HabitForm> {
   final _formKey = GlobalKey<FormState>();
   final _countController = TextEditingController();
-  bool _isInit = true;
+  // bool _isInit = true;
   String? _docId;
 
   bool _dailySelected = true;
@@ -29,30 +29,32 @@ class _HabitFormState extends State<HabitForm> {
   String? _count;
   String? _countUnit;
 
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      final args = ModalRoute.of(context)!.settings.arguments as Map;
-
-      // docId is only present for the habit that has already been created
-      if (args['docId'] != null) {
-        _docId = args['docId'];
-        _dailySelected = args['duration'] == 'day' ? true : false;
-        _weeklySelected = args['duration'] == 'week' ? true : false;
-        _title = args['title'];
-        _iconData = args['icon'];
-        _mainColor = args['iconColor'];
-        _count = args['count'].toString();
-        _countUnit = args['countUnit'];
-        _countController.text = args['count'].toString();
-      }
-      _isInit = false;
-    }
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     final args = ModalRoute.of(context)!.settings.arguments as Map;
+  //
+  //     // docId is only present for the habit that has already been created
+  //     if (args['docId'] != null) {
+  //       _docId = args['docId'];
+  //       _dailySelected = args['duration'] == 'day' ? true : false;
+  //       _weeklySelected = args['duration'] == 'week' ? true : false;
+  //       _title = args['title'];
+  //       _iconData = args['icon'];
+  //       _mainColor = args['iconColor'];
+  //       _count = args['count'].toString();
+  //       _countUnit = args['countUnit'];
+  //       _countController.text = args['count'].toString();
+  //     }
+  //     _isInit = false;
+  //   }
+  //   super.didChangeDependencies();
+  // }
 
   void _pickIcon() async {
-    IconData? icon = await FlutterIconPicker.showIconPicker(context);
+    IconData? icon = await FlutterIconPicker.showIconPicker(
+      context,
+    );
 
     setState(() {
       _iconData = icon;
@@ -136,125 +138,122 @@ class _HabitFormState extends State<HabitForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30),
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const InputTitleText(title: "Title"),
-              TextFormField(
-                initialValue: _title,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  label: const Text(
-                    "Enter Title",
-                    style: TextStyle(
-                      fontSize: 15,
-                    ),
-                  ),
-                  contentPadding: const EdgeInsets.all(15),
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const InputTitleText(title: "Title"),
+            TextFormField(
+              initialValue: _title,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter the title of the habit.";
-                  }
-                  return null;
-                },
-                onSaved: (value) => _title = value,
+                label: const Text(
+                  "Enter Title",
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                contentPadding: const EdgeInsets.all(15),
               ),
-              const SizedBox(height: 20),
-              const InputTitleText(title: "Icon and Color"),
-              IconAndColorPicker(
-                pickIcon: _pickIcon,
-                openMainColorPicker: _openMainColorPicker,
-                iconData: _iconData,
-                mainColor: _mainColor,
-              ),
-              const SizedBox(height: 20),
-              const InputTitleText(title: "Duration"),
-              DurationPicker(
-                handleDailySelect: _handleDailySelect,
-                handleWeeklySelect: _handleWeeklySelect,
-                dailySelected: _dailySelected,
-                weeklySelected: _weeklySelected,
-              ),
-              const SizedBox(height: 20),
-              const InputTitleText(title: "Count"),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _countController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        label: const Text(
-                          "Enter Count",
-                          style: TextStyle(
-                            fontSize: 15,
-                          ),
-                        ),
-                        contentPadding: const EdgeInsets.all(15),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please enter the title of the habit.";
+                }
+                return null;
+              },
+              onSaved: (value) => _title = value,
+            ),
+            const SizedBox(height: 20),
+            const InputTitleText(title: "Icon and Color"),
+            IconAndColorPicker(
+              pickIcon: _pickIcon,
+              openMainColorPicker: _openMainColorPicker,
+              iconData: _iconData,
+              mainColor: _mainColor,
+            ),
+            const SizedBox(height: 20),
+            const InputTitleText(title: "Duration"),
+            DurationPicker(
+              handleDailySelect: _handleDailySelect,
+              handleWeeklySelect: _handleWeeklySelect,
+              dailySelected: _dailySelected,
+              weeklySelected: _weeklySelected,
+            ),
+            const SizedBox(height: 20),
+            const InputTitleText(title: "Count"),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _countController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            int.parse(value) < 0) {
-                          return "Please enter valid count.";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => _count = value,
+                      label: const Text(
+                        "Enter Count",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.all(15),
                     ),
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          int.parse(value) < 0) {
+                        return "Please enter valid count.";
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => _count = value,
                   ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: DropdownButton(
-                      value: _countUnit,
-                      items: const [
-                        DropdownMenuItem(
-                          value: 'min',
-                          child: Text("min"),
-                        ),
-                        DropdownMenuItem(
-                          value: 'hr',
-                          child: Text("hr"),
-                        ),
-                        DropdownMenuItem(
-                          value: 'times',
-                          child: Text('times'),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _countUnit = value;
-                        });
-                      },
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 20),
-              FractionallySizedBox(
-                widthFactor: 0.5,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(15),
-                    textStyle: const TextStyle(
-                      fontSize: 15,
-                    ),
-                  ),
-                  onPressed: _handleSubmit,
-                  child: const Text("Submit"),
                 ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: DropdownButton(
+                    value: _countUnit,
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'min',
+                        child: Text("min"),
+                      ),
+                      DropdownMenuItem(
+                        value: 'hr',
+                        child: Text("hr"),
+                      ),
+                      DropdownMenuItem(
+                        value: 'times',
+                        child: Text('times'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _countUnit = value;
+                      });
+                    },
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 20),
+            FractionallySizedBox(
+              widthFactor: 0.5,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(15),
+                  textStyle: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                onPressed: _handleSubmit,
+                child: const Text("Submit"),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 
 class IconAndColorPicker extends StatelessWidget {
   const IconAndColorPicker({
@@ -19,49 +18,46 @@ class IconAndColorPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(15),
-                  textStyle: const TextStyle(
-                    fontSize: 15,
+          child: GestureDetector(
+            onTap: () {
+              pickIcon();
+            },
+            child: Container(
+              child: Row(
+                children: [
+                  CircleAvatar(child: Icon(Icons.directions_run)),
+                  SizedBox(width: 10),
+                  const Text(
+                    "Icon",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  pickIcon();
-                },
-                child: const Text("Choose Your Icon"),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(15),
-                  textStyle: const TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
-                onPressed: iconData != null ? openMainColorPicker : null,
-                child: const Text("Choose Icon Color"),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          child: SizedBox(
-            height: 130,
-            child: FittedBox(
-              child: Icon(
-                iconData,
-                color: mainColor,
+                ],
               ),
             ),
           ),
-        )
+        ),
+        Expanded(
+          child: GestureDetector(
+            child: Container(
+              child: Row(
+                children: [
+                  CircleAvatar(backgroundColor: Colors.red),
+                  SizedBox(width: 10),
+                  const Text(
+                    "Color",
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

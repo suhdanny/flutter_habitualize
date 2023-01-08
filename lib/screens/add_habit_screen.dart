@@ -68,11 +68,16 @@ class AddHabitScreen extends StatelessWidget {
                 opacity: 0,
                 child: IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                 ),
               ),
             ],
-          )
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: HabitForm(addHabit: addHabit),
+          ),
         ],
       ),
     );
