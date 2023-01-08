@@ -48,35 +48,40 @@ class AddHabitScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 25),
-      height: MediaQuery.of(context).size.height * 0.9,
+      height: MediaQuery.of(context).size.height * 0.55,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+      ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.close),
-              ),
-              Text(
-                "Add Habit",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              Opacity(
-                opacity: 0,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.delete),
-                ),
-              ),
-            ],
+          // Container(
+          //   margin: const EdgeInsets.fromLTRB(13, 0, 0, 0),
+          // child: Text(
+          //   "Add new challenge",
+          //   textAlign: TextAlign.center,
+          //   style: TextStyle(
+          //       fontSize: 23,
+          //       color: Colors.black,
+          //       fontWeight: FontWeight.w500),
+          // ),
+          // ),
+          // Expanded(child: Container()),
+          Container(
+            height: 40,
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.close),
+              color: Colors.black,
+            ),
           ),
-          const SizedBox(height: 10),
+
           Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: HabitForm(addHabit: addHabit),
+            padding: const EdgeInsets.fromLTRB(15.0, 0, 15.0, 15.0),
+            child: Container(child: HabitForm(addHabit: addHabit)),
           ),
         ],
       ),

@@ -17,6 +17,8 @@ class InputTitleText extends StatelessWidget {
         textAlign: TextAlign.left,
         style: const TextStyle(
           fontSize: 18,
+          color: Colors.black,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
