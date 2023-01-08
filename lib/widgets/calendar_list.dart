@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 
 class CalendarList extends StatelessWidget {
-  const CalendarList(
-      {required this.icon,
-      required this.title,
-      required this.completed,
-      super.key});
+  const CalendarList({
+    required this.icon,
+    required this.title,
+    required this.streaks,
+    required this.completed,
+    super.key,
+  });
 
   final IconData icon;
   final String title;
-  final bool completed;
+  final int streaks;
+  final String completed;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +28,30 @@ class CalendarList extends StatelessWidget {
             bottomRight: Radius.circular(20)),
       ),
       child: ListTile(
-        leading: Icon(icon),
-        title: Text(title),
-        trailing: Icon(
-          IconData(0xf3fe, fontFamily: iconFont, fontPackage: iconFontPackage),
-          size: 30,
-          color: completed ? Colors.red : Colors.grey,
-        ),
-      ),
+          leading: Icon(icon),
+          title: Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          trailing: Container(
+            margin: const EdgeInsets.only(top: 8),
+            child: Column(
+              children: [
+                Text('${streaks} 🔥'),
+                Text(
+                  completed,
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: completed == 'completed!'
+                          ? Color.fromRGBO(54, 126, 24, 1)
+                          : Color.fromRGBO(204, 54, 54, 1)),
+                )
+              ],
+            ),
+          )),
     );
   }
 }

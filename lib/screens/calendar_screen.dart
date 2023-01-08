@@ -79,44 +79,64 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             child: Column(
               children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Padding(
-                    padding: const EdgeInsets.all(28.0),
-                    child: TableCalendar(
-                      focusedDay: DateTime.now(),
-                      firstDay: DateTime(1990),
-                      lastDay: DateTime(2050),
-                      calendarFormat: format,
-                      onDaySelected: ((selectDay, focusDay) async {
-                        setState(() {
-                          selectedDay = selectDay;
-                          focusedDay = focusDay;
-                          createNewTimeline(selectDay);
-                        });
-                      }),
-                      onFormatChanged: (CalendarFormat calendarFormat) {
-                        setState(() {
-                          format = calendarFormat;
-                        });
-                      },
-                      selectedDayPredicate: (day) {
-                        return isSameDay(selectedDay, day);
-                      },
-                      startingDayOfWeek: StartingDayOfWeek.sunday,
-                      daysOfWeekVisible: true,
-                      calendarStyle: const CalendarStyle(
-                        isTodayHighlighted: false,
-                        selectedDecoration: BoxDecoration(
-                          color: Color.fromRGBO(87, 111, 114, 1),
-                          shape: BoxShape.circle,
-                        ),
-                        selectedTextStyle: TextStyle(color: Colors.white),
-                        // todayDecoration: BoxDecoration(
-                        //     // color: Color.fromRGBO(87, 111, 114, 1),
-                        //     shape: BoxShape.circle),
+                Padding(
+                  padding: const EdgeInsets.all(28.0),
+                  child: TableCalendar(
+                    focusedDay: DateTime.now(),
+                    firstDay: DateTime(1990),
+                    lastDay: DateTime(2050),
+                    calendarFormat: format,
+                    onDaySelected: ((selectDay, focusDay) async {
+                      setState(() {
+                        selectedDay = selectDay;
+                        focusedDay = focusDay;
+                        createNewTimeline(selectDay);
+                      });
+                    }),
+                    onFormatChanged: (CalendarFormat calendarFormat) {
+                      setState(() {
+                        format = calendarFormat;
+                      });
+                    },
+                    selectedDayPredicate: (day) {
+                      return isSameDay(selectedDay, day);
+                    },
+                    startingDayOfWeek: StartingDayOfWeek.sunday,
+                    daysOfWeekVisible: true,
+                    calendarStyle: const CalendarStyle(
+                      isTodayHighlighted: false,
+                      selectedDecoration: BoxDecoration(
+                        color: Color.fromRGBO(87, 111, 114, 1),
+                        shape: BoxShape.circle,
                       ),
-                      headerVisible: false,
+                      selectedTextStyle: TextStyle(color: Colors.white),
+                      // todayDecoration: BoxDecoration(
+                      //     // color: Color.fromRGBO(87, 111, 114, 1),
+                      //     shape: BoxShape.circle),
+                    ),
+                    headerVisible: true,
+                    headerStyle: HeaderStyle(
+                      titleCentered: true,
+                      headerMargin: const EdgeInsets.only(bottom: 10),
+                      formatButtonVisible: false,
+                      formatButtonTextStyle: const TextStyle(
+                        color: Color.fromRGBO(87, 111, 114, 1),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
+                      formatButtonDecoration: BoxDecoration(
+                        color: Color.fromRGBO(228, 220, 207, 1),
+                        border: Border.all(
+                            width: 0.0,
+                            color: Color.fromRGBO(228, 220, 207, 1)),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            topRight: Radius.circular(5),
+                            bottomLeft: Radius.circular(5),
+                            bottomRight: Radius.circular(5)),
+                      ),
+                      leftChevronVisible: false,
+                      rightChevronVisible: false,
                     ),
                   ),
                 ),
@@ -151,6 +171,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             final docs = snapshot.data!.docs;
                             String selectedDateString =
                                 DateFormat('yyyy-MM-dd').format(selectedDay);
+
                             return Expanded(
                               child: Container(
                                 child: ListView.builder(
@@ -169,10 +190,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         ? false
                                         : data['timeline'][selectedDateString]
                                             ['completed'];
+
                                     return CalendarList(
                                       icon: icon,
                                       title: data['title'],
-                                      completed: completed,
+                                      streaks: data['streaks'],
+                                      completed: completed
+                                          ? 'completed!'
+                                          : 'uncompleted!',
                                     );
                                   },
                                   itemCount: docs.length,
