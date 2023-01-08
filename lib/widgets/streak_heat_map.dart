@@ -13,12 +13,13 @@ class StreakHeatMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(13),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(30)),
-        color: Color.fromRGBO(249, 235, 227, 1),
+        color: Color.fromRGBO(228, 220, 207, 1),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
@@ -112,7 +113,7 @@ class StreakHeatMap extends StatelessWidget {
                     startDate: startDateTime,
                     endDate: endDateTime,
                     datasets: dataset,
-                    size: 18,
+                    size: 15,
                     colorMode: ColorMode.color,
                     scrollable: true,
                     showText: false,

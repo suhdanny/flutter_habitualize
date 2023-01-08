@@ -254,6 +254,7 @@ class _HabitFormState extends State<HabitForm> {
                           const SizedBox(width: 20),
                           Expanded(
                             child: DropdownButton(
+                              isExpanded: true,
                               value: _countUnit,
                               iconSize: 24,
                               underline: Container(
