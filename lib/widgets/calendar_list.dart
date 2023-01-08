@@ -152,7 +152,7 @@ class CalendarList extends StatelessWidget {
                         fontSize: 12,
                         color: completed == 'completed!'
                             ? Color.fromRGBO(54, 126, 24, 1)
-                            : Color.fromRGBO(204, 54, 54, 1)),
+                            : Colors.grey[600]),
                   )
                 ],
               ),

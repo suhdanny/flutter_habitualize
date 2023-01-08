@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/habit_grid_tile.dart';
 import '../widgets/home_calendar.dart';
+import '../widgets/streak_heat_map.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -36,54 +37,56 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(
-                  FirebaseAuth.instance.currentUser!.photoURL!,
+    return CustomScrollView(slivers: [
+      SliverFillRemaining(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 40.0, left: 8, right: 8, bottom: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: CircleAvatar(
+                  radius: 22,
+                  backgroundImage: NetworkImage(
+                    FirebaseAuth.instance.currentUser!.photoURL!,
+                  ),
+                ),
+                title: Text(
+                  '$greetingText, ',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w300,
+                  ),
+                  selectionColor: Colors.black,
+                ),
+                subtitle: Text(
+                  '${FirebaseAuth.instance.currentUser!.displayName!}',
+                  style: const TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.w300,
+                    color: Colors.black,
+                  ),
+                  selectionColor: Colors.black,
                 ),
               ),
-              title: Text(
-                '$greetingText, ',
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w300,
-                ),
-                selectionColor: Colors.black,
+              const SizedBox(height: 15),
+              HomeCalendar(
+                updatedSelectedDateTime: _updateSelectedDateTime,
               ),
-              subtitle: Text(
-                '${FirebaseAuth.instance.currentUser!.displayName!}',
-                style: const TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.w300,
-                  color: Colors.black,
-                ),
-                selectionColor: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 15),
-            HomeCalendar(
-              updatedSelectedDateTime: _updateSelectedDateTime,
-            ),
-            const SizedBox(height: 20),
-            const Padding(
-              padding: EdgeInsets.only(left: 17.0),
-              child: Text(
-                "Today's Challenge",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
+              const SizedBox(height: 20),
+              const Padding(
+                padding: EdgeInsets.only(left: 17.0),
+                child: Text(
+                  "Today's Challenge",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: StreamBuilder(
+              const SizedBox(height: 10),
+              StreamBuilder(
                 builder: (ctx, snapshot) {
                   if (snapshot.data == null) {
                     return const Center(
@@ -93,12 +96,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(9.0, 0.0, 9.0, 0.0),
                     child: GridView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 8.0,
                         crossAxisSpacing: 8.0,
-                        childAspectRatio: 1,
+                        childAspectRatio: 1.0,
                       ),
                       itemBuilder: (ctx, idx) {
                         Map<String, dynamic> data =
@@ -142,10 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     .collection('/users/$userUid/habits')
                     .snapshots(),
               ),
-            ),
-          ],
+              StreakHeatMap(),
+            ],
+          ),
         ),
       ),
-    );
+    ]);
   }
 }

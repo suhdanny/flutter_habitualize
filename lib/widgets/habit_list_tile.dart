@@ -46,7 +46,6 @@ class _HabitListTileState extends State<HabitListTile> {
         key: const ValueKey(0),
         startActionPane: ActionPane(
           motion: const DrawerMotion(),
-          extentRatio: 0.4,
           children: [
             SlidableAction(
               onPressed: (ctx) {
