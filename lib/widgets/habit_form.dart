@@ -23,6 +23,15 @@ class _HabitFormState extends State<HabitForm> {
 
   bool _dailySelected = true;
   bool _weeklySelected = false;
+  Map<String, bool> _dailyTracks = {
+    'Mon': true,
+    'Tue': true,
+    'Wed': true,
+    'Thu': true,
+    'Fri': true,
+    'Sat': true,
+    'Sun': true,
+  };
   String? _title;
   IconData? _iconData;
   Color? _tempMainColor;
@@ -51,6 +60,12 @@ class _HabitFormState extends State<HabitForm> {
   //   }
   //   super.didChangeDependencies();
   // }
+
+  void _updateDayTrack(String day) {
+    setState(() {
+      _dailyTracks.update(day, (value) => !value);
+    });
+  }
 
   void _pickIcon() async {
     IconData? icon = await FlutterIconPicker.showIconPicker(
@@ -139,165 +154,173 @@ class _HabitFormState extends State<HabitForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                TextFormField(
-                  style: const TextStyle(
-                    fontSize: 25,
-                  ),
-                  decoration: const InputDecoration(
-                    hintText: "Add new habit",
-                    hintStyle: TextStyle(
-                      fontSize: 28,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(15.0, 0, 15.0, 15.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextFormField(
+                    style: const TextStyle(
+                      fontSize: 25,
                     ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 3),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter the title of the habit.";
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => _title = value,
-                ),
-                const SizedBox(height: 20),
-                // const InputTitleText(title: "Icon and Color"),
-                IconAndColorPicker(
-                  pickIcon: _pickIcon,
-                  openMainColorPicker: _openMainColorPicker,
-                  iconData: _iconData,
-                  mainColor: _mainColor,
-                ),
-                const SizedBox(height: 10),
-                // const InputTitleText(title: "Duration"),
-                Column(children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          IconData(0xf44c,
-                              fontFamily: iconFont,
-                              fontPackage: iconFontPackage),
-                          color: Colors.black,
-                        ),
+                    decoration: const InputDecoration(
+                      hintText: "Add new habit",
+                      hintStyle: TextStyle(
+                        fontSize: 28,
                       ),
-                      SizedBox(width: 7),
-                      Column(
-                        children: [
-                          Text(
-                            "I want to set the habit to be",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 87, 85, 85),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 3),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter the title of the habit.";
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => _title = value,
                   ),
-                  // const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(32.0, 0, 20.0, 0),
-                    child: Row(
+                  const SizedBox(height: 20),
+                  // const InputTitleText(title: "Icon and Color"),
+                  IconAndColorPicker(
+                    pickIcon: _pickIcon,
+                    openMainColorPicker: _openMainColorPicker,
+                    iconData: _iconData,
+                    mainColor: _mainColor,
+                  ),
+                  const SizedBox(height: 10),
+                  // const InputTitleText(title: "Duration"),
+                  Column(children: [
+                    Row(
                       children: [
-                        Expanded(
-                          // margin: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
-                          child: TextFormField(
-                            controller: _countController,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              label: Text(
-                                "Enter Count",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.all(15),
-                            ),
-                            validator: (value) {
-                              if (value == null ||
-                                  value.isEmpty ||
-                                  int.parse(value) < 0) {
-                                return "Please enter valid count.";
-                              }
-                              return null;
-                            },
-                            onSaved: (value) => _count = value,
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            IconData(0xf44c,
+                                fontFamily: iconFont,
+                                fontPackage: iconFontPackage),
+                            color: Colors.black,
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: DropdownButton(
-                            value: _countUnit,
-                            iconSize: 24,
-                            underline: Container(
-                              height: 2,
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Color(0xFFBDBDBD),
-                                          width: 0.0))),
+                        SizedBox(width: 7),
+                        Column(
+                          children: [
+                            Text(
+                              "I want to set the habit to be",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Color.fromARGB(255, 87, 85, 85),
+                              ),
                             ),
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'min',
-                                child: Text("min"),
-                              ),
-                              DropdownMenuItem(
-                                value: 'hr',
-                                child: Text("hr"),
-                              ),
-                              DropdownMenuItem(
-                                value: 'times',
-                                child: Text('times'),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                _countUnit = value;
-                              });
-                            },
-                          ),
-                        )
+                          ],
+                        ),
                       ],
                     ),
+                    // const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(32.0, 0, 20.0, 0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            // margin: const EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
+                            child: TextFormField(
+                              controller: _countController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                label: Text(
+                                  "Enter Count",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.all(15),
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    int.parse(value) < 0) {
+                                  return "Please enter valid count.";
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => _count = value,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: DropdownButton(
+                              value: _countUnit,
+                              iconSize: 24,
+                              underline: Container(
+                                height: 2,
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Color(0xFFBDBDBD),
+                                            width: 0.0))),
+                              ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                              items: const [
+                                DropdownMenuItem(
+                                  value: 'min',
+                                  child: Text("min"),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'hr',
+                                  child: Text("hr"),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'times',
+                                  child: Text('times'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _countUnit = value;
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    DurationPicker(
+                      dailyTracks: _dailyTracks,
+                      updateDayTrack: _updateDayTrack,
+                      handleDailySelect: _handleDailySelect,
+                      handleWeeklySelect: _handleWeeklySelect,
+                      dailySelected: _dailySelected,
+                      weeklySelected: _weeklySelected,
+                    ),
+                  ]),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  DurationPicker(
-                    handleDailySelect: _handleDailySelect,
-                    handleWeeklySelect: _handleWeeklySelect,
-                    dailySelected: _dailySelected,
-                    weeklySelected: _weeklySelected,
-                  ),
-                ]),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
-            ),
-          ),
-          FractionallySizedBox(
-            widthFactor: 0.5,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromRGBO(87, 111, 114, 1),
-                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                textStyle: const TextStyle(
-                  fontSize: 15,
-                ),
+                ],
               ),
-              onPressed: _handleSubmit,
-              child: const Text("Add habit 😆"),
             ),
-          ),
-        ],
+            FractionallySizedBox(
+              widthFactor: 0.5,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(87, 111, 114, 1),
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  textStyle: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                onPressed: _handleSubmit,
+                child: const Text("Add habit 😆"),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
