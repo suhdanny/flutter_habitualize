@@ -1,16 +1,153 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
 
-class SettingsScreen extends StatelessWidget {
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
   @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  late String imageUrl;
+
+  // uploadImage() async {
+  //   final _firebaseStorage = FirebaseStorage.instance;
+  //   final _imagePicker = ImagePicker();
+  //   PickedFile image;
+
+  //   // check permission
+  //   await Permission.photos.request();
+  //   var permissionStatus = Platform.isIOS
+  //       ? await Permission.photos.status
+  //       : await Permission.storage.status;
+
+  //   if (permissionStatus.isGranted) {
+  //     image = (await _imagePicker.getImage(source: ImageSource.gallery))!;
+  //     var file = File(image.path);
+
+  //     if (image != null) {
+  //       //upload to Firebase
+  //       final storageRef = FirebaseStorage.instance.ref();
+  //       final imageRef = storageRef.child("mountains.jpg").putFile(file);
+  //     } else {
+  //       print("No Image Path Recieved");
+  //     }
+  //   } else {
+  //     print('Permission not granted. Try Again with permission access');
+  //     print(permissionStatus);
+  //   }
+  // }
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () => FirebaseAuth.instance.signOut(),
-        child: const Text("Sign Out"),
+    return Container(
+      padding: const EdgeInsets.all(45),
+      margin: const EdgeInsets.only(top: 85),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // "Account" Header
+          const Text(
+            "Account",
+            style: TextStyle(
+              fontSize: 35,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+
+          // Photo Section
+          Row(
+            children: [
+              Container(
+                child: const Text(
+                  "Photo",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 100,
+              ),
+              Container(
+                width: 90,
+                height: 90,
+                margin: const EdgeInsets.only(top: 60),
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundImage: NetworkImage(
+                    FirebaseAuth.instance.currentUser!.photoURL!,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(
+            height: 40,
+          ),
+
+          // Name Section
+          Row(
+            children: [
+              Container(
+                child: const Text(
+                  "Name",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 100,
+              ),
+              Expanded(
+                child: TextField(
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                  decoration: InputDecoration(
+                      enabledBorder: const UnderlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Colors.grey,
+                      )),
+                      hintText:
+                          '${FirebaseAuth.instance.currentUser!.displayName!}',
+                      hintStyle: TextStyle(
+                        fontSize: 15,
+                      )),
+
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return "Please enter the title of the habit.";
+                  //   }
+                  //   return null;
+                  // },
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }
 }
+
+
+// Center(
+//       child: ElevatedButton(
+//         onPressed: () => FirebaseAuth.instance.signOut(),
+//         child: const Text("Sign Out"),
+//       ),
+//     );

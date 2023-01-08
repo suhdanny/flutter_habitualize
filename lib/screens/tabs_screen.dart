@@ -64,13 +64,15 @@ class _TabsScreenState extends State<TabsScreen> {
         unselectedItemColor: Colors.grey,
         items: [
           DotNavigationBarItem(
-              icon: Icon(Icons.home), selectedColor: Colors.black),
+              icon: const Icon(Icons.home), selectedColor: Colors.black),
           DotNavigationBarItem(
-              icon: Icon(Icons.calendar_month), selectedColor: Colors.black),
+              icon: const Icon(Icons.calendar_month),
+              selectedColor: Colors.black),
           DotNavigationBarItem(
-              icon: Icon(Icons.add), selectedColor: Colors.black),
+              icon: const Icon(Icons.add), selectedColor: Colors.black),
           DotNavigationBarItem(
-              icon: Icon(Icons.settings), selectedColor: Colors.black),
+              icon: const Icon(Icons.manage_accounts),
+              selectedColor: Colors.black),
         ],
       ),
     );
