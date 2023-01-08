@@ -47,44 +47,36 @@ class AddHabitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom * 0.8),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 25),
         height: MediaQuery.of(context).size.height * 0.65,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+            topLeft: Radius.circular(50),
+            topRight: Radius.circular(50),
+          ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            // Container(
-            //   margin: const EdgeInsets.fromLTRB(13, 0, 0, 0),
-            // child: Text(
-            //   "Add new challenge",
-            //   textAlign: TextAlign.center,
-            //   style: TextStyle(
-            //       fontSize: 23,
-            //       color: Colors.black,
-            //       fontWeight: FontWeight.w500),
-            // ),
-            // ),
-            // Expanded(child: Container()),
-            Container(
-              height: 40,
-              child: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.close),
-                color: Colors.black,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                height: 40,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.close),
+                  color: Colors.black,
+                ),
               ),
-            ),
-            HabitForm(addHabit: addHabit),
-          ],
+              HabitForm(addHabit: addHabit),
+            ],
+          ),
         ),
       ),
     );

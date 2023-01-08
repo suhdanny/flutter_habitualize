@@ -38,6 +38,8 @@ class _TabsScreenState extends State<TabsScreen> {
             ),
           ),
           expand: false,
+          isDismissible: false,
+          enableDrag: false,
           context: context,
           builder: (context) {
             return AddHabitScreen();

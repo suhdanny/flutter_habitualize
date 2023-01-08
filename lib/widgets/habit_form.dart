@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-import '../widgets/input_title_text.dart';
-import '../widgets/icon_and_color_picker.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:flutter_iconpicker/IconPicker/icons.dart';
+import '../widgets/habit_emoji_picker.dart';
 import '../widgets/duration_picker.dart';
 
 class HabitForm extends StatefulWidget {
@@ -23,6 +21,7 @@ class _HabitFormState extends State<HabitForm> {
 
   bool _dailySelected = true;
   bool _weeklySelected = false;
+  Emoji? _selectedEmoji;
   Map<String, bool> _dailyTracks = {
     'Mon': true,
     'Tue': true,
@@ -33,9 +32,6 @@ class _HabitFormState extends State<HabitForm> {
     'Sun': true,
   };
   String? _title;
-  IconData? _iconData;
-  Color? _tempMainColor;
-  Color? _mainColor;
   String? _count;
   String? _countUnit;
 
@@ -67,53 +63,10 @@ class _HabitFormState extends State<HabitForm> {
     });
   }
 
-  void _pickIcon() async {
-    IconData? icon = await FlutterIconPicker.showIconPicker(
-      context,
-    );
-
+  void _updateSelectedEmoji(Emoji emoji) {
     setState(() {
-      _iconData = icon;
+      _selectedEmoji = emoji;
     });
-  }
-
-  void _openDialog(String title, Widget content) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(6.0),
-          title: Text(title),
-          content: content,
-          actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const Text('CANCEL'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _mainColor = _tempMainColor;
-                });
-              },
-              child: const Text('SUBMIT'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _openMainColorPicker() async {
-    _openDialog(
-      "Choose Your Icon Color",
-      MaterialColorPicker(
-        selectedColor: _mainColor,
-        allowShades: false,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-      ),
-    );
   }
 
   void _handleDailySelect() {
@@ -132,24 +85,24 @@ class _HabitFormState extends State<HabitForm> {
 
   void _handleSubmit() async {
     bool isValid = _formKey.currentState!.validate();
-    if (!isValid || _iconData == null || _countUnit == null) return;
+    if (!isValid || _countUnit == null) return;
     _formKey.currentState!.save();
 
-    try {
-      widget.addHabit(
-        _docId,
-        false,
-        int.parse(_count!),
-        _countUnit,
-        _dailySelected ? 'day' : 'week',
-        _iconData.toString(),
-        _mainColor!.value.toRadixString(16),
-        _title,
-      );
-      Navigator.of(context).pop();
-    } catch (error) {
-      print(error);
-    }
+    // try {
+    //   widget.addHabit(
+    //     _docId,
+    //     false,
+    //     int.parse(_count!),
+    //     _countUnit,
+    //     _dailySelected ? 'day' : 'week',
+    //     _iconData.toString(),
+    //     _mainColor!.value.toRadixString(16),
+    //     _title,
+    //   );
+    //   Navigator.of(context).pop();
+    // } catch (error) {
+    //   print(error);
+    // }
   }
 
   @override
@@ -174,7 +127,7 @@ class _HabitFormState extends State<HabitForm> {
                         fontSize: 28,
                       ),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 3),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 3),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -186,18 +139,16 @@ class _HabitFormState extends State<HabitForm> {
                   ),
                   const SizedBox(height: 20),
                   // const InputTitleText(title: "Icon and Color"),
-                  IconAndColorPicker(
-                    pickIcon: _pickIcon,
-                    openMainColorPicker: _openMainColorPicker,
-                    iconData: _iconData,
-                    mainColor: _mainColor,
+                  HabitEmojiPicker(
+                    selectedEmoji: _selectedEmoji,
+                    updateSelectedEmoji: _updateSelectedEmoji,
                   ),
                   const SizedBox(height: 10),
                   // const InputTitleText(title: "Duration"),
                   Column(children: [
                     Row(
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           backgroundColor: Colors.white,
                           child: Icon(
                             IconData(0xf44c,
@@ -206,9 +157,9 @@ class _HabitFormState extends State<HabitForm> {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(width: 7),
+                        const SizedBox(width: 7),
                         Column(
-                          children: [
+                          children: const [
                             Text(
                               "I want to set the habit to be",
                               style: TextStyle(
@@ -220,7 +171,6 @@ class _HabitFormState extends State<HabitForm> {
                         ),
                       ],
                     ),
-                    // const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(32.0, 0, 20.0, 0),
                       child: Row(
