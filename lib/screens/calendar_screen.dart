@@ -182,11 +182,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 controller: _scrollController,
                                 itemBuilder: (ctx, idx) {
                                   final data = docs[idx].data();
-                                  int codePoint = int.parse(
-                                      data['icon'].split('U+')[1].split(')')[0],
-                                      radix: 16);
-                                  IconData icon = IconData(codePoint,
-                                      fontFamily: "MaterialIcons");
                                   bool completed = data['timeline']
                                               [selectedDateString] ==
                                           null
@@ -205,7 +200,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                                   return CalendarList(
                                     docId: docs[idx].id,
-                                    icon: icon,
+                                    icon: data['icon'],
                                     title: data['title'],
                                     streaks: data['streaks'],
                                     completed: completed

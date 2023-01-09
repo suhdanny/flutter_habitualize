@@ -1,47 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import '../widgets/habit_form.dart';
 
 class AddHabitScreen extends StatelessWidget {
   const AddHabitScreen({super.key});
 
   void addHabit(
-    String? docId,
-    bool completed,
+    String title,
+    Emoji emoji,
     int count,
     String countUnit,
-    String duration,
-    String icon,
-    String iconColor,
-    String title,
+    bool dailySelected,
+    bool weeklySelected,
+    Map<String, bool> dailyTracks,
   ) async {
     String userUid = FirebaseAuth.instance.currentUser!.uid;
-    if (docId == null) {
-      await FirebaseFirestore.instance.collection('users/$userUid/habits').add({
-        "completed": completed,
-        "count": count,
-        "countUnit": countUnit,
-        "duration": duration,
-        "icon": icon,
-        "iconColor": iconColor,
-        "streaks": 0,
-        "title": title,
-        "dayCount": 0,
-      });
-    } else {
-      await FirebaseFirestore.instance
-          .doc('users/$userUid/habits/$docId')
-          .update({
-        "completed": completed,
-        "count": count,
-        "countUnit": countUnit,
-        "duration": duration,
-        "icon": icon,
-        "iconColor": iconColor,
-        "title": title,
-      });
-    }
+    String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    await FirebaseFirestore.instance.collection('users/$userUid/habits').add({
+      "title": title,
+      "count": count,
+      "countUnit": countUnit,
+      "duration": dailySelected ? 'day' : 'week',
+      "dailyTracks": dailySelected ? dailyTracks : null,
+      "icon": emoji.emoji,
+      "streaks": 0,
+      "timeline": {
+        today: {
+          "completed": false,
+          "dayCount": 0,
+        },
+      }
+    });
   }
 
   @override

@@ -84,25 +84,26 @@ class _HabitFormState extends State<HabitForm> {
   }
 
   void _handleSubmit() async {
-    bool isValid = _formKey.currentState!.validate();
-    if (!isValid || _countUnit == null) return;
     _formKey.currentState!.save();
 
-    // try {
-    //   widget.addHabit(
-    //     _docId,
-    //     false,
-    //     int.parse(_count!),
-    //     _countUnit,
-    //     _dailySelected ? 'day' : 'week',
-    //     _iconData.toString(),
-    //     _mainColor!.value.toRadixString(16),
-    //     _title,
-    //   );
-    //   Navigator.of(context).pop();
-    // } catch (error) {
-    //   print(error);
-    // }
+    // place validation logic
+
+    print(_title);
+    print(_selectedEmoji);
+    print(_count);
+    print(_dailySelected);
+    print(_weeklySelected);
+    print(_dailyTracks);
+
+    widget.addHabit(
+      _title,
+      _selectedEmoji,
+      int.parse(_count!),
+      _countUnit,
+      _dailySelected,
+      _weeklySelected,
+      _dailyTracks,
+    );
   }
 
   @override
@@ -129,12 +130,6 @@ class _HabitFormState extends State<HabitForm> {
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(horizontal: 3),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter the title of the habit.";
-                      }
-                      return null;
-                    },
                     onSaved: (value) => _title = value,
                   ),
                   const SizedBox(height: 20),
@@ -190,14 +185,6 @@ class _HabitFormState extends State<HabitForm> {
                                 contentPadding: EdgeInsets.all(15),
                               ),
                               keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null ||
-                                    value.isEmpty ||
-                                    int.parse(value) < 0) {
-                                  return "Please enter valid count.";
-                                }
-                                return null;
-                              },
                               onSaved: (value) => _count = value,
                             ),
                           ),
@@ -266,7 +253,7 @@ class _HabitFormState extends State<HabitForm> {
                   ),
                 ),
                 onPressed: _handleSubmit,
-                child: const Text("Add habit 😆"),
+                child: const Text("Add Habit 😆"),
               ),
             ),
           ],
