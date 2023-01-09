@@ -172,10 +172,20 @@ class _CalendarListState extends State<CalendarList> {
                 showDialog(
                   context: ctx,
                   builder: (context) => AlertDialog(
-                    title: const Text("Add Daily Count"),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    title: const Text(
+                      "Add Daily Count",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
                     content: TextField(
                       decoration: const InputDecoration(
-                        label: Text("Enter Count"),
+                        hintText: "Enter Count",
+                        hintStyle: TextStyle(
+                          fontSize: 15,
+                        ),
                       ),
                       keyboardType: TextInputType.number,
                       onChanged: (value) {
@@ -192,7 +202,12 @@ class _CalendarListState extends State<CalendarList> {
                           });
                           Navigator.pop(context, 'Cancel');
                         },
-                        child: const Text("Cancel"),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                          ),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
@@ -244,7 +259,10 @@ class _CalendarListState extends State<CalendarList> {
                           }
                           Navigator.pop(context, 'Add');
                         },
-                        child: const Text("Add"),
+                        child: const Text("Add",
+                            style: TextStyle(
+                              color: Color.fromRGBO(245, 115, 40, 1),
+                            )),
                       ),
                     ],
                   ),
