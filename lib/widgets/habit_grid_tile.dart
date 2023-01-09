@@ -1,11 +1,11 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 import 'package:intl/intl.dart';
+import '../utils/is_today.dart';
 
 class HabitGridTile extends StatelessWidget {
   HabitGridTile({
@@ -63,9 +63,14 @@ class HabitGridTile extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () async {
+                  // if the selected date is in the future, do not allow users to complete the habit
+                  if (isDateAfterToday(selectedDateTime)) return;
+
                   String userUid = FirebaseAuth.instance.currentUser!.uid;
                   String selectedDate =
                       DateFormat('yyyy-MM-dd').format(selectedDateTime);
+
+                  // update the completed status and if the habit wasn't completed before, then add streak count by 1
                   await FirebaseFirestore.instance
                       .doc('/users/$userUid/habits/$docId')
                       .update({
