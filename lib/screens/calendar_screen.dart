@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/habit_list_tile.dart';
 import '../widgets/calendar_list.dart';
 import '../utils/create_new_timeline.dart';
+import '../utils/is_today.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -174,8 +175,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               return const CircularProgressIndicator();
                             }
                             final docs = snapshot.data!.docs;
+
                             String selectedDateString =
                                 DateFormat('yyyy-MM-dd').format(selectedDay);
+                            bool isAfterToday = isDateAfterToday(selectedDay);
 
                             return Expanded(
                               child: ListView.builder(
@@ -213,6 +216,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     completed: completed
                                         ? 'completed!'
                                         : 'uncompleted',
+                                    selectedDateString: selectedDateString,
+                                    isAfterToday: isAfterToday,
                                   );
                                 },
                                 itemCount: snapshot.data!.docs.length,

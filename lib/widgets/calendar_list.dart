@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../screens/add_habit_screen.dart';
 
-class CalendarList extends StatelessWidget {
+class CalendarList extends StatefulWidget {
   const CalendarList({
     required this.docId,
     required this.emoji,
@@ -16,6 +16,8 @@ class CalendarList extends StatelessWidget {
     required this.dayTracks,
     required this.streaks,
     required this.completed,
+    required this.selectedDateString,
+    required this.isAfterToday,
     super.key,
   });
 
@@ -28,6 +30,15 @@ class CalendarList extends StatelessWidget {
   final Map<String, bool> dayTracks;
   final int streaks;
   final String completed;
+  final String selectedDateString;
+  final bool isAfterToday;
+
+  @override
+  State<CalendarList> createState() => _CalendarListState();
+}
+
+class _CalendarListState extends State<CalendarList> {
+  String? _countInput;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +76,7 @@ class CalendarList extends StatelessWidget {
                           ),
                         ),
                         content: Text(
-                          "Are you sure you want to delete '${title}'? This action cannot be undone.",
+                          "Are you sure you want to delete '${widget.title}'? This action cannot be undone.",
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             fontSize: 15,
@@ -86,7 +97,7 @@ class CalendarList extends StatelessWidget {
                               String userUid =
                                   FirebaseAuth.instance.currentUser!.uid;
                               FirebaseFirestore.instance
-                                  .doc('users/$userUid/habits/$docId')
+                                  .doc('users/$userUid/habits/${widget.docId}')
                                   .delete();
                               Navigator.pop(context, 'Delete');
                             },
@@ -134,13 +145,13 @@ class CalendarList extends StatelessWidget {
                   context: context,
                   builder: (context) {
                     return AddHabitScreen(
-                      docId: docId,
-                      title: title,
-                      emoji: emoji,
-                      count: count,
-                      countUnit: countUnit,
-                      duration: duration,
-                      dayTracks: dayTracks,
+                      docId: widget.docId,
+                      title: widget.title,
+                      emoji: widget.emoji,
+                      count: widget.count,
+                      countUnit: widget.countUnit,
+                      duration: widget.duration,
+                      dayTracks: widget.dayTracks,
                     );
                   },
                 );
@@ -151,31 +162,164 @@ class CalendarList extends StatelessWidget {
             ),
           ],
         ),
-        child: ListTile(
-            leading: Text(emoji, style: TextStyle(fontSize: 35)),
-            title: Text(
-              title,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
+        endActionPane: ActionPane(
+          motion: const DrawerMotion(),
+          extentRatio: 0.4,
+          children: [
+            SlidableAction(
+              onPressed: (ctx) {
+                if (widget.isAfterToday) return;
+                showDialog(
+                  context: ctx,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Add Daily Count"),
+                    content: TextField(
+                      decoration: const InputDecoration(
+                        label: Text("Enter Count"),
+                      ),
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        setState(() {
+                          _countInput = value;
+                        });
+                      },
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _countInput = null;
+                          });
+                          Navigator.pop(context, 'Cancel');
+                        },
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (_countInput == null) return;
+                          try {
+                            print(widget.selectedDateString);
+
+                            final db = FirebaseFirestore.instance;
+                            String userUid =
+                                FirebaseAuth.instance.currentUser!.uid;
+
+                            db
+                                .doc('users/$userUid/habits/${widget.docId}')
+                                .get()
+                                .then((DocumentSnapshot doc) {
+                              final docData =
+                                  doc.data() as Map<String, dynamic>;
+
+                              final currentCompleted = docData['timeline']
+                                  [widget.selectedDateString]['completed'];
+                              final currentDayCount = docData['timeline']
+                                  [widget.selectedDateString]['dayCount'];
+                              final currentStreaks = docData['streaks'];
+
+                              // if the updated dayCount exceeds daily goal count, then completed must be true
+                              bool updatedCompleted =
+                                  currentDayCount + int.parse(_countInput!) >=
+                                          widget.count
+                                      ? true
+                                      : false;
+
+                              // if current completed is false and updatedCompleted is true, then update the streaks value by 1
+                              int updatedStreaks =
+                                  updatedCompleted && !currentCompleted
+                                      ? currentStreaks + 1
+                                      : currentStreaks;
+
+                              doc.reference.update({
+                                "timeline.${widget.selectedDateString}.completed":
+                                    updatedCompleted,
+                                "timeline.${widget.selectedDateString}.dayCount":
+                                    FieldValue.increment(
+                                        int.parse(_countInput!)),
+                                "streaks": updatedStreaks,
+                              });
+                            });
+                          } catch (error) {
+                            print(error);
+                          }
+                          Navigator.pop(context, 'Add');
+                        },
+                        child: const Text("Add"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              icon: Icons.more_time,
+              backgroundColor: const Color.fromRGBO(245, 115, 40, 1),
+              foregroundColor: Colors.white,
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                      alignment: Alignment.center,
+                      width: 24 * 4, // space for actionPan
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        color: Color.fromRGBO(255, 233, 160, 1),
+                      ),
+                      child: const Icon(
+                        Icons.create,
+                        color: Colors.white,
+                      )),
+                ),
               ),
             ),
-            trailing: Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: Column(
-                children: [
-                  Text('${streaks} 🔥'),
-                  Text(
-                    completed,
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: completed == 'completed!'
-                            ? Color.fromRGBO(54, 126, 24, 1)
-                            : Colors.grey[600]),
-                  )
-                ],
+            // SlidableAction(
+            //   onPressed: (_) {},
+            //   icon: Icons.create,
+            //   backgroundColor: Color.fromRGBO(255, 233, 160, 1),
+            //   foregroundColor: Colors.white,
+            // ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+          child: ListTile(
+              leading: Text(widget.emoji, style: TextStyle(fontSize: 40)),
+              title: Text(
+                widget.title,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 17,
+                ),
               ),
-            )),
+              trailing: Container(
+                width: 80,
+                margin: const EdgeInsets.only(top: 10),
+                child: Column(
+                  children: [
+                    Text(
+                      '${widget.streaks} 🔥',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      widget.completed,
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: widget.completed == 'completed!'
+                              ? Color.fromRGBO(54, 126, 24, 1)
+                              : Colors.grey[600]),
+                    )
+                  ],
+                ),
+              )),
+        ),
       ),
     );
   }
