@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../screens/add_habit_screen.dart';
 
 class CalendarList extends StatelessWidget {
   const CalendarList({
     required this.docId,
-    required this.icon,
+    required this.emoji,
     required this.title,
+    required this.count,
+    required this.countUnit,
+    required this.duration,
+    required this.dayTracks,
     required this.streaks,
     required this.completed,
     super.key,
   });
 
   final String docId;
-  final String icon;
+  final String emoji;
   final String title;
+  final int count;
+  final String countUnit;
+  final String duration;
+  final Map<String, bool> dayTracks;
   final int streaks;
   final String completed;
 
@@ -112,19 +121,29 @@ class CalendarList extends StatelessWidget {
             ),
             SlidableAction(
               onPressed: (ctx) {
-                // Navigator.pushNamed(
-                //   context,
-                //   '/add-habit',
-                //   arguments: {
-                //     "docId": docId,
-                //     "icon":icon,
-                //     "iconColor":iconColor,
-                //     "title":title,
-                //     "count":count,
-                //     "countUnit":countUnit,
-                //     "duration":duration,
-                //   },
-                // );
+                showMaterialModalBottomSheet(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
+                    ),
+                  ),
+                  expand: false,
+                  isDismissible: false,
+                  enableDrag: false,
+                  context: context,
+                  builder: (context) {
+                    return AddHabitScreen(
+                      docId: docId,
+                      title: title,
+                      emoji: emoji,
+                      count: count,
+                      countUnit: countUnit,
+                      duration: duration,
+                      dayTracks: dayTracks,
+                    );
+                  },
+                );
               },
               icon: Icons.edit,
               backgroundColor: Color.fromRGBO(54, 126, 24, 1),
@@ -133,7 +152,7 @@ class CalendarList extends StatelessWidget {
           ],
         ),
         child: ListTile(
-            leading: Text(icon, style: TextStyle(fontSize: 35)),
+            leading: Text(emoji, style: TextStyle(fontSize: 35)),
             title: Text(
               title,
               style: TextStyle(

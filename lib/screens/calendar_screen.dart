@@ -198,10 +198,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     );
                                   });
 
+                                  final dayTracks = Map<String, bool>.from(
+                                      data['dailyTracks']);
+
                                   return CalendarList(
                                     docId: docs[idx].id,
-                                    icon: data['icon'],
+                                    emoji: data['icon'],
                                     title: data['title'],
+                                    count: data['count'],
+                                    countUnit: data['countUnit'],
+                                    duration: data['duration'],
+                                    dayTracks: dayTracks,
                                     streaks: data['streaks'],
                                     completed: completed
                                         ? 'completed!'

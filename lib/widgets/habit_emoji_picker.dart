@@ -9,7 +9,7 @@ class HabitEmojiPicker extends StatefulWidget {
     super.key,
   });
 
-  Emoji? selectedEmoji;
+  String? selectedEmoji;
   Function updateSelectedEmoji;
 
   @override
@@ -28,9 +28,7 @@ class _HabitEmojiPickerState extends State<HabitEmojiPicker> {
               showDialog(
                 context: context,
                 builder: (context) {
-                  Emoji? tempEmoji = widget.selectedEmoji == null
-                      ? null
-                      : widget.selectedEmoji;
+                  String? tempEmoji = widget.selectedEmoji ?? null;
 
                   return StatefulBuilder(
                     builder: (context, setState) {
@@ -38,7 +36,7 @@ class _HabitEmojiPickerState extends State<HabitEmojiPicker> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         title: Text(
-                            "Choose Your Icon  ${tempEmoji != null ? tempEmoji!.emoji : ''}"),
+                            "Choose Your Icon  ${tempEmoji != null ? tempEmoji! : ''}"),
                         backgroundColor: const Color(0xFFF2F2F2),
                         insetPadding:
                             const EdgeInsets.symmetric(horizontal: 10),
@@ -73,7 +71,7 @@ class _HabitEmojiPickerState extends State<HabitEmojiPicker> {
                           child: EmojiPicker(
                             onEmojiSelected: (category, emoji) {
                               setState(() {
-                                tempEmoji = emoji;
+                                tempEmoji = emoji.emoji;
                               });
                             },
                             config: const Config(
@@ -106,7 +104,7 @@ class _HabitEmojiPickerState extends State<HabitEmojiPicker> {
                 Text(
                   widget.selectedEmoji == null
                       ? "Choose Icon"
-                      : widget.selectedEmoji!.emoji,
+                      : widget.selectedEmoji!,
                   style: TextStyle(
                     fontSize: widget.selectedEmoji == null ? 15 : 30,
                     color: Color.fromARGB(255, 87, 85, 85),

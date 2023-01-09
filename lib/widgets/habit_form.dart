@@ -5,9 +5,28 @@ import '../widgets/habit_emoji_picker.dart';
 import '../widgets/duration_picker.dart';
 
 class HabitForm extends StatefulWidget {
-  const HabitForm({required this.addHabit, super.key});
+  const HabitForm({
+    required this.addHabit,
+    required this.updateHabit,
+    this.docId,
+    this.emoji,
+    this.title,
+    this.count,
+    this.countUnit,
+    this.duration,
+    this.dayTracks,
+    super.key,
+  });
 
   final Function addHabit;
+  final Function updateHabit;
+  final String? docId;
+  final String? emoji;
+  final String? title;
+  final int? count;
+  final String? countUnit;
+  final String? duration;
+  final Map<String, bool>? dayTracks;
 
   @override
   State<HabitForm> createState() => _HabitFormState();
@@ -16,12 +35,11 @@ class HabitForm extends StatefulWidget {
 class _HabitFormState extends State<HabitForm> {
   final _formKey = GlobalKey<FormState>();
   final _countController = TextEditingController();
-  // bool _isInit = true;
-  String? _docId;
 
+  String? _docId;
   bool _dailySelected = true;
   bool _weeklySelected = false;
-  Emoji? _selectedEmoji;
+  String? _selectedEmoji;
   Map<String, bool> _dailyTracks = {
     'Mon': true,
     'Tue': true,
@@ -34,28 +52,24 @@ class _HabitFormState extends State<HabitForm> {
   String? _title;
   String? _count;
   String? _countUnit;
+  String? _validationMessage;
 
-  // @override
-  // void didChangeDependencies() {
-  //   if (_isInit) {
-  //     final args = ModalRoute.of(context)!.settings.arguments as Map;
-  //
-  //     // docId is only present for the habit that has already been created
-  //     if (args['docId'] != null) {
-  //       _docId = args['docId'];
-  //       _dailySelected = args['duration'] == 'day' ? true : false;
-  //       _weeklySelected = args['duration'] == 'week' ? true : false;
-  //       _title = args['title'];
-  //       _iconData = args['icon'];
-  //       _mainColor = args['iconColor'];
-  //       _count = args['count'].toString();
-  //       _countUnit = args['countUnit'];
-  //       _countController.text = args['count'].toString();
-  //     }
-  //     _isInit = false;
-  //   }
-  //   super.didChangeDependencies();
-  // }
+  @override
+  void initState() {
+    if (widget.docId != null) {
+      _docId = widget.docId;
+      _dailySelected = widget.duration == 'day' ? true : false;
+      _weeklySelected = widget.duration == 'week' ? true : false;
+      _selectedEmoji = widget.emoji;
+      _dailyTracks = widget.dayTracks!;
+      _title = widget.title;
+      _count = widget.count.toString();
+      _countUnit = widget.countUnit;
+
+      _countController.text = _count!;
+      super.initState();
+    }
+  }
 
   void _updateDayTrack(String day) {
     setState(() {
@@ -63,7 +77,7 @@ class _HabitFormState extends State<HabitForm> {
     });
   }
 
-  void _updateSelectedEmoji(Emoji emoji) {
+  void _updateSelectedEmoji(String emoji) {
     setState(() {
       _selectedEmoji = emoji;
     });
@@ -84,30 +98,62 @@ class _HabitFormState extends State<HabitForm> {
   }
 
   void _handleSubmit() async {
-    _formKey.currentState!.save();
+    // validation logic
+    if (_title == null || _title!.isEmpty) {
+      setState(() {
+        _validationMessage = "Please enter a valid habit title.";
+      });
+      return;
+    } else if (_selectedEmoji == null || _selectedEmoji!.isEmpty) {
+      setState(() {
+        _validationMessage = "Please select an emoji.";
+      });
+      return;
+    } else if (_count == null || _count!.isEmpty) {
+      setState(() {
+        _validationMessage = "Please enter a valid count number.";
+      });
+      return;
+    } else if (_countUnit == null || _countUnit!.isEmpty) {
+      setState(() {
+        _validationMessage = "Please select a count unit.";
+      });
+      return;
+    } else {
+      setState(() {
+        _validationMessage = null;
+      });
+    }
 
-    // place validation logic
+    if (_docId == null) {
+      widget.addHabit(
+        _title,
+        _selectedEmoji,
+        int.parse(_count!),
+        _countUnit,
+        _dailySelected,
+        _weeklySelected,
+        _dailyTracks,
+      );
+    } else {
+      widget.updateHabit(
+        _docId,
+        _title,
+        _selectedEmoji,
+        int.parse(_count!),
+        _countUnit,
+        _dailySelected,
+        _weeklySelected,
+        _dailyTracks,
+      );
+    }
 
-    print(_title);
-    print(_selectedEmoji);
-    print(_count);
-    print(_dailySelected);
-    print(_weeklySelected);
-    print(_dailyTracks);
-
-    widget.addHabit(
-      _title,
-      _selectedEmoji,
-      int.parse(_count!),
-      _countUnit,
-      _dailySelected,
-      _weeklySelected,
-      _dailyTracks,
-    );
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    print(_selectedEmoji);
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 0, 15.0, 15.0),
       child: Form(
@@ -119,6 +165,7 @@ class _HabitFormState extends State<HabitForm> {
               child: Column(
                 children: [
                   TextFormField(
+                    initialValue: _title,
                     style: const TextStyle(
                       fontSize: 25,
                     ),
@@ -130,6 +177,7 @@ class _HabitFormState extends State<HabitForm> {
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(horizontal: 3),
                     ),
+                    onChanged: (value) => _title = value,
                     onSaved: (value) => _title = value,
                   ),
                   const SizedBox(height: 20),
@@ -185,6 +233,7 @@ class _HabitFormState extends State<HabitForm> {
                                 contentPadding: EdgeInsets.all(15),
                               ),
                               keyboardType: TextInputType.number,
+                              onChanged: (value) => _count = value,
                               onSaved: (value) => _count = value,
                             ),
                           ),
@@ -243,6 +292,16 @@ class _HabitFormState extends State<HabitForm> {
                 ],
               ),
             ),
+            if (_validationMessage != null)
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  _validationMessage!,
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ),
             FractionallySizedBox(
               widthFactor: 0.5,
               child: ElevatedButton(
@@ -254,7 +313,7 @@ class _HabitFormState extends State<HabitForm> {
                   ),
                 ),
                 onPressed: _handleSubmit,
-                child: const Text("Add Habit 😆"),
+                child: Text(_docId == null ? "Add Habit 😆" : "Confirm Edit"),
               ),
             ),
           ],
