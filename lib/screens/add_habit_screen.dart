@@ -6,11 +6,28 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import '../widgets/habit_form.dart';
 
 class AddHabitScreen extends StatelessWidget {
-  const AddHabitScreen({super.key});
+  const AddHabitScreen({
+    this.docId,
+    this.emoji,
+    this.title,
+    this.count,
+    this.countUnit,
+    this.duration,
+    this.dayTracks,
+    super.key,
+  });
+
+  final String? docId;
+  final String? emoji;
+  final String? title;
+  final int? count;
+  final String? countUnit;
+  final String? duration;
+  final Map<String, bool>? dayTracks;
 
   void addHabit(
     String title,
-    Emoji emoji,
+    String emoji,
     int count,
     String countUnit,
     bool dailySelected,
@@ -24,8 +41,8 @@ class AddHabitScreen extends StatelessWidget {
       "count": count,
       "countUnit": countUnit,
       "duration": dailySelected ? 'day' : 'week',
-      "dailyTracks": dailySelected ? dailyTracks : null,
-      "icon": emoji.emoji,
+      "dailyTracks": dailyTracks,
+      "icon": emoji,
       "streaks": 0,
       "timeline": {
         today: {
@@ -36,8 +53,32 @@ class AddHabitScreen extends StatelessWidget {
     });
   }
 
+  void updateHabit(
+    String docId,
+    String title,
+    String emoji,
+    int count,
+    String countUnit,
+    bool dailySelected,
+    bool weeklySelected,
+    Map<String, bool> dailyTracks,
+  ) async {
+    String userUid = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance
+        .doc('users/$userUid/habits/$docId')
+        .update({
+      "title": title,
+      "icon": emoji,
+      "duration": dailySelected ? 'day' : 'week',
+      "dailyTracks": dailyTracks,
+      "count": count,
+      "countUnit": countUnit,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(docId);
     return Padding(
       padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom * 0.8),
@@ -66,7 +107,17 @@ class AddHabitScreen extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              HabitForm(addHabit: addHabit),
+              HabitForm(
+                addHabit: addHabit,
+                updateHabit: updateHabit,
+                docId: docId,
+                title: title,
+                emoji: emoji,
+                count: count,
+                countUnit: countUnit,
+                duration: duration,
+                dayTracks: dayTracks,
+              ),
             ],
           ),
         ),
