@@ -37,121 +37,111 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: [
-      SliverFillRemaining(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 40.0, left: 8, right: 8, bottom: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: CircleAvatar(
-                  radius: 22,
-                  backgroundImage: NetworkImage(
-                    FirebaseAuth.instance.currentUser!.photoURL!,
-                  ),
-                ),
-                title: Text(
-                  '$greetingText, ',
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
-                  ),
-                  selectionColor: Colors.black,
-                ),
-                subtitle: Text(
-                  '${FirebaseAuth.instance.currentUser!.displayName!}',
-                  style: const TextStyle(
-                    fontSize: 23,
-                    fontWeight: FontWeight.w300,
-                    color: Colors.black,
-                  ),
-                  selectionColor: Colors.black,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 40.0, left: 8, right: 8, bottom: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              leading: CircleAvatar(
+                radius: 22,
+                backgroundImage: NetworkImage(
+                  FirebaseAuth.instance.currentUser!.photoURL!,
                 ),
               ),
-              const SizedBox(height: 15),
-              HomeCalendar(
-                updatedSelectedDateTime: _updateSelectedDateTime,
+              title: Text(
+                '$greetingText, ',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w300,
+                ),
+                selectionColor: Colors.black,
               ),
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.only(left: 17.0),
-                child: Text(
-                  "Today's Challenge",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400,
-                  ),
+              subtitle: Text(
+                '${FirebaseAuth.instance.currentUser!.displayName!}',
+                style: const TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                ),
+                selectionColor: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 15),
+            HomeCalendar(
+              updatedSelectedDateTime: _updateSelectedDateTime,
+            ),
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.only(left: 17.0),
+              child: Text(
+                "Today's Challenge",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
-              const SizedBox(height: 10),
-              StreamBuilder(
-                builder: (ctx, snapshot) {
-                  if (snapshot.data == null) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(9.0, 0.0, 9.0, 0.0),
-                    child: GridView.builder(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 8.0,
-                        crossAxisSpacing: 8.0,
-                        childAspectRatio: 1.0,
-                      ),
-                      itemBuilder: (ctx, idx) {
-                        Map<String, dynamic> data =
-                            snapshot.data!.docs[idx].data();
-                        String selectedDate =
-                            DateFormat('yyyy-MM-dd').format(_selectedDateTime);
-                        int codePoint = int.parse(
-                            data['icon'].split('U+')[1].split(')')[0],
-                            radix: 16);
-                        IconData icon =
-                            IconData(codePoint, fontFamily: "MaterialIcons");
-                        Color iconColor =
-                            Color(int.parse(data['iconColor'], radix: 16));
-                        Map<String, dynamic>? timelineData =
-                            data['timeline'][selectedDate];
-                        int dayCount =
-                            timelineData == null ? 0 : timelineData['dayCount'];
-                        bool completed = timelineData == null
-                            ? false
-                            : timelineData['completed'];
-
-                        return HabitGridTile(
-                          docId: snapshot.data!.docs[idx].id,
-                          icon: icon,
-                          iconColor: iconColor,
-                          title: data['title'],
-                          count: data['count'],
-                          countUnit: data['countUnit'],
-                          dayCount: dayCount,
-                          duration: data['duration'],
-                          streaks: data['streaks'],
-                          completed: completed,
-                          selectedDateTime: _selectedDateTime,
-                        );
-                      },
-                      itemCount: snapshot.data!.docs.length,
-                    ),
+            ),
+            const SizedBox(height: 10),
+            StreamBuilder(
+              builder: (ctx, snapshot) {
+                if (snapshot.data == null) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-                stream: FirebaseFirestore.instance
-                    .collection('/users/$userUid/habits')
-                    .snapshots(),
-              ),
-              StreakHeatMap(),
-            ],
-          ),
+                }
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(9.0, 0.0, 9.0, 0.0),
+                  child: GridView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                      childAspectRatio: 1.0,
+                    ),
+                    itemBuilder: (ctx, idx) {
+                      Map<String, dynamic> data =
+                          snapshot.data!.docs[idx].data();
+                      String selectedDate =
+                          DateFormat('yyyy-MM-dd').format(_selectedDateTime);
+                      Map<String, dynamic>? timelineData =
+                          data['timeline'][selectedDate];
+                      int dayCount =
+                          timelineData == null ? 0 : timelineData['dayCount'];
+                      bool completed = timelineData == null
+                          ? false
+                          : timelineData['completed'];
+
+                      return HabitGridTile(
+                        docId: snapshot.data!.docs[idx].id,
+                        icon: data['icon'],
+                        title: data['title'],
+                        count: data['count'],
+                        countUnit: data['countUnit'],
+                        dayCount: dayCount,
+                        duration: data['duration'],
+                        streaks: data['streaks'],
+                        completed: completed,
+                        selectedDateTime: _selectedDateTime,
+                      );
+                    },
+                    itemCount: snapshot.data!.docs.length,
+                  ),
+                );
+              },
+              stream: FirebaseFirestore.instance
+                  .collection('/users/$userUid/habits')
+                  .snapshots(),
+            ),
+            StreakHeatMap(),
+            const SizedBox(height: 100),
+          ],
         ),
       ),
-    ]);
+    );
   }
 }

@@ -11,7 +11,6 @@ class HabitGridTile extends StatelessWidget {
   HabitGridTile({
     required this.docId,
     required this.icon,
-    required this.iconColor,
     required this.title,
     required this.count,
     required this.countUnit,
@@ -24,8 +23,7 @@ class HabitGridTile extends StatelessWidget {
   });
 
   final String docId;
-  final IconData icon;
-  final Color iconColor;
+  final String icon;
   final String title;
   final int count;
   final int dayCount;
@@ -59,10 +57,9 @@ class HabitGridTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
+              Text(
                 icon,
-                size: 60,
-                color: iconColor,
+                style: TextStyle(fontSize: 60),
               ),
               IconButton(
                 onPressed: () async {

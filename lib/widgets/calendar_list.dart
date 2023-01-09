@@ -15,7 +15,7 @@ class CalendarList extends StatelessWidget {
   });
 
   final String docId;
-  final IconData icon;
+  final String icon;
   final String title;
   final int streaks;
   final String completed;
@@ -133,7 +133,7 @@ class CalendarList extends StatelessWidget {
           ],
         ),
         child: ListTile(
-            leading: Icon(icon),
+            leading: Text(icon, style: TextStyle(fontSize: 35)),
             title: Text(
               title,
               style: TextStyle(

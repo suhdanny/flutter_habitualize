@@ -49,6 +49,7 @@ class StreakHeatMap extends StatelessWidget {
               // completedCount has date string (ex. '2021-01-01') as key and
               // count value calculated as # of habits completed / total # of habits
               Map<String, int> completedCount = {};
+
               docs.forEach((doc) {
                 final timelineData =
                     doc.data()['timeline'] as Map<String, dynamic>;
@@ -57,8 +58,9 @@ class StreakHeatMap extends StatelessWidget {
                     completedCount.update(date, (value) {
                       return data['completed'] ? value + 1 : value;
                     });
+                  } else {
+                    completedCount[date] = data['completed'] ? 1 : 0;
                   }
-                  completedCount[date] = data['completed'] ? 1 : 0;
                 });
               });
 
