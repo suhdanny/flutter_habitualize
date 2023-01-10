@@ -94,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(9.0, 0.0, 9.0, 0.0),
                   child: GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     gridDelegate:
