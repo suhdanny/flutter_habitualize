@@ -182,7 +182,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                             return Expanded(
                               child: ListView.builder(
-                                controller: _scrollController,
+                                padding: EdgeInsets.only(top: 5, bottom: 120),
                                 itemBuilder: (ctx, idx) {
                                   final data = docs[idx].data();
                                   bool completed = data['timeline']
@@ -191,15 +191,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       ? false
                                       : data['timeline'][selectedDateString]
                                           ['completed'];
-
-                                  Future.delayed(Duration.zero, () {
-                                    _scrollController.animateTo(
-                                      30,
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                      curve: Curves.ease,
-                                    );
-                                  });
 
                                   final dayTracks = Map<String, bool>.from(
                                       data['dailyTracks']);
@@ -237,7 +228,3 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 }
-
-//                 final snapshot = await FirebaseFirestore.instance
-//                     .collection('users/$userUid/habits')
-//                     .get();
