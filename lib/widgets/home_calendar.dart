@@ -62,6 +62,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
             if (_isInit) {
               _controller.animateToDate(
                 DateTime.now(),
+                duration: const Duration(milliseconds: 250),
               );
               _isInit = false;
             }
@@ -77,7 +78,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
               initialSelectedDate: DateTime.now(),
               selectionColor: Color.fromRGBO(125, 157, 156, 1),
               selectedTextColor: Colors.white,
-              daysCount: 100,
+              daysCount: 30,
               monthTextStyle: GoogleFonts.lato(
                 textStyle: const TextStyle(
                   fontSize: 10,
