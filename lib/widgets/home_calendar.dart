@@ -50,7 +50,13 @@ class _HomeCalendarState extends State<HomeCalendar> {
           if (snapshot.data == null) return const CircularProgressIndicator();
 
           final startDate = snapshot.data!['startDate'];
-          final calendarStartDate = DateFormat("yyyy-MM-dd").parse(startDate);
+          DateTime calendarStartDate =
+              DateFormat("yyyy-MM-dd").parse(startDate);
+          int difference = DateTime.now().difference(calendarStartDate).inDays;
+
+          if (difference > 14) {
+            calendarStartDate = DateTime.now().subtract(Duration(days: 14));
+          }
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (_isInit) {
