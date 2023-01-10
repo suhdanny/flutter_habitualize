@@ -100,6 +100,7 @@ class _CalendarListState extends State<CalendarList> {
                               "Cancel",
                               style: TextStyle(
                                 color: Colors.grey[600],
+                                fontSize: 15,
                               ),
                             ),
                           ),
@@ -114,6 +115,7 @@ class _CalendarListState extends State<CalendarList> {
                               "Delete",
                               style: TextStyle(
                                 color: Color.fromRGBO(204, 54, 54, 1),
+                                fontSize: 15,
                               ),
                             ),
                           ),
@@ -125,12 +127,12 @@ class _CalendarListState extends State<CalendarList> {
                   child: Container(
                       alignment: Alignment.center,
                       width: 24 * 4, // space for actionPan
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           bottomLeft: Radius.circular(20),
                         ),
-                        color: Color.fromRGBO(204, 54, 54, 1),
+                        color: Colors.red[500],
                       ),
                       child: const Icon(
                         Icons.delete,
@@ -166,7 +168,7 @@ class _CalendarListState extends State<CalendarList> {
                 );
               },
               icon: Icons.edit,
-              backgroundColor: Color.fromRGBO(54, 126, 24, 1),
+              backgroundColor: Colors.green,
               foregroundColor: Colors.white,
             ),
           ],
@@ -177,6 +179,8 @@ class _CalendarListState extends State<CalendarList> {
           children: [
             SlidableAction(
               onPressed: (ctx) {
+                print(widget.selectedDateString);
+                print(widget.isAfterToday);
                 if (widget.isAfterToday) return;
                 showDialog(
                   context: ctx,
@@ -215,6 +219,7 @@ class _CalendarListState extends State<CalendarList> {
                           "Cancel",
                           style: TextStyle(
                             color: Colors.grey[600],
+                            fontSize: 15,
                           ),
                         ),
                       ),
@@ -269,6 +274,7 @@ class _CalendarListState extends State<CalendarList> {
                         child: const Text("Add",
                             style: TextStyle(
                               color: Color.fromRGBO(245, 115, 40, 1),
+                              fontSize: 15,
                             )),
                       ),
                     ],
@@ -346,6 +352,7 @@ class _CalendarListState extends State<CalendarList> {
                               "Cancel",
                               style: TextStyle(
                                 color: Colors.grey[600],
+                                fontSize: 15,
                               ),
                             ),
                           ),
@@ -370,10 +377,13 @@ class _CalendarListState extends State<CalendarList> {
 
                               Navigator.pop(context, 'Save');
                             },
-                            child: const Text("Save",
-                                style: TextStyle(
-                                  color: Color.fromRGBO(245, 115, 40, 1),
-                                )),
+                            child: const Text(
+                              "Save",
+                              style: TextStyle(
+                                color: Color.fromRGBO(245, 115, 40, 1),
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -388,7 +398,7 @@ class _CalendarListState extends State<CalendarList> {
                         topRight: Radius.circular(20),
                         bottomRight: Radius.circular(20),
                       ),
-                      color: Colors.yellow[600] as Color,
+                      color: Colors.yellow[700] as Color,
                     ),
                     child: const Icon(
                       IconData(0xf417,

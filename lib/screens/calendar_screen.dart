@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/habit_list_tile.dart';
 import '../widgets/calendar_list.dart';
 import '../utils/create_new_timeline.dart';
-import '../utils/is_today.dart';
+import '../utils/is_after_today.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
