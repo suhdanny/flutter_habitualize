@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import '../widgets/habit_grid_tile.dart';
 import '../widgets/home_calendar.dart';
 import '../widgets/streak_heat_map.dart';
+import '../utils/get_weekday_string.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -91,47 +93,76 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CircularProgressIndicator(),
                   );
                 }
+
+                final children = <Widget>[];
+
+                snapshot.data!.docs.forEach((doc) {
+                  Map<String, dynamic> data = doc.data();
+                  String selectedDate =
+                      DateFormat('yyyy-MM-dd').format(_selectedDateTime);
+                  Map<String, dynamic>? timelineData =
+                      data['timeline'][selectedDate];
+                  int dayCount =
+                      timelineData == null ? 0 : timelineData['dayCount'];
+                  bool completed =
+                      timelineData == null ? false : timelineData['completed'];
+
+                  bool display = false;
+
+                  if (data['duration'] == 'day') {
+                    final dailyTracks =
+                        Map<String, bool>.from(data['dailyTracks']);
+                    if (dailyTracks[getWeekdayString(_selectedDateTime)] ==
+                        true) {
+                      display = true;
+                    }
+                  } else {
+                    final weeklyTrack = data['weeklyTrack'];
+                    if (weeklyTrack == getWeekdayString(_selectedDateTime)) {
+                      display = true;
+                    }
+                  }
+
+                  if (display) {
+                    children.add(HabitGridTile(
+                      docId: doc.id,
+                      icon: data['icon'],
+                      title: data['title'],
+                      count: data['count'],
+                      countUnit: data['countUnit'],
+                      dayCount: dayCount,
+                      duration: data['duration'],
+                      streaks: data['streaks'],
+                      completed: completed,
+                      selectedDateTime: _selectedDateTime,
+                    ));
+                  }
+                });
+
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(9.0, 0.0, 9.0, 0.0),
-                  child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8.0,
-                      crossAxisSpacing: 8.0,
-                      childAspectRatio: 1.0,
-                    ),
-                    itemBuilder: (ctx, idx) {
-                      Map<String, dynamic> data =
-                          snapshot.data!.docs[idx].data();
-                      String selectedDate =
-                          DateFormat('yyyy-MM-dd').format(_selectedDateTime);
-                      Map<String, dynamic>? timelineData =
-                          data['timeline'][selectedDate];
-                      int dayCount =
-                          timelineData == null ? 0 : timelineData['dayCount'];
-                      bool completed = timelineData == null
-                          ? false
-                          : timelineData['completed'];
-
-                      return HabitGridTile(
-                        docId: snapshot.data!.docs[idx].id,
-                        icon: data['icon'],
-                        title: data['title'],
-                        count: data['count'],
-                        countUnit: data['countUnit'],
-                        dayCount: dayCount,
-                        duration: data['duration'],
-                        streaks: data['streaks'],
-                        completed: completed,
-                        selectedDateTime: _selectedDateTime,
-                      );
-                    },
-                    itemCount: snapshot.data!.docs.length,
-                  ),
+                  child: children.isEmpty
+                      ? const SizedBox(
+                          height: 175,
+                          child: Center(
+                            child: Text(
+                              "You have no challenges! 😄",
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        )
+                      : GridView.count(
+                          crossAxisCount: 2,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          mainAxisSpacing: 8.0,
+                          crossAxisSpacing: 8.0,
+                          childAspectRatio: 1.0,
+                          children: children,
+                        ),
                 );
               },
               stream: FirebaseFirestore.instance
