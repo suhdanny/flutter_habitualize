@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 import 'package:intl/intl.dart';
-import '../utils/is_today.dart';
+import '../utils/is_after_today.dart';
 
 class HabitGridTile extends StatelessWidget {
   HabitGridTile({

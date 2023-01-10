@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 class DurationPicker extends StatelessWidget {
   const DurationPicker({
     required this.dailyTracks,
+    required this.weeklyTrack,
     required this.updateDayTrack,
+    required this.updateWeekTrack,
     required this.handleDailySelect,
     required this.handleWeeklySelect,
     required this.dailySelected,
@@ -14,7 +16,9 @@ class DurationPicker extends StatelessWidget {
   });
 
   final Map<String, bool> dailyTracks;
+  final String weeklyTrack;
   final Function updateDayTrack;
+  final Function updateWeekTrack;
   final VoidCallback handleDailySelect;
   final VoidCallback handleWeeklySelect;
   final bool dailySelected;
@@ -30,15 +34,42 @@ class DurationPicker extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           color: dailyTracks[day] == true
-              ? Color.fromRGBO(87, 111, 114, 1)
-              : Color.fromRGBO(228, 220, 207, 1),
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+              ? const Color.fromRGBO(87, 111, 114, 1)
+              : const Color.fromRGBO(228, 220, 207, 1),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Align(
           alignment: Alignment.center,
           child: Text(
             dayText,
-            style: TextStyle(
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget weekContainer(String day, String dayText) {
+    return GestureDetector(
+      onTap: () {
+        updateWeekTrack(day);
+      },
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: weeklyTrack == day
+              ? const Color.fromRGBO(87, 111, 114, 1)
+              : const Color.fromRGBO(228, 220, 207, 1),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
+        ),
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            dayText,
+            style: const TextStyle(
               color: Colors.white,
             ),
           ),
@@ -121,7 +152,29 @@ class DurationPicker extends StatelessWidget {
                 dayContainer('Sun', 'S'),
               ],
             ),
-          )
+          ),
+        if (weeklySelected)
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                weekContainer('Mon', 'M'),
+                const SizedBox(width: 5),
+                weekContainer('Tue', 'T'),
+                const SizedBox(width: 5),
+                weekContainer('Wed', 'W'),
+                const SizedBox(width: 5),
+                weekContainer('Thu', 'T'),
+                const SizedBox(width: 5),
+                weekContainer('Fri', 'F'),
+                const SizedBox(width: 5),
+                weekContainer('Sat', 'S'),
+                const SizedBox(width: 5),
+                weekContainer('Sun', 'S'),
+              ],
+            ),
+          ),
       ],
     );
   }

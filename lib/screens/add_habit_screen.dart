@@ -13,7 +13,8 @@ class AddHabitScreen extends StatelessWidget {
     this.count,
     this.countUnit,
     this.duration,
-    this.dayTracks,
+    this.dailyTracks,
+    this.weeklyTrack,
     super.key,
   });
 
@@ -23,7 +24,8 @@ class AddHabitScreen extends StatelessWidget {
   final int? count;
   final String? countUnit;
   final String? duration;
-  final Map<String, bool>? dayTracks;
+  final Map<String, bool>? dailyTracks;
+  final String? weeklyTrack;
 
   void addHabit(
     String title,
@@ -33,6 +35,7 @@ class AddHabitScreen extends StatelessWidget {
     bool dailySelected,
     bool weeklySelected,
     Map<String, bool> dailyTracks,
+    String weeklyTrack,
   ) async {
     String userUid = FirebaseAuth.instance.currentUser!.uid;
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -41,7 +44,8 @@ class AddHabitScreen extends StatelessWidget {
       "count": count,
       "countUnit": countUnit,
       "duration": dailySelected ? 'day' : 'week',
-      "dailyTracks": dailyTracks,
+      if (dailySelected) "dailyTracks": dailyTracks,
+      if (weeklySelected) "weeklyTrack": weeklyTrack,
       "icon": emoji,
       "streaks": 0,
       "timeline": {
@@ -62,6 +66,7 @@ class AddHabitScreen extends StatelessWidget {
     bool dailySelected,
     bool weeklySelected,
     Map<String, bool> dailyTracks,
+    String weeklyTrack,
   ) async {
     String userUid = FirebaseAuth.instance.currentUser!.uid;
     await FirebaseFirestore.instance
@@ -70,7 +75,8 @@ class AddHabitScreen extends StatelessWidget {
       "title": title,
       "icon": emoji,
       "duration": dailySelected ? 'day' : 'week',
-      "dailyTracks": dailyTracks,
+      if (dailySelected) "dailyTracks": dailyTracks,
+      if (weeklySelected) "weeklyTrack": weeklyTrack,
       "count": count,
       "countUnit": countUnit,
     });
@@ -78,7 +84,6 @@ class AddHabitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(docId);
     return Padding(
       padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom * 0.8),
@@ -116,7 +121,8 @@ class AddHabitScreen extends StatelessWidget {
                 count: count,
                 countUnit: countUnit,
                 duration: duration,
-                dayTracks: dayTracks,
+                dailyTracks: dailyTracks,
+                weeklyTrack: weeklyTrack,
               ),
             ],
           ),

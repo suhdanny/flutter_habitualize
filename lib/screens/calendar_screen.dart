@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/habit_list_tile.dart';
 import '../widgets/calendar_list.dart';
 import '../utils/create_new_timeline.dart';
-import '../utils/is_today.dart';
+import '../utils/is_after_today.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -192,8 +192,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                       : data['timeline'][selectedDateString]
                                           ['completed'];
 
-                                  final dayTracks = Map<String, bool>.from(
-                                      data['dailyTracks']);
+                                  Map<String, bool>? dailyTracks;
+                                  String? weeklyTrack;
+
+                                  if (data['dailyTracks'] != null) {
+                                    dailyTracks = Map<String, bool>.from(
+                                        data['dailyTracks']);
+                                  }
+                                  if (data['weeklyTrack'] != null) {
+                                    weeklyTrack = data['weeklyTrack'];
+                                  }
 
                                   return CalendarList(
                                     docId: docs[idx].id,
@@ -202,7 +210,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     count: data['count'],
                                     countUnit: data['countUnit'],
                                     duration: data['duration'],
-                                    dayTracks: dayTracks,
+                                    dailyTracks: dailyTracks,
+                                    weeklyTrack: weeklyTrack,
                                     streaks: data['streaks'],
                                     completed: completed
                                         ? 'completed!'
