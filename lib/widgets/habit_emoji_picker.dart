@@ -66,7 +66,7 @@ class _HabitEmojiPickerState extends State<HabitEmojiPicker> {
                           ),
                         ],
                         content: SizedBox(
-                          height: 200,
+                          height: 350,
                           width: 350,
                           child: EmojiPicker(
                             onEmojiSelected: (category, emoji) {

@@ -15,7 +15,8 @@ class CalendarList extends StatefulWidget {
     required this.count,
     required this.countUnit,
     required this.duration,
-    required this.dayTracks,
+    required this.dailyTracks,
+    required this.weeklyTrack,
     required this.streaks,
     required this.completed,
     required this.selectedDateString,
@@ -29,7 +30,8 @@ class CalendarList extends StatefulWidget {
   final int count;
   final String countUnit;
   final String duration;
-  final Map<String, bool> dayTracks;
+  final Map<String, bool>? dailyTracks;
+  final String? weeklyTrack;
   final int streaks;
   final String completed;
   final String selectedDateString;
@@ -162,7 +164,8 @@ class _CalendarListState extends State<CalendarList> {
                       count: widget.count,
                       countUnit: widget.countUnit,
                       duration: widget.duration,
-                      dayTracks: widget.dayTracks,
+                      dailyTracks: widget.dailyTracks,
+                      weeklyTrack: widget.weeklyTrack,
                     );
                   },
                 );
@@ -179,7 +182,6 @@ class _CalendarListState extends State<CalendarList> {
           children: [
             SlidableAction(
               onPressed: (ctx) {
-                print(widget.selectedDateString);
                 print(widget.isAfterToday);
                 if (widget.isAfterToday) return;
                 showDialog(

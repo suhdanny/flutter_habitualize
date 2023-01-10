@@ -3,6 +3,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter_iconpicker/IconPicker/icons.dart';
 import '../widgets/habit_emoji_picker.dart';
 import '../widgets/duration_picker.dart';
+import '../utils/get_weekday_string.dart';
 
 class HabitForm extends StatefulWidget {
   const HabitForm({
@@ -14,7 +15,8 @@ class HabitForm extends StatefulWidget {
     this.count,
     this.countUnit,
     this.duration,
-    this.dayTracks,
+    this.dailyTracks,
+    this.weeklyTrack,
     super.key,
   });
 
@@ -26,7 +28,8 @@ class HabitForm extends StatefulWidget {
   final int? count;
   final String? countUnit;
   final String? duration;
-  final Map<String, bool>? dayTracks;
+  final Map<String, bool>? dailyTracks;
+  final String? weeklyTrack;
 
   @override
   State<HabitForm> createState() => _HabitFormState();
@@ -49,6 +52,7 @@ class _HabitFormState extends State<HabitForm> {
     'Sat': true,
     'Sun': true,
   };
+  String _weeklyTrack = getWeekdayString(DateTime.now());
   String? _title;
   String? _count;
   String? _countUnit;
@@ -61,10 +65,16 @@ class _HabitFormState extends State<HabitForm> {
       _dailySelected = widget.duration == 'day' ? true : false;
       _weeklySelected = widget.duration == 'week' ? true : false;
       _selectedEmoji = widget.emoji;
-      _dailyTracks = widget.dayTracks!;
       _title = widget.title;
       _count = widget.count.toString();
       _countUnit = widget.countUnit;
+
+      if (_dailySelected) {
+        _dailyTracks = widget.dailyTracks!;
+      }
+      if (_weeklySelected) {
+        _weeklyTrack = widget.weeklyTrack!;
+      }
 
       _countController.text = _count!;
       super.initState();
@@ -74,6 +84,12 @@ class _HabitFormState extends State<HabitForm> {
   void _updateDayTrack(String day) {
     setState(() {
       _dailyTracks.update(day, (value) => !value);
+    });
+  }
+
+  void _updateWeekTrack(String day) {
+    setState(() {
+      _weeklyTrack = day;
     });
   }
 
@@ -134,6 +150,7 @@ class _HabitFormState extends State<HabitForm> {
         _dailySelected,
         _weeklySelected,
         _dailyTracks,
+        _weeklyTrack,
       );
     } else {
       widget.updateHabit(
@@ -145,6 +162,7 @@ class _HabitFormState extends State<HabitForm> {
         _dailySelected,
         _weeklySelected,
         _dailyTracks,
+        _weeklyTrack,
       );
     }
 
@@ -153,7 +171,6 @@ class _HabitFormState extends State<HabitForm> {
 
   @override
   Widget build(BuildContext context) {
-    print(_selectedEmoji);
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 0, 15.0, 15.0),
       child: Form(
@@ -279,7 +296,9 @@ class _HabitFormState extends State<HabitForm> {
                     ),
                     DurationPicker(
                       dailyTracks: _dailyTracks,
+                      weeklyTrack: _weeklyTrack,
                       updateDayTrack: _updateDayTrack,
+                      updateWeekTrack: _updateWeekTrack,
                       handleDailySelect: _handleDailySelect,
                       handleWeeklySelect: _handleWeeklySelect,
                       dailySelected: _dailySelected,
