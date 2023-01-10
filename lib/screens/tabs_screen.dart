@@ -55,6 +55,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: _widgetOptions![_selectedIndex],
       extendBody: true,
       bottomNavigationBar: DotNavigationBar(

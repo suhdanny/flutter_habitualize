@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 import '../screens/add_habit_screen.dart';
 
 class CalendarList extends StatefulWidget {
@@ -38,7 +40,16 @@ class CalendarList extends StatefulWidget {
 }
 
 class _CalendarListState extends State<CalendarList> {
+  String userUid = FirebaseAuth.instance.currentUser!.uid;
   String? _countInput;
+  String? _noteInput;
+  final _noteTextFieldController = TextEditingController();
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchNote() {
+    return FirebaseFirestore.instance
+        .doc('users/$userUid/habits/${widget.docId}')
+        .get();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +105,6 @@ class _CalendarListState extends State<CalendarList> {
                           ),
                           TextButton(
                             onPressed: () {
-                              String userUid =
-                                  FirebaseAuth.instance.currentUser!.uid;
                               FirebaseFirestore.instance
                                   .doc('users/$userUid/habits/${widget.docId}')
                                   .delete();
@@ -216,8 +225,6 @@ class _CalendarListState extends State<CalendarList> {
                             print(widget.selectedDateString);
 
                             final db = FirebaseFirestore.instance;
-                            String userUid =
-                                FirebaseAuth.instance.currentUser!.uid;
 
                             db
                                 .doc('users/$userUid/habits/${widget.docId}')
@@ -276,22 +283,119 @@ class _CalendarListState extends State<CalendarList> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () async {
+                    final data = await fetchNote();
+                    final docData = data.data();
+
+                    if (docData!['timeline'][widget.selectedDateString]
+                        .containsKey('note')) {
+                      _noteInput = docData['timeline']
+                          [widget.selectedDateString]['note'];
+                      _noteTextFieldController.text = _noteInput!;
+                    } else {
+                      _noteTextFieldController.text = '';
+                    }
+
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        title: const Text(
+                          "Add Note",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        content: TextField(
+                          controller: _noteTextFieldController,
+                          minLines: 4,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: "Enter Note",
+                            hintStyle: const TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _noteInput = value;
+                            });
+                          },
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                _noteInput = null;
+                              });
+                              Navigator.pop(context, 'Cancel');
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              if (_noteInput == null || _noteInput!.isEmpty) {
+                                return;
+                              }
+
+                              String userUid =
+                                  FirebaseAuth.instance.currentUser!.uid;
+                              FirebaseFirestore.instance
+                                  .doc('users/$userUid/habits/${widget.docId}')
+                                  .update({
+                                'timeline.${widget.selectedDateString}.note':
+                                    _noteInput,
+                              });
+
+                              setState(() {
+                                _noteInput = null;
+                              });
+
+                              Navigator.pop(context, 'Save');
+                            },
+                            child: const Text("Save",
+                                style: TextStyle(
+                                  color: Color.fromRGBO(245, 115, 40, 1),
+                                )),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                   borderRadius: BorderRadius.circular(16),
                   child: Container(
-                      alignment: Alignment.center,
-                      width: 24 * 4, // space for actionPan
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                        color: Color.fromRGBO(255, 233, 160, 1),
+                    alignment: Alignment.center,
+                    width: 24 * 4, // space for actionPan
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
                       ),
-                      child: const Icon(
-                        Icons.create,
-                        color: Colors.white,
-                      )),
+                      color: Colors.yellow[600] as Color,
+                    ),
+                    child: const Icon(
+                      IconData(0xf417,
+                          fontFamily: iconFont, fontPackage: iconFontPackage),
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),

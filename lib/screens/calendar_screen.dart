@@ -144,6 +144,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
                 Expanded(
                   child: Container(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).viewInsets.bottom),
                     decoration: const BoxDecoration(
                       color: Color.fromRGBO(125, 157, 156, 1),
                       borderRadius: BorderRadius.only(
