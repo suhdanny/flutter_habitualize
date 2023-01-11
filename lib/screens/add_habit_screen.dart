@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import '../widgets/habit_form.dart';
+import '../utils/get_weekday_string.dart';
 
 class AddHabitScreen extends StatelessWidget {
   const AddHabitScreen({
@@ -39,6 +40,28 @@ class AddHabitScreen extends StatelessWidget {
   ) async {
     String userUid = FirebaseAuth.instance.currentUser!.uid;
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    var timeline = {};
+
+    if (dailySelected) {
+      if (dailyTracks[getWeekdayString(DateTime.now())] == true) {
+        timeline = {
+          today: {
+            "completed": false,
+            "dayCount": 0,
+          }
+        };
+      }
+    } else {
+      if (weeklyTrack == getWeekdayString(DateTime.now())) {
+        timeline = {
+          today: {
+            "completed": false,
+            "dayCount": 0,
+          }
+        };
+      }
+    }
+
     await FirebaseFirestore.instance.collection('users/$userUid/habits').add({
       "title": title,
       "count": count,

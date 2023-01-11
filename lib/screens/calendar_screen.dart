@@ -7,6 +7,7 @@ import '../widgets/habit_list_tile.dart';
 import '../widgets/calendar_list.dart';
 import '../utils/create_new_timeline.dart';
 import '../utils/is_after_today.dart';
+import '../utils/get_weekday_string.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -21,32 +22,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
   DateTime focusedDay = DateTime.now();
   final String userUid = FirebaseAuth.instance.currentUser!.uid;
 
-  TextEditingController _eventController = TextEditingController();
-  ScrollController _scrollController = ScrollController();
-
-  // @override
-  // void initState() {
-  //   selectedEvents = {};
-  //   super.initState();
-  // }
-
-  // List<Event> _getEventsfromDay(DateTime date) {
-  //   return selectedEvents[date] ?? [];
-  // }
-
-  @override
-  void dispose() {
-    _eventController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.all(25.0),
+          padding: const EdgeInsets.all(25.0),
           child: Container(
             margin: const EdgeInsets.only(top: 30),
             child: ListTile(
@@ -62,7 +44,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 margin: const EdgeInsets.only(top: 5),
                 child: Text(
                   DateFormat.yMMMd().format(DateTime.now()),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color.fromRGBO(87, 111, 114, 1),
                     fontSize: 28,
                     fontWeight: FontWeight.w700,
@@ -127,10 +109,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         fontSize: 15,
                       ),
                       formatButtonDecoration: BoxDecoration(
-                        color: Color.fromRGBO(228, 220, 207, 1),
+                        color: const Color.fromRGBO(228, 220, 207, 1),
                         border: Border.all(
                             width: 0.0,
-                            color: Color.fromRGBO(228, 220, 207, 1)),
+                            color: const Color.fromRGBO(228, 220, 207, 1)),
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(5),
                             topRight: Radius.circular(5),
@@ -176,52 +158,86 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             }
                             final docs = snapshot.data!.docs;
 
+                            final children = <Widget>[];
+
                             String selectedDateString =
                                 DateFormat('yyyy-MM-dd').format(selectedDay);
                             bool isAfterToday = isDateAfterToday(selectedDay);
 
-                            return Expanded(
-                              child: ListView.builder(
-                                padding: EdgeInsets.only(top: 5, bottom: 120),
-                                itemBuilder: (ctx, idx) {
-                                  final data = docs[idx].data();
-                                  bool completed = data['timeline']
-                                              [selectedDateString] ==
-                                          null
+                            docs.forEach((doc) {
+                              final data = doc.data();
+                              bool display = false;
+                              bool completed =
+                                  data['timeline'][selectedDateString] == null
                                       ? false
                                       : data['timeline'][selectedDateString]
                                           ['completed'];
 
-                                  Map<String, bool>? dailyTracks;
-                                  String? weeklyTrack;
+                              Map<String, bool>? dailyTracks;
+                              String? weeklyTrack;
 
-                                  if (data['dailyTracks'] != null) {
-                                    dailyTracks = Map<String, bool>.from(
-                                        data['dailyTracks']);
-                                  }
-                                  if (data['weeklyTrack'] != null) {
-                                    weeklyTrack = data['weeklyTrack'];
-                                  }
+                              if (data['dailyTracks'] != null) {
+                                dailyTracks =
+                                    Map<String, bool>.from(data['dailyTracks']);
+                              }
+                              if (data['weeklyTrack'] != null) {
+                                weeklyTrack = data['weeklyTrack'];
+                              }
 
-                                  return CalendarList(
-                                    docId: docs[idx].id,
-                                    emoji: data['icon'],
-                                    title: data['title'],
-                                    count: data['count'],
-                                    countUnit: data['countUnit'],
-                                    duration: data['duration'],
-                                    dailyTracks: dailyTracks,
-                                    weeklyTrack: weeklyTrack,
-                                    streaks: data['streaks'],
-                                    completed: completed
-                                        ? 'completed!'
-                                        : 'uncompleted',
-                                    selectedDateString: selectedDateString,
-                                    isAfterToday: isAfterToday,
-                                  );
-                                },
-                                itemCount: snapshot.data!.docs.length,
-                              ),
+                              if (data['duration'] == 'day') {
+                                final dailyTracks =
+                                    Map<String, bool>.from(data['dailyTracks']);
+                                if (dailyTracks[
+                                        getWeekdayString(selectedDay)] ==
+                                    true) {
+                                  display = true;
+                                }
+                              } else {
+                                final weeklyTrack = data['weeklyTrack'];
+                                if (weeklyTrack ==
+                                    getWeekdayString(selectedDay)) {
+                                  display = true;
+                                }
+                              }
+
+                              if (display) {
+                                children.add(CalendarList(
+                                  docId: doc.id,
+                                  emoji: data['icon'],
+                                  title: data['title'],
+                                  count: data['count'],
+                                  countUnit: data['countUnit'],
+                                  duration: data['duration'],
+                                  dailyTracks: dailyTracks,
+                                  weeklyTrack: weeklyTrack,
+                                  streaks: data['streaks'],
+                                  completed:
+                                      completed ? 'completed!' : 'uncompleted',
+                                  selectedDateString: selectedDateString,
+                                  isAfterToday: isAfterToday,
+                                ));
+                              }
+                            });
+
+                            return Expanded(
+                              child: children.isEmpty
+                                  ? const Padding(
+                                      padding: EdgeInsets.only(bottom: 80),
+                                      child: Center(
+                                        child: Text(
+                                          "You have no challenges! 😄",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : ListView(
+                                      padding: const EdgeInsets.only(
+                                          top: 5, bottom: 120),
+                                      children: children,
+                                    ),
                             );
                           },
                         ),

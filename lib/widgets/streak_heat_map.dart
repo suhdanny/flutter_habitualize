@@ -50,6 +50,10 @@ class StreakHeatMap extends StatelessWidget {
               // count value calculated as # of habits completed / total # of habits
               Map<String, int> completedCount = {};
 
+              // habitTrackCount has date string as key and count value calulated as how
+              // many habits are tracked in a certain date
+              Map<String, int> habitTrackCount = {};
+
               docs.forEach((doc) {
                 final timelineData =
                     doc.data()['timeline'] as Map<String, dynamic>;
@@ -58,18 +62,22 @@ class StreakHeatMap extends StatelessWidget {
                     completedCount.update(date, (value) {
                       return data['completed'] ? value + 1 : value;
                     });
+                    habitTrackCount.update(date, (value) => value + 1);
                   } else {
                     completedCount[date] = data['completed'] ? 1 : 0;
+                    habitTrackCount[date] = 1;
                   }
                 });
               });
+
+              print(habitTrackCount);
 
               Map<DateTime, int> dataset = {};
 
               // populate dataset map as DateTime object as key and the corresponding shade
               // values based on percentage
               completedCount.forEach((date, count) {
-                double percentage = count / docs.length;
+                double percentage = count / habitTrackCount[date]!;
                 int shade;
 
                 if (percentage >= 0.0 && percentage < 0.2) {
