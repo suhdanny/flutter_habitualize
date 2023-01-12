@@ -40,7 +40,7 @@ class AddHabitScreen extends StatelessWidget {
   ) async {
     String userUid = FirebaseAuth.instance.currentUser!.uid;
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    var timeline = {};
+    Map<String, Map<String, dynamic>> timeline = {};
 
     if (dailySelected) {
       if (dailyTracks[getWeekdayString(DateTime.now())] == true) {
@@ -71,12 +71,7 @@ class AddHabitScreen extends StatelessWidget {
       if (weeklySelected) "weeklyTrack": weeklyTrack,
       "icon": emoji,
       "streaks": 0,
-      "timeline": {
-        today: {
-          "completed": false,
-          "dayCount": 0,
-        },
-      }
+      "timeline": timeline,
     });
   }
 
