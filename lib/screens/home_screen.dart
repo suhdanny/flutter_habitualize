@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 final children = <Widget>[];
 
-                snapshot.data!.docs.forEach((doc) {
+                snapshot.data!.docs.forEachIndexed((idx, doc) {
                   Map<String, dynamic> data = doc.data();
                   String selectedDate =
                       DateFormat('yyyy-MM-dd').format(_selectedDateTime);
@@ -144,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (display) {
                     children.add(HabitGridTile(
                       docId: doc.id,
+                      idx: idx,
                       icon: data['icon'],
                       title: data['title'],
                       count: data['count'],

@@ -10,6 +10,7 @@ import '../utils/is_after_today.dart';
 class HabitGridTile extends StatelessWidget {
   HabitGridTile({
     required this.docId,
+    required this.idx,
     required this.icon,
     required this.title,
     required this.count,
@@ -24,6 +25,7 @@ class HabitGridTile extends StatelessWidget {
   });
 
   final String docId;
+  final int idx;
   final String icon;
   final String title;
   final int count;
@@ -35,14 +37,13 @@ class HabitGridTile extends StatelessWidget {
   final DateTime selectedDateTime;
   final int bestStreaks;
 
-  List<String> colors = [
-    'Color.fromRGBO(235, 83, 83, 0.5)',
-    'Color.fromRGBO(249, 217, 35, 0.5)',
-    'Color.fromRGBO(54, 174, 124, 0.5)',
-    'Color.fromRGBO(24, 116, 152, 0.5)',
+  List<Color> colorsList = [
+    Color.fromRGBO(253, 21, 27, 1),
+    Color.fromRGBO(255, 179, 15, 1),
+    Color.fromRGBO(132, 147, 36, 1),
+    Color.fromRGBO(67, 127, 151, 1),
+    Color.fromRGBO(1, 41, 95, 1),
   ];
-
-  int index = Random().nextInt(4);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +67,7 @@ class HabitGridTile extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
+          color: colorsList[idx % (colorsList.length - 1)],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +78,9 @@ class HabitGridTile extends StatelessWidget {
               children: [
                 Text(
                   icon,
-                  style: TextStyle(fontSize: 45),
+                  style: TextStyle(
+                    fontSize: 45,
+                  ),
                 ),
                 IconButton(
                   onPressed: () async {
@@ -102,7 +106,7 @@ class HabitGridTile extends StatelessWidget {
                     IconData(0xf3fe,
                         fontFamily: iconFont, fontPackage: iconFontPackage),
                     size: 30,
-                    color: completed ? Colors.red : Colors.grey,
+                    color: completed ? Colors.red : Colors.white,
                   ),
                 ),
               ],
@@ -112,6 +116,7 @@ class HabitGridTile extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontSize: 17,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 1),

@@ -70,8 +70,6 @@ class StreakHeatMap extends StatelessWidget {
                 });
               });
 
-              print(habitTrackCount);
-
               Map<DateTime, int> dataset = {};
 
               // populate dataset map as DateTime object as key and the corresponding shade

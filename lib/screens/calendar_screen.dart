@@ -100,7 +100,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     headerVisible: true,
                     headerStyle: const HeaderStyle(
                       titleCentered: true,
-                      headerMargin: const EdgeInsets.only(bottom: 10),
+                      headerMargin: EdgeInsets.only(bottom: 10),
                       formatButtonVisible: false,
                       leftChevronVisible: false,
                       rightChevronVisible: false,

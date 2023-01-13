@@ -29,33 +29,80 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // back-arrow Icon
-          Container(
-            padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-            margin: const EdgeInsets.only(top: 30),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                IconData(
-                  0xf4fd,
-                  fontFamily: iconFont,
-                  fontPackage: iconFontPackage,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                margin: const EdgeInsets.only(top: 30),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    IconData(
+                      0xf4fd,
+                      fontFamily: iconFont,
+                      fontPackage: iconFontPackage,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+                margin: const EdgeInsets.only(top: 30),
+                child: PopupMenuButton(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8.0),
+                      bottomRight: Radius.circular(8.0),
+                      topLeft: Radius.circular(8.0),
+                      topRight: Radius.circular(8.0),
+                    )),
+                    position: PopupMenuPosition.under,
+                    itemBuilder: ((context) => [
+                          PopupMenuItem(
+                              child: Text(
+                            "✍🏻 Edit",
+                            style: TextStyle(fontWeight: FontWeight.w200),
+                          )),
+                          PopupMenuItem(
+                              child: Text("🔄 Add Count",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w200))),
+                          PopupMenuItem(
+                              child: Text("📝 Take Notes",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w200))),
+                          PopupMenuItem(
+                              child: Text("🗑 Delete",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w200))),
+                        ])),
+              )
+              // Container(
+              // padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
+              // margin: const EdgeInsets.only(top: 30),
+              //   child: IconButton(
+              //       onPressed: () {
+
+              //       },
+              //       icon: const Icon(IconData(0xf46a,
+              //           fontFamily: iconFont, fontPackage: iconFontPackage))),
+              // )
+            ],
           ),
           Center(
               child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 args['icon'],
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 84,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
@@ -64,9 +111,35 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 20),
+              // Row(
+              //   mainAxisSize: MainAxisSize.min,
+              //   children: [
+              //     IconButton(
+              //       onPressed: () {},
+              //       icon: Icon(Icons.delete),
+              //     ),
+              //     const SizedBox(width: 10),
+              //     IconButton(
+              //       onPressed: () {},
+              //       icon: Icon(Icons.edit),
+              //     ),
+              //     const SizedBox(width: 10),
+              //     IconButton(
+              //       onPressed: () {},
+              //       icon: Icon(Icons.more_time),
+              //     ),
+              //     const SizedBox(width: 10),
+              //     IconButton(
+              //       onPressed: () {},
+              //       icon: Icon(
+              //         IconData(0xf417,
+              //             fontFamily: iconFont, fontPackage: iconFontPackage),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -149,8 +222,8 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                               borderRadius: BorderRadius.circular(50),
                               color: completed ? Colors.green : Colors.red,
                             ),
-                            width: 7,
-                            height: 7,
+                            width: 5,
+                            height: 5,
                           );
                         }
                       },
