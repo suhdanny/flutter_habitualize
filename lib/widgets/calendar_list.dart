@@ -432,7 +432,7 @@ class _CalendarListState extends State<CalendarList> {
                 ),
               ),
               trailing: Container(
-                width: 80,
+                width: 90,
                 margin: const EdgeInsets.only(top: 10),
                 child: Column(
                   children: [

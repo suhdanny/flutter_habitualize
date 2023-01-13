@@ -17,6 +17,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late String imageUrl;
+  final userUId = FirebaseAuth.instance.currentUser!.uid;
 
   // uploadImage() async {
   //   final _firebaseStorage = FirebaseStorage.instance;
@@ -77,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               const SizedBox(
-                width: 100,
+                width: 80,
               ),
               Container(
                 width: 90,
@@ -110,23 +111,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               const SizedBox(
-                width: 100,
+                width: 80,
               ),
               Expanded(
-                child: TextField(
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                  decoration: InputDecoration(
-                      enabledBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Colors.grey,
-                      )),
-                      hintText:
-                          '${FirebaseAuth.instance.currentUser!.displayName!}',
-                      hintStyle: TextStyle(
+                child: StreamBuilder(
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    final data = snapshot.data!.data();
+                    TextEditingController controller = TextEditingController();
+
+                    if (data!.containsKey('userName')) {
+                      controller.text = data['userName'];
+                    }
+
+                    return TextField(
+                      controller: controller,
+                      onSubmitted: (value) {
+                        FirebaseFirestore.instance
+                            .doc('users/$userUId')
+                            .update({"userName": value});
+                      },
+                      style: const TextStyle(
                         fontSize: 15,
-                      )),
+                      ),
+                      decoration: InputDecoration(
+                          enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                            color: Colors.grey,
+                          )),
+                          hintText:
+                              '${FirebaseAuth.instance.currentUser!.displayName!}',
+                          hintStyle: TextStyle(
+                            fontSize: 15,
+                          )),
+                    );
+                  },
+                  stream: FirebaseFirestore.instance
+                      .doc('/users/$userUId')
+                      .snapshots(),
 
                   // validator: (value) {
                   //   if (value == null || value.isEmpty) {
@@ -135,19 +160,51 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   //   return null;
                   // },
                 ),
+              ),
+            ],
+          ),
+
+          const SizedBox(
+            height: 40,
+          ),
+
+          // Email Section
+          Row(
+            children: [
+              Container(
+                child: const Text(
+                  "Email",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 80,
+              ),
+              Text(
+                '${FirebaseAuth.instance.currentUser!.email}',
               )
             ],
+          ),
+
+          const SizedBox(
+            height: 190,
+          ),
+
+          Center(
+            child: ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(87, 111, 114, 1)),
+              ),
+              onPressed: () => FirebaseAuth.instance.signOut(),
+              child: const Text("Sign Out"),
+            ),
           )
         ],
       ),
     );
   }
 }
-
-
-// Center(
-//       child: ElevatedButton(
-//         onPressed: () => FirebaseAuth.instance.signOut(),
-//         child: const Text("Sign Out"),
-//       ),
-//     );
