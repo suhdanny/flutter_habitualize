@@ -186,6 +186,7 @@ class _HabitFormState extends State<HabitForm> {
                     style: const TextStyle(
                       fontSize: 25,
                     ),
+                    maxLength: 20,
                     decoration: const InputDecoration(
                       hintText: "Add new habit",
                       hintStyle: TextStyle(
