@@ -194,6 +194,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   dailyTracks: dailyTracks,
                                   weeklyTrack: weeklyTrack,
                                   streaks: data['streaks'],
+                                  bestStreak: data['bestStreak'],
                                   completed:
                                       completed ? 'completed!' : 'uncompleted',
                                   selectedDateString: selectedDateString,
