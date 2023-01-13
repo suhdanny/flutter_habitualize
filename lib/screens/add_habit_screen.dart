@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import '../widgets/habit_form.dart';
 import '../utils/get_weekday_string.dart';
 
@@ -40,7 +39,7 @@ class AddHabitScreen extends StatelessWidget {
   ) async {
     String userUid = FirebaseAuth.instance.currentUser!.uid;
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    var timeline = {};
+    Map<String, Map<String, dynamic>> timeline = {};
 
     if (dailySelected) {
       if (dailyTracks[getWeekdayString(DateTime.now())] == true) {
@@ -71,12 +70,7 @@ class AddHabitScreen extends StatelessWidget {
       if (weeklySelected) "weeklyTrack": weeklyTrack,
       "icon": emoji,
       "streaks": 0,
-      "timeline": {
-        today: {
-          "completed": false,
-          "dayCount": 0,
-        },
-      }
+      "timeline": timeline,
     });
   }
 
@@ -125,13 +119,13 @@ class AddHabitScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Container(
+              SizedBox(
                 height: 40,
                 child: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                   color: Colors.black,
                 ),
               ),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../widgets/habit_list_tile.dart';
 import '../widgets/calendar_list.dart';
 import '../utils/create_new_timeline.dart';
 import '../utils/is_after_today.dart';
@@ -101,7 +100,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     headerVisible: true,
                     headerStyle: const HeaderStyle(
                       titleCentered: true,
-                      headerMargin: const EdgeInsets.only(bottom: 10),
+                      headerMargin: EdgeInsets.only(bottom: 10),
                       formatButtonVisible: false,
                       leftChevronVisible: false,
                       rightChevronVisible: false,
@@ -195,6 +194,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   dailyTracks: dailyTracks,
                                   weeklyTrack: weeklyTrack,
                                   streaks: data['streaks'],
+                                  bestStreak: data['bestStreak'],
                                   completed:
                                       completed ? 'completed!' : 'uncompleted',
                                   selectedDateString: selectedDateString,
