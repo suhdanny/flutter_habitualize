@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../widgets/habit_list_tile.dart';
 import '../widgets/calendar_list.dart';
 import '../utils/create_new_timeline.dart';
 import '../utils/is_after_today.dart';

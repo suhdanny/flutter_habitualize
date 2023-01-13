@@ -52,6 +52,7 @@ class HabitGridTile extends StatelessWidget {
           context,
           '/habit-details',
           arguments: {
+            'docId': docId,
             'title': title,
             'icon': icon,
             'streaks': streaks,

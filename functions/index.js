@@ -19,7 +19,7 @@ function getStreakAndTotal(timeline) {
                 bestStreak = currentStreak;
             }
         } else {
-            if (!isAfterToday(date)) {
+            if (!isAfterToday(date) && !isToday(date)) {
                 currentStreak = 0;
             }
         }
@@ -45,6 +45,19 @@ function isAfterToday(date) {
         }
     }
 
+    return false;
+}
+
+function isToday(date) {
+    const today = new Date();
+    const selectedDay = moment(date, "YYYY-MM-DD").toDate();
+    if (
+        selectedDay.getFullYear() === today.getFullYear() &&
+        selectedDay.getMonth() === today.getMonth() &&
+        selectedDay.getDate() === today.getDate()
+    ) {
+        return true;
+    }
     return false;
 }
 
