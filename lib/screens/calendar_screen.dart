@@ -99,26 +99,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       //     shape: BoxShape.circle),
                     ),
                     headerVisible: true,
-                    headerStyle: HeaderStyle(
+                    headerStyle: const HeaderStyle(
                       titleCentered: true,
                       headerMargin: const EdgeInsets.only(bottom: 10),
                       formatButtonVisible: false,
-                      formatButtonTextStyle: const TextStyle(
-                        color: Color.fromRGBO(87, 111, 114, 1),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15,
-                      ),
-                      formatButtonDecoration: BoxDecoration(
-                        color: const Color.fromRGBO(228, 220, 207, 1),
-                        border: Border.all(
-                            width: 0.0,
-                            color: const Color.fromRGBO(228, 220, 207, 1)),
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(5),
-                            topRight: Radius.circular(5),
-                            bottomLeft: Radius.circular(5),
-                            bottomRight: Radius.circular(5)),
-                      ),
                       leftChevronVisible: false,
                       rightChevronVisible: false,
                     ),
