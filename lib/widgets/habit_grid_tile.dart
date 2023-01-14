@@ -42,11 +42,30 @@ class HabitGridTile extends StatelessWidget {
   final String? weeklyTrack;
 
   List<Color> colorsList = [
-    Color.fromRGBO(253, 21, 27, 1),
-    Color.fromRGBO(255, 179, 15, 1),
-    Color.fromRGBO(132, 147, 36, 1),
-    Color.fromRGBO(67, 127, 151, 1),
-    Color.fromRGBO(1, 41, 95, 1),
+    Color.fromRGBO(203, 228, 249, 1),
+    Color.fromRGBO(239, 249, 218, 1),
+    // Color.fromRGBO(255, 88, 68, 1),
+    Color.fromRGBO(247, 215, 140, 1),
+    Color.fromRGBO(249, 235, 223, 1),
+    Color.fromRGBO(166, 211, 242, 1),
+    Color.fromRGBO(249, 216, 214, 1),
+    Color.fromRGBO(214, 205, 234, 1),
+    Color.fromRGBO(175, 195, 168, 1),
+  ];
+
+  List<Color> colorsList2 = [
+    Color.fromRGBO(253, 21, 27, 0.8),
+    Color.fromRGBO(255, 179, 15, 0.8),
+    Color.fromRGBO(132, 147, 36, 0.8),
+    Color.fromRGBO(67, 127, 151, 0.8),
+    Color.fromRGBO(1, 41, 95, 0.8),
+  ];
+
+  List<Color> colorsList3 = [
+    Color.fromRGBO(255, 88, 68, 1),
+    Color.fromRGBO(166, 211, 242, 1),
+    Color.fromRGBO(247, 215, 140, 1),
+    Color.fromRGBO(175, 195, 168, 1),
   ];
 
   @override
@@ -73,9 +92,17 @@ class HabitGridTile extends StatelessWidget {
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(13),
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 10,
+              offset: Offset(4, 5), // changes position of shadow
+            ),
+          ],
           borderRadius: BorderRadius.circular(10),
           color: colorsList[idx % (colorsList.length - 1)],
         ),
@@ -89,7 +116,7 @@ class HabitGridTile extends StatelessWidget {
                 Text(
                   icon,
                   style: TextStyle(
-                    fontSize: 45,
+                    fontSize: 43,
                   ),
                 ),
                 IconButton(
@@ -116,7 +143,7 @@ class HabitGridTile extends StatelessWidget {
                     IconData(0xf3fe,
                         fontFamily: iconFont, fontPackage: iconFontPackage),
                     size: 30,
-                    color: completed ? Colors.red : Colors.white,
+                    color: completed ? Colors.red : Colors.grey,
                   ),
                 ),
               ],
@@ -126,10 +153,10 @@ class HabitGridTile extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontSize: 17,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
-            const SizedBox(height: 1),
+            const SizedBox(height: 3),
             // Text(
             //   "$count $countUnit / $duration",
             //   style: const TextStyle(
@@ -142,7 +169,7 @@ class HabitGridTile extends StatelessWidget {
               "TODAY: $dayCount / $count $countUnit",
               style: const TextStyle(
                 fontSize: 11,
-                color: Colors.grey,
+                color: Color.fromARGB(255, 68, 67, 67),
               ),
             )
           ],

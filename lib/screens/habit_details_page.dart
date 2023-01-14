@@ -167,46 +167,48 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
               ),
               const SizedBox(height: 20),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      const Text(
-                        "Current Streaks",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        args['streaks'].toString(),
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
+              Container(
+                // padding: const ,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(247, 215, 140, 1),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          "Current Streaks",
+                          style: TextStyle(fontSize: 13),
                         ),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      const Text(
-                        "Best Streaks",
-                        style: TextStyle(fontSize: 13),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        args['bestStreaks'].toString(),
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
+                        SizedBox(
+                          height: 10,
                         ),
-                      )
-                    ],
-                  ),
-                ],
+                        Text(
+                          args['streaks'].toString(),
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "Best Streaks",
+                          style: TextStyle(fontSize: 13),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          args['bestStreaks'].toString(),
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w600),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           )),
@@ -260,7 +262,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                       // markerDecoration: BoxDecoration(shape: BoxShape.circle),
                       isTodayHighlighted: false,
                       selectedDecoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromRGBO(247, 215, 140, 1),
                         shape: BoxShape.circle,
                       ),
                       selectedTextStyle: TextStyle(color: Colors.black),
@@ -269,11 +271,12 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                       //     shape: BoxShape.circle),
                     ),
                     headerStyle: const HeaderStyle(
-                      leftChevronVisible: false,
-                      rightChevronVisible: false,
-                      formatButtonVisible: false,
-                      headerPadding: EdgeInsets.all(15),
-                    ),
+                        leftChevronVisible: false,
+                        rightChevronVisible: false,
+                        formatButtonVisible: false,
+                        headerPadding: EdgeInsets.all(15),
+                        titleTextStyle: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500)),
                   );
                 }),
           )

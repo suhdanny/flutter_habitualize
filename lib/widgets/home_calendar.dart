@@ -51,14 +51,14 @@ class _HomeCalendarState extends State<HomeCalendar> {
           });
 
           return Padding(
-            padding: const EdgeInsets.fromLTRB(17.0, 0.0, 17.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: DatePicker(
               calendarStartDate,
               controller: _controller,
-              height: 90,
-              width: 60,
+              height: 80,
+              width: 50,
               initialSelectedDate: DateTime.now(),
-              selectionColor: Color.fromRGBO(125, 157, 156, 1),
+              selectionColor: Color.fromRGBO(178, 184, 163, 1),
               selectedTextColor: Colors.white,
               daysCount: 30,
               monthTextStyle: GoogleFonts.lato(
@@ -70,7 +70,7 @@ class _HomeCalendarState extends State<HomeCalendar> {
               ),
               dateTextStyle: GoogleFonts.lato(
                 textStyle: const TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
