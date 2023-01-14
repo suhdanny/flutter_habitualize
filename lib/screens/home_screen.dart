@@ -163,6 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       bestStreaks: data['bestStreak'],
                       dailyTracks: dailyTracks,
                       weeklyTrack: weeklyTrack,
+                      totalCount: data['totalCount'],
                     ));
                   }
                 });

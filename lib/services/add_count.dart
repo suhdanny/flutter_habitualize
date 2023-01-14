@@ -17,7 +17,7 @@ void addCount(
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       title: const Text(
-        "Add Daily Count",
+        "Update Your Progress",
         style: TextStyle(
           fontSize: 20,
         ),
@@ -36,7 +36,7 @@ void addCount(
         TextButton(
           onPressed: (() {
             count = null;
-            Navigator.pop(context, 'Cancel');
+            Navigator.of(context).pop(false);
           }),
           child: Text(
             "Cancel",
@@ -80,12 +80,13 @@ void addCount(
                   "timeline.$selectedDateString.dayCount":
                       FieldValue.increment(int.parse(count!)),
                   "streaks": updatedStreaks,
+                  "totalCount": FieldValue.increment(int.parse(count!)),
                 });
               });
             } catch (error) {
               print(error);
             }
-            Navigator.pop(context, 'Add');
+            Navigator.of(context).pop(true);
           },
           child: const Text(
             "Add",
@@ -97,5 +98,9 @@ void addCount(
         ),
       ],
     ),
-  );
+  ).then((result) {
+    if (result == true) {
+      Navigator.pop(context);
+    }
+  });
 }

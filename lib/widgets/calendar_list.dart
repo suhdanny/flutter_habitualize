@@ -25,7 +25,9 @@ class CalendarList extends StatefulWidget {
     required this.bestStreak,
     required this.completed,
     required this.selectedDateString,
+    required this.selectedDateTime,
     required this.isAfterToday,
+    required this.totalCount,
     super.key,
   });
 
@@ -41,7 +43,9 @@ class CalendarList extends StatefulWidget {
   final int bestStreak;
   final String completed;
   final String selectedDateString;
+  final DateTime selectedDateTime;
   final bool isAfterToday;
+  final int totalCount;
 
   @override
   State<CalendarList> createState() => _CalendarListState();
@@ -64,6 +68,12 @@ class _CalendarListState extends State<CalendarList> {
             'streaks': widget.streaks,
             'bestStreaks': widget.bestStreak,
             'completed': widget.completed,
+            'selectedDateTime': widget.selectedDateTime,
+            'totalCount': widget.totalCount,
+            'count': widget.count,
+            'countUnit': widget.countUnit,
+            'dailyTracks': widget.dailyTracks,
+            'weeklyTrack': widget.weeklyTrack,
           },
         );
       },
