@@ -72,6 +72,7 @@ class AddHabitScreen extends StatelessWidget {
       "streaks": 0,
       "timeline": timeline,
       "bestStreak": 0,
+      "totalCount": 0,
     });
   }
 
