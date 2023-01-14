@@ -34,8 +34,8 @@ class DurationPicker extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           color: dailyTracks[day] == true
-              ? const Color.fromRGBO(87, 111, 114, 1)
-              : const Color.fromRGBO(228, 220, 207, 1),
+              ? Color.fromRGBO(178, 184, 163, 1)
+              : Color.fromRGBO(244, 199, 171, 1),
           borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Align(
@@ -61,8 +61,8 @@ class DurationPicker extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           color: weeklyTrack == day
-              ? const Color.fromRGBO(87, 111, 114, 1)
-              : const Color.fromRGBO(228, 220, 207, 1),
+              ? Color.fromRGBO(178, 184, 163, 1)
+              : Color.fromRGBO(244, 199, 171, 1),
           borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Align(
@@ -99,8 +99,8 @@ class DurationPicker extends StatelessWidget {
                           ? Colors.white
                           : Color.fromRGBO(87, 111, 114, 1)),
                   backgroundColor: dailySelected
-                      ? Color.fromRGBO(87, 111, 114, 1)
-                      : Color.fromRGBO(228, 220, 207, 1),
+                      ? Color.fromRGBO(178, 184, 163, 1)
+                      : Color.fromRGBO(244, 199, 171, 1),
                 ),
                 child: const Text(
                   "Daily",
@@ -123,8 +123,8 @@ class DurationPicker extends StatelessWidget {
                           ? Color.fromRGBO(87, 111, 114, 1)
                           : Colors.white),
                   backgroundColor: weeklySelected
-                      ? Color.fromRGBO(87, 111, 114, 1)
-                      : Color.fromRGBO(228, 220, 207, 1),
+                      ? Color.fromRGBO(178, 184, 163, 1)
+                      : Color.fromRGBO(244, 199, 171, 1),
                 ),
                 child: const Text("Weekly"),
               ),

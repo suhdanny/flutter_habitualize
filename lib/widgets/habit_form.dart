@@ -312,9 +312,26 @@ class _HabitFormState extends State<HabitForm> {
                 ],
               ),
             ),
+            FractionallySizedBox(
+              widthFactor: 0.5,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(178, 184, 163, 1),
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  textStyle: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+                onPressed: _handleSubmit,
+                child: Text(
+                  _docId == null ? "Add Habit 🔥" : "Confirm Edit",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
             if (_validationMessage != null)
               Container(
-                margin: const EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(top: 5),
                 child: Text(
                   _validationMessage!,
                   style: TextStyle(
@@ -322,20 +339,6 @@ class _HabitFormState extends State<HabitForm> {
                   ),
                 ),
               ),
-            FractionallySizedBox(
-              widthFactor: 0.5,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(87, 111, 114, 1),
-                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  textStyle: const TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
-                onPressed: _handleSubmit,
-                child: Text(_docId == null ? "Add Habit 😆" : "Confirm Edit"),
-              ),
-            ),
           ],
         ),
       ),

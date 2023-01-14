@@ -71,6 +71,7 @@ class AddHabitScreen extends StatelessWidget {
       "icon": emoji,
       "streaks": 0,
       "timeline": timeline,
+      "bestStreak": 0,
     });
   }
 

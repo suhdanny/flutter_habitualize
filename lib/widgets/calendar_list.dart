@@ -73,7 +73,7 @@ class _CalendarListState extends State<CalendarList> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -152,7 +152,7 @@ class _CalendarListState extends State<CalendarList> {
                             topLeft: Radius.circular(20),
                             bottomLeft: Radius.circular(20),
                           ),
-                          color: Colors.red[500],
+                          color: Color.fromRGBO(253, 21, 27, 1),
                         ),
                         child: const Icon(
                           Icons.delete,
@@ -189,7 +189,7 @@ class _CalendarListState extends State<CalendarList> {
                   );
                 },
                 icon: Icons.edit,
-                backgroundColor: Colors.green,
+                backgroundColor: Color.fromRGBO(255, 179, 15, 1),
                 foregroundColor: Colors.white,
               ),
             ],
@@ -302,7 +302,7 @@ class _CalendarListState extends State<CalendarList> {
                   );
                 },
                 icon: Icons.more_time,
-                backgroundColor: const Color.fromRGBO(245, 115, 40, 1),
+                backgroundColor: Color.fromRGBO(132, 147, 36, 1),
                 foregroundColor: Colors.white,
               ),
               Expanded(
@@ -419,7 +419,7 @@ class _CalendarListState extends State<CalendarList> {
                           topRight: Radius.circular(20),
                           bottomRight: Radius.circular(20),
                         ),
-                        color: Colors.yellow[700] as Color,
+                        color: Color.fromRGBO(67, 127, 151, 1),
                       ),
                       child: const Icon(
                         IconData(0xf417,
