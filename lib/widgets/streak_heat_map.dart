@@ -16,34 +16,13 @@ class StreakHeatMap extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 25),
         margin: const EdgeInsets.all(13),
         decoration: const BoxDecoration(
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Color.fromRGBO(249, 216, 214, 1),
-          //     spreadRadius: 5,
-          //     blurRadius: 10,
-          //     offset: Offset(4, 5), // changes position of shadow
-          //   ),
-          // ],
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          // border: Border.all(color: Colors.grey.withOpacity(0.5))
-          // color: Colors.grey.withOpacity(0.5),
           color: Color.fromRGBO(223, 223, 223, 1),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // const Padding(
-            //   padding: EdgeInsets.only(left: 17.0),
-            //   child: Text(
-            //     "Statistics",
-            //     style: TextStyle(
-            //       fontSize: 20,
-            //       fontWeight: FontWeight.w400,
-            //     ),
-            //   ),
-            // ),
-            // const SizedBox(height: 10),
             StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('users/$userUid/habits')
@@ -115,23 +94,13 @@ class StreakHeatMap extends StatelessWidget {
                       return const Center(child: CircularProgressIndicator());
                     }
 
-                    String startDate = snapshot.data!.data()!['startDate'];
-
                     DateTime startDateTime =
-                        DateFormat('yyy-MM-dd').parse(startDate);
-                    int difference =
-                        DateTime.now().difference(startDateTime).inDays;
+                        DateTime.now().subtract(const Duration(days: 32));
                     DateTime endDateTime =
-                        DateTime.now().add(Duration(days: 39 - difference));
-
-                    if (difference > 36) {
-                      startDateTime =
-                          DateTime.now().subtract(Duration(days: 39));
-                      endDateTime = DateTime.now().add(Duration(days: 30));
-                    }
+                        DateTime.now().add(const Duration(days: 36));
 
                     return HeatMap(
-                      startDate: startDateTime.subtract(Duration(days: 20)),
+                      startDate: startDateTime,
                       endDate: endDateTime,
                       datasets: dataset,
                       size: 21,
