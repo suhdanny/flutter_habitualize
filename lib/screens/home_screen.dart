@@ -124,18 +124,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       timelineData == null ? 0 : timelineData['dayCount'];
                   bool completed =
                       timelineData == null ? false : timelineData['completed'];
+                  Map<String, bool>? dailyTracks;
+                  String? weeklyTrack;
+
+                  if (data['dailyTracks'] != null) {
+                    dailyTracks = Map<String, bool>.from(data['dailyTracks']);
+                  }
+                  if (data['weeklyTrack'] != null) {
+                    weeklyTrack = data['weeklyTrack'];
+                  }
 
                   bool display = false;
 
                   if (data['duration'] == 'day') {
-                    final dailyTracks =
-                        Map<String, bool>.from(data['dailyTracks']);
-                    if (dailyTracks[getWeekdayString(_selectedDateTime)] ==
+                    if (dailyTracks![getWeekdayString(_selectedDateTime)] ==
                         true) {
                       display = true;
                     }
                   } else {
-                    final weeklyTrack = data['weeklyTrack'];
                     if (weeklyTrack == getWeekdayString(_selectedDateTime)) {
                       display = true;
                     }
@@ -155,6 +161,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       completed: completed,
                       selectedDateTime: _selectedDateTime,
                       bestStreaks: data['bestStreak'],
+                      dailyTracks: dailyTracks,
+                      weeklyTrack: weeklyTrack,
                     ));
                   }
                 });

@@ -21,6 +21,8 @@ class HabitGridTile extends StatelessWidget {
     required this.completed,
     required this.selectedDateTime,
     required this.bestStreaks,
+    required this.dailyTracks,
+    required this.weeklyTrack,
     super.key,
   });
 
@@ -36,6 +38,8 @@ class HabitGridTile extends StatelessWidget {
   final bool completed;
   final DateTime selectedDateTime;
   final int bestStreaks;
+  final Map<String, bool>? dailyTracks;
+  final String? weeklyTrack;
 
   List<Color> colorsList = [
     Color.fromRGBO(203, 228, 249, 1),
@@ -78,6 +82,12 @@ class HabitGridTile extends StatelessWidget {
             'streaks': streaks,
             'bestStreaks': bestStreaks,
             'completed': completed,
+            'count': count,
+            'countUnit': countUnit,
+            'duration': duration,
+            'dailyTracks': dailyTracks,
+            'weeklyTrack': weeklyTrack,
+            'selectedDateTime': selectedDateTime,
           },
         );
       },

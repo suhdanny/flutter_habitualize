@@ -166,7 +166,7 @@ class _HabitFormState extends State<HabitForm> {
       );
     }
 
-    Navigator.pop(context);
+    Navigator.pop(context, true);
   }
 
   @override

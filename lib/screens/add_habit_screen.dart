@@ -124,7 +124,7 @@ class AddHabitScreen extends StatelessWidget {
                 height: 40,
                 child: IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, false);
                   },
                   icon: const Icon(Icons.close),
                   color: Colors.black,

@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
+import '../services/delete_habit.dart';
+import '../services/edit_habit.dart';
+import '../services/add_count.dart';
+import '../services/add_note.dart';
 import '../utils/is_after_today.dart';
 
 class HabitDetailsPage extends StatefulWidget {
@@ -23,8 +27,11 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-
+    DateTime selectedDateTime = args['selectedDateTime'];
+    String selectedDateString =
+        DateFormat('yyyy-MM-dd').format(selectedDateTime);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,44 +59,88 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                 padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
                 margin: const EdgeInsets.only(top: 30),
                 child: PopupMenuButton(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(8.0),
-                      bottomRight: Radius.circular(8.0),
-                      topLeft: Radius.circular(8.0),
-                      topRight: Radius.circular(8.0),
-                    )),
-                    position: PopupMenuPosition.under,
-                    itemBuilder: ((context) => [
-                          PopupMenuItem(
-                              child: Text(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(8.0),
+                    bottomRight: Radius.circular(8.0),
+                    topLeft: Radius.circular(8.0),
+                    topRight: Radius.circular(8.0),
+                  )),
+                  position: PopupMenuPosition.under,
+                  onSelected: (result) {
+                    if (result == 0) {
+                      editHabit(
+                        context,
+                        args['docId'],
+                        args['title'],
+                        args['icon'],
+                        args['count'],
+                        args['countUnit'],
+                        args['duration'],
+                        args['dailyTracks'],
+                        args['weeklyTrack'],
+                      );
+                    }
+                    if (result == 1) {
+                      bool isAfterToday = isDateAfterToday(selectedDateTime);
+                      addCount(
+                        context,
+                        userUid,
+                        args['docId'],
+                        selectedDateString,
+                        isAfterToday,
+                        args['count'],
+                      );
+                    }
+                    if (result == 2) {
+                      addNote(
+                        context,
+                        userUid,
+                        args['docId'],
+                        selectedDateString,
+                      );
+                    }
+                    if (result == 3) {
+                      deleteHabit(
+                        context,
+                        userUid,
+                        args['docId'],
+                        args['title'],
+                      );
+                    }
+                  },
+                  itemBuilder: ((_) => [
+                        const PopupMenuItem(
+                          value: 0,
+                          child: Text(
                             "✍🏻 Edit",
                             style: TextStyle(fontWeight: FontWeight.w200),
-                          )),
-                          PopupMenuItem(
-                              child: Text("🔄 Add Count",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w200))),
-                          PopupMenuItem(
-                              child: Text("📝 Take Notes",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w200))),
-                          PopupMenuItem(
-                              child: Text("🗑 Delete",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w200))),
-                        ])),
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 1,
+                          child: Text(
+                            "🔄 Add Count",
+                            style: TextStyle(fontWeight: FontWeight.w200),
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 2,
+                          child: Text(
+                            "📝 Take Notes",
+                            style: TextStyle(fontWeight: FontWeight.w200),
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          value: 3,
+                          child: Text(
+                            "🗑 Delete",
+                            style: TextStyle(fontWeight: FontWeight.w200),
+                          ),
+                        ),
+                      ]),
+                ),
               )
-              // Container(
-              // padding: const EdgeInsets.fromLTRB(0, 20, 20, 0),
-              // margin: const EdgeInsets.only(top: 30),
-              //   child: IconButton(
-              //       onPressed: () {
-
-              //       },
-              //       icon: const Icon(IconData(0xf46a,
-              //           fontFamily: iconFont, fontPackage: iconFontPackage))),
-              // )
             ],
           ),
           Center(
@@ -107,38 +158,14 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
               ),
               Text(
                 args['title'],
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+                style: const TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w400,
+                ),
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 20),
-              // Row(
-              //   mainAxisSize: MainAxisSize.min,
-              //   children: [
-              //     IconButton(
-              //       onPressed: () {},
-              //       icon: Icon(Icons.delete),
-              //     ),
-              //     const SizedBox(width: 10),
-              //     IconButton(
-              //       onPressed: () {},
-              //       icon: Icon(Icons.edit),
-              //     ),
-              //     const SizedBox(width: 10),
-              //     IconButton(
-              //       onPressed: () {},
-              //       icon: Icon(Icons.more_time),
-              //     ),
-              //     const SizedBox(width: 10),
-              //     IconButton(
-              //       onPressed: () {},
-              //       icon: Icon(
-              //         IconData(0xf417,
-              //             fontFamily: iconFont, fontPackage: iconFontPackage),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               const SizedBox(height: 20),
               Container(
                 // padding: const ,
@@ -186,9 +213,6 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
             ],
           )),
           Container(
-            // decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.all(Radius.circular(20)),
-            //     color: Color.fromRGBO(240, 235, 227, 1)),
             padding: const EdgeInsets.all(30),
             child: StreamBuilder(
                 stream: FirebaseFirestore.instance
