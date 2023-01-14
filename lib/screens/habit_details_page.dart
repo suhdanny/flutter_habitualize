@@ -120,7 +120,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                         const PopupMenuItem(
                           value: 1,
                           child: Text(
-                            "🔄 Add Count",
+                            "🔄 Update Progress",
                             style: TextStyle(fontWeight: FontWeight.w200),
                           ),
                         ),
@@ -165,12 +165,14 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                 softWrap: true,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 20),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
+              // const SizedBox(height: 20),
               Container(
-                // padding: const ,
+                width: 320,
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(247, 215, 140, 1),
+                  borderRadius: BorderRadius.circular(20),
+                  color: Color.fromRGBO(223, 223, 223, 1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -179,7 +181,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                       children: [
                         Text(
                           "Current Streaks",
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 12),
                         ),
                         SizedBox(
                           height: 10,
@@ -187,7 +189,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                         Text(
                           args['streaks'].toString(),
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w600),
+                              fontSize: 25, fontWeight: FontWeight.w500),
                         )
                       ],
                     ),
@@ -195,7 +197,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                       children: [
                         Text(
                           "Best Streaks",
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 12),
                         ),
                         SizedBox(
                           height: 10,
@@ -203,7 +205,35 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                         Text(
                           args['bestStreaks'].toString(),
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w600),
+                              fontSize: 25, fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "Total Count",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              args['totalCount'].toString(),
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              args['countUnit'],
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
                         )
                       ],
                     ),

@@ -210,7 +210,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 completed:
                                     completed ? 'completed!' : 'uncompleted',
                                 selectedDateString: selectedDateString,
+                                selectedDateTime: selectedDay,
                                 isAfterToday: isAfterToday,
+                                totalCount: data['totalCount'],
                               ));
                             }
                           });
