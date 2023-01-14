@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.only(top: 40.0, left: 8, right: 8, bottom: 8),
+        padding: const EdgeInsets.only(top: 60.0, left: 8, right: 8, bottom: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: Text(
                 '$greetingText, ',
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   fontWeight: FontWeight.w300,
                 ),
                 selectionColor: Colors.black,
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Text(
                       userName,
                       style: const TextStyle(
-                        fontSize: 23,
+                        fontSize: 25,
                         fontWeight: FontWeight.w300,
                         color: Colors.black,
                       ),
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             HomeCalendar(
               updatedSelectedDateTime: _updateSelectedDateTime,
             ),
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 "Today's Challenge",
                 style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -188,6 +188,17 @@ class _HomeScreenState extends State<HomeScreen> {
               stream: FirebaseFirestore.instance
                   .collection('/users/$userUid/habits')
                   .snapshots(),
+            ),
+            Container(
+              // padding: const EdgeInsets.all(5),
+              margin: const EdgeInsets.fromLTRB(25, 18, 0, 5),
+              child: const Text(
+                "Analytics",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
             StreakHeatMap(),
             const SizedBox(height: 100),
