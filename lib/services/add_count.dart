@@ -8,6 +8,7 @@ void addCount(
   String selectedDateString,
   bool isAfterToday,
   int currentCount,
+  Function handleExit,
 ) {
   String? count;
 
@@ -100,7 +101,7 @@ void addCount(
     ),
   ).then((result) {
     if (result == true) {
-      Navigator.pop(context);
+      handleExit();
     }
   });
 }
