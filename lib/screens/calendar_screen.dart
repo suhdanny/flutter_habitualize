@@ -90,9 +90,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 2,
-                          blurRadius: 6,
-                          offset: Offset(2, 5), // changes position of shadow
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: Offset(2, 3), // changes position of shadow
                         ),
                       ],
                       // color: Color.fromRGBO(147, 181, 198, 1),
@@ -101,8 +101,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       // borderRadius: BorderRadius.circular(7.0),
                       // borderRadius: BorderRadius.all(Radius.circular(7)),
                     ),
-                    selectedTextStyle:
-                        TextStyle(color: Colors.black.withOpacity(0.5)),
+                    selectedTextStyle: TextStyle(color: Colors.black),
                     // todayDecoration: BoxDecoration(
                     //   // color: Color.fromRGBO(87, 111, 114, 1),
                     //   shape: BoxShape.rectangle,

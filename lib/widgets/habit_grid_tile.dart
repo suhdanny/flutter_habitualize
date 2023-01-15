@@ -101,9 +101,9 @@ class HabitGridTile extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 10,
-              offset: Offset(4, 5), // changes position of shadow
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(3, 5), // changes position of shadow
             ),
           ],
           borderRadius: BorderRadius.circular(10),
