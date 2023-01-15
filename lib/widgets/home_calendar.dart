@@ -58,8 +58,8 @@ class _HomeCalendarState extends State<HomeCalendar> {
               height: 80,
               width: 50,
               initialSelectedDate: DateTime.now(),
-              selectionColor: Color.fromRGBO(178, 184, 163, 1),
-              selectedTextColor: Colors.white,
+              selectionColor: Color.fromRGBO(223, 223, 223, 0.5),
+              selectedTextColor: Colors.black,
               daysCount: 30,
               monthTextStyle: GoogleFonts.lato(
                 textStyle: const TextStyle(

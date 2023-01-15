@@ -45,50 +45,57 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CircleAvatar(
-                radius: 22,
-                backgroundImage: NetworkImage(
-                  FirebaseAuth.instance.currentUser!.photoURL!,
+            Container(
+              padding: const EdgeInsets.all(7),
+              margin: const EdgeInsets.symmetric(horizontal: 17.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Color.fromRGBO(223, 223, 223, 0.5)),
+              child: ListTile(
+                leading: CircleAvatar(
+                  radius: 28,
+                  backgroundImage: NetworkImage(
+                    FirebaseAuth.instance.currentUser!.photoURL!,
+                  ),
                 ),
-              ),
-              title: Text(
-                '$greetingText, ',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
+                title: Text(
+                  '$greetingText, ',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                  ),
+                  selectionColor: Colors.black,
                 ),
-                selectionColor: Colors.black,
+                subtitle: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .doc('/users/$userUid')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      final data = snapshot.data!.data();
+                      String userName =
+                          FirebaseAuth.instance.currentUser!.displayName!;
+
+                      if (data!.containsKey("userName")) {
+                        userName = data["userName"];
+                      }
+
+                      return Text(
+                        userName,
+                        style: const TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black,
+                        ),
+                        selectionColor: Colors.black,
+                      );
+                    }),
               ),
-              subtitle: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .doc('/users/$userUid')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
-
-                    final data = snapshot.data!.data();
-                    String userName =
-                        FirebaseAuth.instance.currentUser!.displayName!;
-
-                    if (data!.containsKey("userName")) {
-                      userName = data["userName"];
-                    }
-
-                    return Text(
-                      userName,
-                      style: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.black,
-                      ),
-                      selectionColor: Colors.black,
-                    );
-                  }),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             HomeCalendar(
               updatedSelectedDateTime: _updateSelectedDateTime,
             ),

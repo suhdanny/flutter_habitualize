@@ -316,7 +316,7 @@ class _HabitFormState extends State<HabitForm> {
               widthFactor: 0.5,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(178, 184, 163, 1),
+                  backgroundColor: Color.fromRGBO(244, 199, 171, 1),
                   padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                   textStyle: const TextStyle(
                     fontSize: 15,

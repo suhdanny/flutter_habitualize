@@ -54,6 +54,7 @@ dependencies:
   image_picker: ^0.8.4+4
   permission_handler: ^10.2.0
   firebase_storage: ^11.0.10
+  lottie: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -76,7 +77,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/json/lottie.json
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

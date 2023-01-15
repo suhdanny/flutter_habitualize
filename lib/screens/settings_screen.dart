@@ -196,10 +196,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Center(
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.black),
+                backgroundColor:
+                    MaterialStateProperty.all(Color.fromRGBO(223, 223, 223, 1)),
               ),
               onPressed: () => FirebaseAuth.instance.signOut(),
-              child: const Text("Sign Out"),
+              child: const Text(
+                "Sign Out",
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           )
         ],
