@@ -119,7 +119,7 @@ class HabitGridTile extends StatelessWidget {
                 Text(
                   icon,
                   style: TextStyle(
-                    fontSize: 43,
+                    fontSize: 45,
                   ),
                 ),
                 IconButton(
@@ -145,7 +145,7 @@ class HabitGridTile extends StatelessWidget {
                   icon: Icon(
                     IconData(0xf3fe,
                         fontFamily: iconFont, fontPackage: iconFontPackage),
-                    size: 30,
+                    size: 28,
                     color: completed ? Colors.red : Colors.grey,
                   ),
                 ),
@@ -155,11 +155,12 @@ class HabitGridTile extends StatelessWidget {
             Text(
               title,
               style: const TextStyle(
-                fontSize: 17,
+                fontSize: 19,
+                fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 3),
+            const SizedBox(height: 4),
             // Text(
             //   "$count $countUnit / $duration",
             //   style: const TextStyle(

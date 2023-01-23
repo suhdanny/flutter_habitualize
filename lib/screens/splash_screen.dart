@@ -1,8 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../screens/tabs_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import './walkthrough_screen.dart';
+import './tabs_screen.dart';
+import './auth_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,33 +16,53 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-
   @override
   void initState() {
     super.initState();
-
-    Timer(
-        Duration(milliseconds: 3000),
-        () => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => TabsScreen())));
+    startTimer();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void navigateUser() async {
+    print('timer done');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    pushScreen(prefs.getInt("onBoard"));
+  }
+
+  void pushScreen(int? isViewed) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: ((context) {
+          if (isViewed == null || isViewed == 1) {
+            return const WalkthroughScreen();
+          } else {
+            return StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) return const TabsScreen();
+                return const AuthScreen();
+              },
+            );
+          }
+        }),
+      ),
+    );
+  }
+
+  startTimer() async {
+    return Timer(const Duration(seconds: 3), navigateUser);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Container(
-              width: 120,
-              height: 120,
-              child: Lottie.asset(
-                  'assets/json/lottie.json')) // child: Text("Splash Screen"),
-          ),
+        child: Container(
+          width: 120,
+          height: 120,
+          child: Lottie.asset('assets/json/lottie.json'),
+        ), // child: Text("Splash Screen"),
+      ),
     );
   }
 }
