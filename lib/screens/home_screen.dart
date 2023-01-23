@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   '$greetingText, ',
                   style: const TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w500,
                   ),
                   selectionColor: Colors.black,
                 ),
@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         userName,
                         style: const TextStyle(
                           fontSize: 23,
-                          fontWeight: FontWeight.w300,
+                          fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),
                         selectionColor: Colors.black,
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 "Today's Challenge",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 23,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -207,11 +207,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Container(
               // padding: const EdgeInsets.all(5),
-              margin: const EdgeInsets.fromLTRB(25, 18, 0, 5),
+              margin: const EdgeInsets.fromLTRB(25, 20, 0, 5),
               child: const Text(
                 "Analytics",
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 25,
                   fontWeight: FontWeight.w500,
                 ),
               ),
