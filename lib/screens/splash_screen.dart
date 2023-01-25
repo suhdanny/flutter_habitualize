@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
       context,
       MaterialPageRoute(
         builder: ((context) {
-          if (isViewed == null || isViewed == 1) {
+          if (isViewed == null || isViewed == 0) {
             return const WalkthroughScreen();
           } else {
             return StreamBuilder(

@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void deleteHabit(
-    BuildContext context, String userUid, String docId, String title) {
+  BuildContext context,
+  String userUid,
+  String docId,
+  String title,
+  bool popOnDelete,
+) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -52,8 +57,8 @@ void deleteHabit(
         ),
       ],
     ),
-  ).then((value) {
-    if (value == 'Delete') {
+  ).then((action) {
+    if (action == 'Delete' && popOnDelete) {
       Navigator.pop(context);
     }
   });
