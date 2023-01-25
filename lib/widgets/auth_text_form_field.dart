@@ -9,6 +9,7 @@ class AuthTextFormField extends StatefulWidget {
     required this.icon,
     required this.keyboardType,
     required this.hidden,
+    this.errMsg,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class AuthTextFormField extends StatefulWidget {
   final IconData icon;
   final TextInputType keyboardType;
   final bool hidden;
+  final String? errMsg;
 
   @override
   State<AuthTextFormField> createState() => _AuthTextFormFieldState();
@@ -44,7 +46,24 @@ class _AuthTextFormFieldState extends State<AuthTextFormField> {
       return (password) => password == null || password.isEmpty
           ? 'Please enter a valid password.'
           : null;
+    } else if (widget.labelText == 'Username') {
+      return (username) => username == null || username.isEmpty
+          ? 'Please enter a valid username.'
+          : null;
+    } else if (widget.labelText == 'Confirm Password') {
+      return (confirmPassword) =>
+          confirmPassword == null || confirmPassword.isEmpty
+              ? 'Please enter a valid password'
+              : null;
     }
+  }
+
+  getErrorText() {
+    if (widget.labelText != 'Confirm Password') return null;
+    if (widget.errMsg != null) {
+      return widget.errMsg;
+    }
+    return null;
   }
 
   @override
@@ -55,9 +74,15 @@ class _AuthTextFormFieldState extends State<AuthTextFormField> {
       obscureText: _obscureText,
       cursorColor: Colors.black,
       keyboardType: widget.keyboardType,
+      onChanged: (value) {
+        widget.controller.text = value;
+        widget.controller.selection =
+            TextSelection.fromPosition(TextPosition(offset: value.length));
+      },
       decoration: InputDecoration(
         labelText: widget.labelText,
         hintText: widget.hintText,
+        errorText: getErrorText(),
         labelStyle: const TextStyle(
           color: Colors.black,
           fontSize: 15.0,

@@ -126,7 +126,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     const SizedBox(height: 10),
                     if (_errorMessage != null)
                       Container(
-                        margin: const EdgeInsets.only(bottom: 15),
+                        margin: const EdgeInsets.only(bottom: 10),
                         child: Text(
                           _errorMessage!,
                           style: const TextStyle(

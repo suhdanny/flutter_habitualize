@@ -54,9 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: CircleAvatar(
                 radius: 22,
-                backgroundImage: NetworkImage(
-                  FirebaseAuth.instance.currentUser!.photoURL!,
-                ),
+                backgroundImage: NetworkImage(backgroundImageUrl),
               ),
               title: Text(
                 '$greetingText, ',
@@ -76,15 +74,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
 
                     final data = snapshot.data!.data();
-                    String userName =
-                        FirebaseAuth.instance.currentUser!.displayName!;
+                    String? userName =
+                        FirebaseAuth.instance.currentUser!.displayName;
 
                     if (data!.containsKey("userName")) {
                       userName = data["userName"];
                     }
 
                     return Text(
-                      userName,
+                      userName!,
                       style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w300,
