@@ -51,18 +51,54 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: CircleAvatar(
-                radius: 22,
-                backgroundImage: NetworkImage(backgroundImageUrl),
-              ),
-              title: Text(
-                '$greetingText, ',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 23),
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(223, 223, 223, 0.5),
+                  borderRadius: BorderRadius.circular(20)),
+              child: ListTile(
+                leading: CircleAvatar(
+                  radius: 22,
+                  backgroundImage: NetworkImage(
+                    FirebaseAuth.instance.currentUser!.photoURL!,
+                  ),
                 ),
-                selectionColor: Colors.black,
+                title: Text(
+                  '$greetingText, ',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                  ),
+                  selectionColor: Colors.black,
+                ),
+                subtitle: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .doc('/users/$userUid')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      final data = snapshot.data!.data();
+                      String userName =
+                          FirebaseAuth.instance.currentUser!.displayName!;
+
+                      if (data!.containsKey("userName")) {
+                        userName = data["userName"];
+                      }
+
+                      return Text(
+                        userName,
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black,
+                        ),
+                        selectionColor: Colors.black,
+                      );
+                    }),
               ),
               subtitle: StreamBuilder(
                   stream: FirebaseFirestore.instance
