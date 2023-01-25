@@ -63,7 +63,7 @@ function isToday(date) {
 
 exports.updateStreakAndTotal = functions.firestore
     .document("users/{userId}/habits/{habitId}")
-    .onWrite((change, context) => {
+    .onUpdate((change, context) => {
         const timeline = change.after.data().timeline;
         const streakAndTotal = getStreakAndTotal(timeline);
 

@@ -44,23 +44,26 @@ class _LogInScreenState extends State<LogInScreen> {
                   fontSize: 45,
                 ),
               ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 25),
-                  const Text(
-                    "Welcome Back 🙌🏻",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
+            ),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(20.0),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(35),
+                    topLeft: Radius.circular(35),
                   ),
-                  const SizedBox(height: 15),
-                  RichText(
-                    text: TextSpan(
-                      text: 'Don\'t have an account? ',
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.black,
+                  color: Color.fromRGBO(223, 223, 223, 1),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 25),
+                    const Text(
+                      "Welcome Back.",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 15),

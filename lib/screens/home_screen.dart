@@ -9,7 +9,7 @@ import '../widgets/streak_heat_map.dart';
 import '../utils/get_weekday_string.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 leading: CircleAvatar(
                   radius: 22,
                   backgroundImage: NetworkImage(
-                    FirebaseAuth.instance.currentUser!.photoURL!,
+                    backgroundImageUrl,
                   ),
                 ),
                 title: Text(
@@ -82,15 +82,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
 
                       final data = snapshot.data!.data();
-                      String userName =
-                          FirebaseAuth.instance.currentUser!.displayName!;
+                      String? userName =
+                          FirebaseAuth.instance.currentUser!.displayName;
 
                       if (data!.containsKey("userName")) {
                         userName = data["userName"];
                       }
 
                       return Text(
-                        userName,
+                        userName!,
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w300,
@@ -100,33 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }),
               ),
-              subtitle: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .doc('/users/$userUid')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
-
-                    final data = snapshot.data!.data();
-                    String? userName =
-                        FirebaseAuth.instance.currentUser!.displayName;
-
-                    if (data!.containsKey("userName")) {
-                      userName = data["userName"];
-                    }
-
-                    return Text(
-                      userName!,
-                      style: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.black,
-                      ),
-                      selectionColor: Colors.black,
-                    );
-                  }),
             ),
             const SizedBox(height: 10),
             HomeCalendar(
