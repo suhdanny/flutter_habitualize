@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../widgets/auth_text_field.dart';
+import '../widgets/auth_text_form_field.dart';
 import '../services/create_new_user.dart';
 import '../services/sign_in_with_google.dart';
 
@@ -82,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  AuthTextField(
+                  AuthTextFormField(
                     controller: _emailController,
                     labelText: 'Email',
                     hintText: 'Enter Your E-mail',
@@ -91,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hidden: false,
                   ),
                   const SizedBox(height: 20),
-                  AuthTextField(
+                  AuthTextFormField(
                     controller: _userNameController,
                     labelText: 'Username',
                     hintText: 'Enter Your Username',
@@ -100,7 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hidden: false,
                   ),
                   const SizedBox(height: 20),
-                  AuthTextField(
+                  AuthTextFormField(
                     controller: _passwordController,
                     labelText: 'Password',
                     hintText: 'Password',
@@ -109,7 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hidden: true,
                   ),
                   const SizedBox(height: 20),
-                  AuthTextField(
+                  AuthTextFormField(
                     controller: _confirmPasswordController,
                     labelText: 'Confirm Password',
                     hintText: 'Re-Enter Your Password',

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
-class AuthTextField extends StatefulWidget {
-  const AuthTextField({
+class AuthTextFormField extends StatefulWidget {
+  const AuthTextFormField({
     required this.controller,
     required this.labelText,
     required this.hintText,
@@ -19,10 +20,10 @@ class AuthTextField extends StatefulWidget {
   final bool hidden;
 
   @override
-  State<AuthTextField> createState() => _AuthTextFieldState();
+  State<AuthTextFormField> createState() => _AuthTextFormFieldState();
 }
 
-class _AuthTextFieldState extends State<AuthTextField> {
+class _AuthTextFormFieldState extends State<AuthTextFormField> {
   bool _obscureText = false;
 
   @override
@@ -33,10 +34,24 @@ class _AuthTextFieldState extends State<AuthTextField> {
     }
   }
 
+  getValidator() {
+    if (widget.labelText == 'Email') {
+      return (email) =>
+          email == null || email.isEmpty || !EmailValidator.validate(email)
+              ? 'Please enter a valid email address.'
+              : null;
+    } else if (widget.labelText == 'Password') {
+      return (password) => password == null || password.isEmpty
+          ? 'Please enter a valid password.'
+          : null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
+      validator: getValidator(),
       obscureText: _obscureText,
       cursorColor: Colors.black,
       keyboardType: widget.keyboardType,
