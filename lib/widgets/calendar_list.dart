@@ -83,142 +83,146 @@ class _CalendarListState extends State<CalendarList> {
               bottomLeft: Radius.circular(20),
               bottomRight: Radius.circular(20)),
         ),
-        child: Slidable(
-          key: const ValueKey(0),
-          startActionPane: ActionPane(
-            extentRatio: 0.4,
-            motion: const DrawerMotion(),
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    onTap: () => deleteHabit(
-                      context,
-                      userUid,
-                      widget.docId,
-                      widget.title,
-                      false,
+        child: ClipRect(
+          clipBehavior: Clip.hardEdge,
+          child: Slidable(
+            key: const ValueKey(0),
+            startActionPane: ActionPane(
+              extentRatio: 0.4,
+              motion: const DrawerMotion(),
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () => deleteHabit(
+                        context,
+                        userUid,
+                        widget.docId,
+                        widget.title,
+                        false,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                          alignment: Alignment.center,
+                          width: 24 * 4, // space for actionPan
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
+                            ),
+                            color: Color.fromRGBO(253, 21, 27, 1),
+                          ),
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          )),
                     ),
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
+                  ),
+                ),
+                SlidableAction(
+                  onPressed: (ctx) => editHabit(
+                    context,
+                    widget.docId,
+                    widget.title,
+                    widget.emoji,
+                    widget.count,
+                    widget.countUnit,
+                    widget.duration,
+                    widget.dailyTracks,
+                    widget.weeklyTrack,
+                  ),
+                  icon: Icons.edit,
+                  backgroundColor: const Color.fromRGBO(255, 179, 15, 1),
+                  foregroundColor: Colors.white,
+                ),
+              ],
+            ),
+            endActionPane: ActionPane(
+              motion: const DrawerMotion(),
+              extentRatio: 0.4,
+              children: [
+                SlidableAction(
+                  onPressed: (ctx) => addCount(
+                    context,
+                    userUid,
+                    widget.docId,
+                    widget.selectedDateString,
+                    widget.isAfterToday,
+                    widget.count,
+                    () {},
+                  ),
+                  icon: Icons.more_time,
+                  backgroundColor: const Color.fromRGBO(132, 147, 36, 1),
+                  foregroundColor: Colors.white,
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        addNote(context, userUid, widget.docId,
+                            widget.selectedDateString);
+                      },
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
                         alignment: Alignment.center,
                         width: 24 * 4, // space for actionPan
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
                           ),
-                          color: Color.fromRGBO(253, 21, 27, 1),
+                          color: Color.fromRGBO(67, 127, 151, 1),
                         ),
                         child: const Icon(
-                          Icons.delete,
+                          IconData(0xf417,
+                              fontFamily: iconFont,
+                              fontPackage: iconFontPackage),
                           color: Colors.white,
-                        )),
-                  ),
-                ),
-              ),
-              SlidableAction(
-                onPressed: (ctx) => editHabit(
-                  context,
-                  widget.docId,
-                  widget.title,
-                  widget.emoji,
-                  widget.count,
-                  widget.countUnit,
-                  widget.duration,
-                  widget.dailyTracks,
-                  widget.weeklyTrack,
-                ),
-                icon: Icons.edit,
-                backgroundColor: const Color.fromRGBO(255, 179, 15, 1),
-                foregroundColor: Colors.white,
-              ),
-            ],
-          ),
-          endActionPane: ActionPane(
-            motion: const DrawerMotion(),
-            extentRatio: 0.4,
-            children: [
-              SlidableAction(
-                onPressed: (ctx) => addCount(
-                  context,
-                  userUid,
-                  widget.docId,
-                  widget.selectedDateString,
-                  widget.isAfterToday,
-                  widget.count,
-                  () {},
-                ),
-                icon: Icons.more_time,
-                backgroundColor: const Color.fromRGBO(132, 147, 36, 1),
-                foregroundColor: Colors.white,
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    onTap: () {
-                      addNote(context, userUid, widget.docId,
-                          widget.selectedDateString);
-                    },
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: 24 * 4, // space for actionPan
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
                         ),
-                        color: Color.fromRGBO(67, 127, 151, 1),
-                      ),
-                      child: const Icon(
-                        IconData(0xf417,
-                            fontFamily: iconFont, fontPackage: iconFontPackage),
-                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
-            child: ListTile(
-              leading: Text(
-                widget.emoji,
-                style: const TextStyle(fontSize: 40),
-              ),
-              title: Text(
-                widget.title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 17,
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 0),
+              child: ListTile(
+                leading: Text(
+                  widget.emoji,
+                  style: const TextStyle(fontSize: 40),
                 ),
-              ),
-              trailing: Container(
-                width: 90,
-                margin: const EdgeInsets.only(top: 10),
-                child: Column(
-                  children: [
-                    Text(
-                      '${widget.streaks} 🔥',
-                      style: const TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      widget.completed,
-                      style: TextStyle(
+                title: Text(
+                  widget.title,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ),
+                ),
+                trailing: Container(
+                  width: 90,
+                  margin: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${widget.streaks} 🔥',
+                        style: const TextStyle(
                           fontSize: 15,
-                          color: widget.completed == 'completed!'
-                              ? const Color.fromRGBO(54, 126, 24, 1)
-                              : Colors.grey[600]),
-                    )
-                  ],
+                        ),
+                      ),
+                      Text(
+                        widget.completed,
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: widget.completed == 'completed!'
+                                ? const Color.fromRGBO(54, 126, 24, 1)
+                                : Colors.grey[600]),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
