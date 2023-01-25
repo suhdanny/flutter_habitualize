@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_habitualize/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import './screens/login_screen.dart';
+import './screens/signup_screen.dart';
 import './screens/habit_details_page.dart';
 import './screens/add_habit_screen.dart';
-import './screens/tabs_screen.dart';
-import './screens/auth_screen.dart';
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
@@ -37,6 +35,8 @@ class MyApp extends StatelessWidget {
       ),
       home: const SplashScreen(),
       routes: {
+        '/sign-in': (ctx) => const LogInScreen(),
+        '/sign-up': (ctx) => const SignUpScreen(),
         '/add-habit': (ctx) => const AddHabitScreen(),
         '/habit-details': (ctx) => const HabitDetailsPage(),
       },
