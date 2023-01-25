@@ -282,14 +282,27 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                           if (timeline.containsKey(dayString) &&
                               !isDateAfterToday(day)) {
                             final completed = timeline[dayString]['completed'];
-                            return Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: completed ? Colors.green : Colors.red,
-                              ),
-                              width: 5,
-                              height: 5,
-                            );
+                            if (completed) {
+                              // return Container(
+                              //   decoration: BoxDecoration(
+                              //     borderRadius: BorderRadius.circular(50),
+                              //     color: Colors.green,
+                              //   ),
+                              //   width: 5,
+                              //   height: 5,
+                              // );
+                              return const Icon(
+                                Icons.done,
+                                color: Colors.green,
+                                size: 10,
+                              );
+                            } else {
+                              return const Icon(
+                                Icons.close,
+                                color: Colors.red,
+                                size: 10,
+                              );
+                            }
                           }
                         },
                       ),
