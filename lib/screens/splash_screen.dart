@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './walkthrough_screen.dart';
 import './tabs_screen.dart';
-import './auth_screen.dart';
+import './login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -23,7 +23,6 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void navigateUser() async {
-    print('timer done');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     pushScreen(prefs.getInt("onBoard"));
   }
@@ -40,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) return const TabsScreen();
-                return const AuthScreen();
+                return const LogInScreen();
               },
             );
           }

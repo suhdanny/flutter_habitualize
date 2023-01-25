@@ -3,7 +3,7 @@ import 'package:flutter_habitualize/screens/tabs_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './auth_screen.dart';
+import '../screens/login_screen.dart';
 import './walkthrough/intro_addinghabit.dart';
 import './walkthrough/intro_calendar.dart';
 import './walkthrough/intro_details.dart';
@@ -83,7 +83,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                               stream: FirebaseAuth.instance.authStateChanges(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) return const TabsScreen();
-                                return const AuthScreen();
+                                return const LogInScreen();
                               },
                             );
                           }));

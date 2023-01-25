@@ -16,7 +16,14 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  late String imageUrl;
+  final String backgroundImageUrl = FirebaseAuth
+              .instance.currentUser!.photoURL ==
+          null
+      ? 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
+      : FirebaseAuth.instance.currentUser!.photoURL!;
+  String userName = FirebaseAuth.instance.currentUser!.displayName == null
+      ? 'User'
+      : FirebaseAuth.instance.currentUser!.displayName!;
   final userUId = FirebaseAuth.instance.currentUser!.uid;
 
   // uploadImage() async {
@@ -57,6 +64,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // "Account" Header
+          // TextButton(
+          //   onPressed: () => FirebaseAuth.instance.signOut(),
+          //   child: Text('temp'),
+          // ),
           const Text(
             "Account",
             style: TextStyle(
@@ -87,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: CircleAvatar(
                   radius: 22,
                   backgroundImage: NetworkImage(
-                    FirebaseAuth.instance.currentUser!.photoURL!,
+                    backgroundImageUrl,
                   ),
                 ),
               ),
@@ -142,8 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               borderSide: BorderSide(
                             color: Colors.grey,
                           )),
-                          hintText:
-                              '${FirebaseAuth.instance.currentUser!.displayName!}',
+                          hintText: userName,
                           hintStyle: TextStyle(
                             fontSize: 15,
                           )),
