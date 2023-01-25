@@ -30,9 +30,7 @@ class _LogInScreenState extends State<LogInScreen> {
             child: const Text(
               "Haveit.",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 45,
-              ),
+              style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700),
             ),
           ),
           Expanded(
@@ -50,7 +48,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 children: [
                   const SizedBox(height: 25),
                   const Text(
-                    "Welcome Back.",
+                    "Welcome Back 🙌🏻",
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
@@ -61,7 +59,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     text: TextSpan(
                       text: 'Don\'t have an account? ',
                       style: const TextStyle(
-                        fontSize: 13,
+                        fontSize: 11,
                         color: Colors.black,
                       ),
                       children: [

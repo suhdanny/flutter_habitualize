@@ -59,6 +59,7 @@ class _TabsScreenState extends State<TabsScreen> {
       body: _widgetOptions![_selectedIndex],
       extendBody: true,
       bottomNavigationBar: DotNavigationBar(
+        // marginR: const EdgeInsets.symmetric(vertical: 20),
         currentIndex: _selectedIndex,
         onTap: (index) {
           _onItemTapped(index);
