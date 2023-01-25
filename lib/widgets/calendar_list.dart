@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconpicker/IconPicker/Packs/Cupertino.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
-import '../screens/add_habit_screen.dart';
 import '../services/delete_habit.dart';
 import '../services/edit_habit.dart';
 import '../services/add_count.dart';
@@ -98,13 +94,18 @@ class _CalendarListState extends State<CalendarList> {
                   alignment: Alignment.centerRight,
                   child: InkWell(
                     onTap: () => deleteHabit(
-                        context, userUid, widget.docId, widget.title),
+                      context,
+                      userUid,
+                      widget.docId,
+                      widget.title,
+                      false,
+                    ),
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
                         alignment: Alignment.center,
                         width: 24 * 4, // space for actionPan
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
                             bottomLeft: Radius.circular(20),
                           ),
@@ -130,7 +131,7 @@ class _CalendarListState extends State<CalendarList> {
                   widget.weeklyTrack,
                 ),
                 icon: Icons.edit,
-                backgroundColor: Color.fromRGBO(255, 179, 15, 1),
+                backgroundColor: const Color.fromRGBO(255, 179, 15, 1),
                 foregroundColor: Colors.white,
               ),
             ],
@@ -150,7 +151,7 @@ class _CalendarListState extends State<CalendarList> {
                   () {},
                 ),
                 icon: Icons.more_time,
-                backgroundColor: Color.fromRGBO(132, 147, 36, 1),
+                backgroundColor: const Color.fromRGBO(132, 147, 36, 1),
                 foregroundColor: Colors.white,
               ),
               Expanded(
@@ -165,8 +166,8 @@ class _CalendarListState extends State<CalendarList> {
                     child: Container(
                       alignment: Alignment.center,
                       width: 24 * 4, // space for actionPan
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
                           topRight: Radius.circular(20),
                           bottomRight: Radius.circular(20),
                         ),
@@ -214,7 +215,7 @@ class _CalendarListState extends State<CalendarList> {
                       style: TextStyle(
                           fontSize: 15,
                           color: widget.completed == 'completed!'
-                              ? Color.fromRGBO(54, 126, 24, 1)
+                              ? const Color.fromRGBO(54, 126, 24, 1)
                               : Colors.grey[600]),
                     )
                   ],

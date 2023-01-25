@@ -110,6 +110,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                           userUid,
                           args['docId'],
                           args['title'],
+                          true,
                         );
                       }
                     },
