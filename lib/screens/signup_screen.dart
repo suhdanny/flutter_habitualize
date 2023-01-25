@@ -24,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 30),
+          const SizedBox(height: 40),
           Container(
             alignment: Alignment.center,
             width: double.infinity,
@@ -32,9 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: const Text(
               "Haveit.",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 45,
-              ),
+              style: TextStyle(fontSize: 43, fontWeight: FontWeight.w700),
             ),
           ),
           Expanded(
@@ -64,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     text: TextSpan(
                       text: 'Already have an account? ',
                       style: const TextStyle(
-                        fontSize: 13,
+                        fontSize: 11,
                         color: Colors.black,
                       ),
                       children: [

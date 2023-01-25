@@ -176,7 +176,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Color.fromRGBO(223, 223, 223, 1),
+                    color: Color.fromRGBO(223, 223, 223, 0.5),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -310,7 +310,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                         // markerDecoration: BoxDecoration(shape: BoxShape.circle),
                         isTodayHighlighted: false,
                         selectedDecoration: BoxDecoration(
-                          color: Color.fromRGBO(247, 215, 140, 1),
+                          color: Color.fromRGBO(223, 223, 223, 1),
                           shape: BoxShape.circle,
                         ),
                         selectedTextStyle: TextStyle(color: Colors.black),
@@ -335,12 +335,11 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                 children: [
                   Container(
                     width: double.infinity,
-                    margin: const EdgeInsets.only(bottom: 15),
+                    margin: const EdgeInsets.only(bottom: 15, left: 5),
                     child: const Text(
                       "Notes",
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
+                      style:
+                          TextStyle(fontSize: 23, fontWeight: FontWeight.w500),
                       textAlign: TextAlign.start,
                     ),
                   ),

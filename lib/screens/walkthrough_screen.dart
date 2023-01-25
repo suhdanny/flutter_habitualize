@@ -47,16 +47,61 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
             IntroGetStarted(),
           ],
         ),
+        // if (onLastPage)
+        //   GestureDetector(
+        //     onTap: () {
+        //       _storeOnBoardInfo();
+        //       Navigator.push(context, MaterialPageRoute(builder: (context) {
+        //         return StreamBuilder(
+        //           stream: FirebaseAuth.instance.authStateChanges(),
+        //           builder: (context, snapshot) {
+        //             if (snapshot.hasData) return const TabsScreen();
+        //             return const LogInScreen();
+        //           },
+        //         );
+        //       }));
+        //     },
+        // child: Container(
+        //   width: 70,
+        //   height: 40,
+        //   child: Center(
+        //       child: Text(
+        //     "Done",
+        //     style: TextStyle(
+        //         fontSize: 18,
+        //         fontWeight: FontWeight.w600,
+        //         color: Colors.white),
+        //   )),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(5),
+        //       color: Color.fromRGBO(175, 195, 168, 1)),
+        // ),
+        //   ),
         Container(
             alignment: Alignment(0, 0.8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                GestureDetector(
-                    onTap: () {
-                      _controller.jumpToPage(5);
-                    },
-                    child: Text("skip")),
+                // GestureDetector(
+                //     onTap: () {
+                //       _controller.jumpToPage(5);
+                //     },
+                //     child: Container(
+                //       width: 70,
+                //       height: 40,
+                //       child: Center(
+                //           child: Text(
+                //         "Skip",
+                //         style: TextStyle(
+                //             fontSize: 18,
+                //             fontWeight: FontWeight.w600,
+                //             color: Colors.white),
+                //       )),
+                //       decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(5),
+                //           color: Color.fromRGBO(175, 195, 168, 1)),
+                //     )),
                 SmoothPageIndicator(
                   controller: _controller,
                   count: 5,
@@ -66,30 +111,60 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                       dotHeight: 13,
                       dotWidth: 13),
                 ),
-                !onLastPage
-                    ? GestureDetector(
-                        onTap: () {
-                          _controller.nextPage(
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.easeIn);
-                        },
-                        child: Text("next"))
-                    : GestureDetector(
-                        onTap: () {
-                          _storeOnBoardInfo();
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return StreamBuilder(
-                              stream: FirebaseAuth.instance.authStateChanges(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) return const TabsScreen();
-                                return const LogInScreen();
-                              },
-                            );
-                          }));
-                        },
-                        child: Text("done"),
-                      )
+
+                // !onLastPage
+                //     ? GestureDetector(
+                //         onTap: () {
+                //           _controller.nextPage(
+                //               duration: Duration(milliseconds: 300),
+                //               curve: Curves.easeIn);
+                //         },
+                //         child: Container(
+                //           width: 70,
+                //           height: 40,
+                //           child: Center(
+                //             child: Text(
+                //               "Next",
+                //               style: TextStyle(
+                //                   fontSize: 18,
+                //                   fontWeight: FontWeight.w600,
+                //                   color: Colors.white),
+                //             ),
+                //           ),
+                //           decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(5),
+                //               color: Color.fromRGBO(175, 195, 168, 1)),
+                //         ))
+                // : GestureDetector(
+                //     onTap: () {
+                //       _storeOnBoardInfo();
+                //       Navigator.push(context,
+                //           MaterialPageRoute(builder: (context) {
+                //         return StreamBuilder(
+                //           stream: FirebaseAuth.instance.authStateChanges(),
+                //           builder: (context, snapshot) {
+                //             if (snapshot.hasData) return const TabsScreen();
+                //             return const AuthScreen();
+                //           },
+                //         );
+                //       }));
+                //     },
+                //     child: Container(
+                //       width: 70,
+                //       height: 40,
+                //       child: Center(
+                //           child: Text(
+                //         "Done",
+                //         style: TextStyle(
+                //             fontSize: 18,
+                //             fontWeight: FontWeight.w600,
+                //             color: Colors.white),
+                //       )),
+                //       decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(5),
+                //           color: Color.fromRGBO(175, 195, 168, 1)),
+                //     ),
+                //   )
               ],
             ))
       ]),
