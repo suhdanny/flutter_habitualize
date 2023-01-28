@@ -1,12 +1,6 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -26,33 +20,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       : FirebaseAuth.instance.currentUser!.displayName!;
   final userUId = FirebaseAuth.instance.currentUser!.uid;
 
-  // uploadImage() async {
-  //   final _firebaseStorage = FirebaseStorage.instance;
-  //   final _imagePicker = ImagePicker();
-  //   PickedFile image;
-
-  //   // check permission
-  //   await Permission.photos.request();
-  //   var permissionStatus = Platform.isIOS
-  //       ? await Permission.photos.status
-  //       : await Permission.storage.status;
-
-  //   if (permissionStatus.isGranted) {
-  //     image = (await _imagePicker.getImage(source: ImageSource.gallery))!;
-  //     var file = File(image.path);
-
-  //     if (image != null) {
-  //       //upload to Firebase
-  //       final storageRef = FirebaseStorage.instance.ref();
-  //       final imageRef = storageRef.child("mountains.jpg").putFile(file);
-  //     } else {
-  //       print("No Image Path Recieved");
-  //     }
-  //   } else {
-  //     print('Permission not granted. Try Again with permission access');
-  //     print(permissionStatus);
-  //   }
-  // }
+  Future<bool> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return true;
+    } on FirebaseAuthException catch (error) {
+      print(error);
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: Colors.grey,
                           )),
                           hintText: userName,
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontSize: 15,
                           )),
                     );
@@ -162,23 +138,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   stream: FirebaseFirestore.instance
                       .doc('/users/$userUId')
                       .snapshots(),
-
-                  // validator: (value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return "Please enter the title of the habit.";
-                  //   }
-                  //   return null;
-                  // },
                 ),
               ),
             ],
           ),
-
           const SizedBox(
             height: 40,
           ),
-
-          // Email Section
           Row(
             children: [
               Container(
@@ -198,18 +164,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
               )
             ],
           ),
-
           const SizedBox(
             height: 190,
           ),
-
           Center(
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all(Color.fromRGBO(223, 223, 223, 1)),
               ),
-              onPressed: () => FirebaseAuth.instance.signOut(),
+              onPressed: () {
+                signOut().then((success) {
+                  if (success) {
+                    Navigator.pushReplacementNamed(context, '/sign-in');
+                  }
+                });
+              },
               child: const Text(
                 "Sign Out",
                 style: TextStyle(color: Colors.black),

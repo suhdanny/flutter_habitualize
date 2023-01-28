@@ -35,13 +35,18 @@ class _SplashScreenState extends State<SplashScreen>
           if (isViewed == null || isViewed == 0) {
             return const WalkthroughScreen();
           } else {
-            return StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) return const TabsScreen();
-                return const LogInScreen();
-              },
-            );
+            if (FirebaseAuth.instance.currentUser != null) {
+              return const TabsScreen();
+            } else {
+              return const LogInScreen();
+            }
+            // return StreamBuilder(
+            //   stream: FirebaseAuth.instance.authStateChanges(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.hasData) return const TabsScreen();
+            //     return const LogInScreen();
+            //   },
+            // );
           }
         }),
       ),

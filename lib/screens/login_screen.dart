@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import '../widgets/auth_text_form_field.dart';
 import '../services/sign_in_with_google.dart';
+import '../services/sign_in_with_apple.dart';
 import '../services/sign_in_with_email_and_password.dart';
 
 class LogInScreen extends StatefulWidget {
@@ -146,7 +148,9 @@ class _LogInScreenState extends State<LogInScreen> {
                             _emailController.text.trim(),
                             _passwordController.text.trim(),
                             setErrorMessage,
-                          );
+                          ).then((success) {
+                            if (success) Navigator.pushNamed(context, '/');
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -179,7 +183,10 @@ class _LogInScreenState extends State<LogInScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () => signInWithGoogle(),
+                        onPressed: () {
+                          signInWithGoogle().then((success) =>
+                              {if (success) Navigator.pushNamed(context, '/')});
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(
@@ -216,7 +223,10 @@ class _LogInScreenState extends State<LogInScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          signInWithApple().then((success) =>
+                              {if (success) Navigator.pushNamed(context, '/')});
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(

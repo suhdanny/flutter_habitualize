@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../widgets/auth_text_form_field.dart';
-import '../services/create_new_user.dart';
+import '../services/create_new_user_with_email_and_password.dart';
 import '../services/sign_in_with_google.dart';
+import '../services/sign_in_with_apple.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -153,7 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             });
                           }
 
-                          createNewUser(
+                          createNewUserWithEmailAndPassword(
                             _emailController.text.trim(),
                             _userNameController.text.trim(),
                             _passwordController.text.trim(),
@@ -193,7 +194,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () => signInWithGoogle(),
+                        onPressed: () {
+                          signInWithGoogle().then((success) =>
+                              {if (success) Navigator.pushNamed(context, '/')});
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(
@@ -230,7 +234,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          signInWithApple().then((success) =>
+                              {if (success) Navigator.pushNamed(context, '/')});
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(
