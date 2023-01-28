@@ -12,6 +12,7 @@ void editHabit(
   String duration,
   Map<String, bool>? dailyTracks,
   String? weeklyTrack,
+  bool popOnEdit,
 ) {
   showMaterialModalBottomSheet(
     shape: const RoundedRectangleBorder(
@@ -37,7 +38,7 @@ void editHabit(
       );
     },
   ).then((result) {
-    if (result) {
+    if (result && popOnEdit) {
       Navigator.pop(context);
     }
   });

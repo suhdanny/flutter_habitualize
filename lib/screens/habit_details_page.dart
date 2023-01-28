@@ -82,6 +82,7 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                           args['duration'],
                           args['dailyTracks'],
                           args['weeklyTrack'],
+                          true,
                         );
                       }
                       if (result == 1) {
@@ -263,17 +264,17 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                     final timeline = data!['timeline'];
 
                     return TableCalendar(
-                      focusedDay: today,
+                      focusedDay: selectedDateTime,
                       firstDay: DateTime(1990),
                       lastDay: DateTime(2050),
-                      calendarFormat: format,
-                      onFormatChanged: (CalendarFormat calendarFormat) {
-                        setState(() {
-                          format = calendarFormat;
-                        });
-                      },
+                      // calendarFormat: format,
+                      // onFormatChanged: (CalendarFormat calendarFormat) {
+                      //   setState(() {
+                      //     format = calendarFormat;
+                      //   });
+                      // },
                       selectedDayPredicate: (day) {
-                        return isSameDay(day, today);
+                        return isSameDay(day, selectedDateTime);
                       },
                       calendarBuilders: CalendarBuilders(
                         markerBuilder: (context, day, events) {
@@ -284,14 +285,6 @@ class _HabitDetailsPageState extends State<HabitDetailsPage> {
                               !isDateAfterToday(day)) {
                             final completed = timeline[dayString]['completed'];
                             if (completed) {
-                              // return Container(
-                              //   decoration: BoxDecoration(
-                              //     borderRadius: BorderRadius.circular(50),
-                              //     color: Colors.green,
-                              //   ),
-                              //   width: 5,
-                              //   height: 5,
-                              // );
                               return const Icon(
                                 Icons.done,
                                 color: Colors.green,

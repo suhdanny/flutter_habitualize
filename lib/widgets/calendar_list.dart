@@ -131,6 +131,7 @@ class _CalendarListState extends State<CalendarList> {
                     widget.duration,
                     widget.dailyTracks,
                     widget.weeklyTrack,
+                    false,
                   ),
                   icon: Icons.edit,
                   backgroundColor: const Color.fromRGBO(255, 179, 15, 1),

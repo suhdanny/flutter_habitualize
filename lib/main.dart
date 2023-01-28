@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_habitualize/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import './screens/home_screen.dart';
 import './screens/login_screen.dart';
 import './screens/signup_screen.dart';
 import './screens/habit_details_page.dart';
@@ -34,9 +33,8 @@ class MyApp extends StatelessWidget {
           cardColor: const Color.fromRGBO(54, 174, 124, 1),
         ),
       ),
-      home: const SplashScreen(),
       routes: {
-        '/home': (ctx) => HomeScreen(),
+        '/': (ctx) => const SplashScreen(),
         '/sign-in': (ctx) => const LogInScreen(),
         '/sign-up': (ctx) => const SignUpScreen(),
         '/add-habit': (ctx) => const AddHabitScreen(),

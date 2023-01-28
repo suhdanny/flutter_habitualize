@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<UserCredential?> signInWithEmailAndPassword(
+Future<bool> signInWithEmailAndPassword(
   String email,
   String password,
   Function setErrorMessage,
 ) async {
   try {
-    return await FirebaseAuth.instance
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
+    return true;
   } on FirebaseAuthException catch (e) {
     setErrorMessage(e.message);
-    return null;
+    return false;
   }
 }

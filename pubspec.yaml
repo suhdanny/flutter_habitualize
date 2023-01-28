@@ -59,6 +59,7 @@ dependencies:
   shared_preferences: ^2.0.16
   email_validator: ^2.1.16
   delayed_widget: ^1.1.2
+  the_apple_sign_in: ^1.1.1
 
 dev_dependencies:
   flutter_test:
